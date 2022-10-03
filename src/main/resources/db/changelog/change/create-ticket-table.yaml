@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-ticket
+      author: kreker
+      changes:
+      - createTable:
+          tableName: ticket
+          columns:
+            - column:
+                name: id
+                type: INT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: user_id
+                type: INT
+                constraints:
+                  foreignKeyName: user_fk
+                  references: user(id)
+                  nullable: false
+            - column:
+                name: place
+                type: VARCHAR(4)
+                constraints:
+                  nullable: false
+            - column:
+                name: place_class
+                type: VARCHAR(10)
+                constraints:
+                  nullable: false
+            - column:
+                name: cost
+                type: VARCHAR(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: race_id
+                type: INT
+                constraints:
+                  nullable: false
+                  foreignKeyName: race_fk
+                  references: race(id)
