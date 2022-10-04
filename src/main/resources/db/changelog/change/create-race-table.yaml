@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-race
+      author: kreker
+      changes:
+      - createTable:
+          tableName: race
+          columns:
+            - column:
+                name: id
+                type: INT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: departure_time
+                type: TIME
+                constraints:
+                  nullable: false
+            - column:
+                name: arrival_time
+                type: TIME
+                constraints:
+                  nullable: false
+            - column:
+                name: departure_city
+                type: VARCHAR(35)
+                constraints:
+                  nullable: false
+            - column:
+                name: arrival_city
+                type: VARCHAR(35)
+                constraints:
+                  nullable: false
+            - column:
+                name: travel_time
+                type: TIME
+                constraints:
+                  nullable: false
+            - column:
+                name: airline
+                type: VARCHAR(35)
+                constraints:
+                  nullable: false
+            - column:
+                name: race_number
+                type: VARCHAR(35)
+                constraints:
+                  nullable: false

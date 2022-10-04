@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user
+      author: kreker
+      changes:
+      - createTable:
+          tableName: users
+          columns:
+            - column:
+                name: id
+                type: INT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: name
+                type: VARCHAR(30)
+                constraints:
+                  nullable: false
+            - column:
+                name: surname
+                type: VARCHAR(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: mail
+                type: VARCHAR(35)
+                constraints:
+                  nullable: false
+                  unique: true
+            - column:
+                name: phone
+                type: VARCHAR(20)
+                constraints:
+                  nullable: false
+                  unique: true
+            - column:
+                name: login
+                type: VARCHAR(50)
+                constraints:
+                  nullable: false
+                  unique: true
+            - column:
+                name: password
+                type: VARCHAR(35)
+                constraints:
+                  nullable: false
