@@ -34,13 +34,6 @@ databaseChangeLog:
                 constraints:
                   nullable: false
             - column:
-                name: race_id
-                type: INT
-                constraints:
-                  nullable: false
-                  foreignKeyName: race_fk
-                  references: race(id)
-            - column:
                 name: travel_time
                 type: TIME
                 constraints:

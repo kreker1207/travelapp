@@ -18,7 +18,7 @@ databaseChangeLog:
                 type: INT
                 constraints:
                   foreignKeyName: user_fk
-                  references: user(id)
+                  references: users(id)
                   nullable: false
             - column:
                 name: place
