@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class RaceDto {
-    private Long rid;
+    private Long id;
     private String departureTime;
     private String arrivalTime;
     private String departureCity;

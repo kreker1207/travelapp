@@ -23,9 +23,9 @@ import javax.persistence.Table;
 @Table(name = "race")
 public class Race {
     @Id
-    @Column(name = "rid")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rid;
+    private Long id;
     @Column(name = "departure_time")
     private String departureTime;
     @Column(name = "arrival_time")

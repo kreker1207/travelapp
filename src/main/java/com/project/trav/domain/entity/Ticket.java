@@ -37,7 +37,7 @@ public class Ticket {
     @Column(name = "cost")
     private String cost;
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id",referencedColumnName = "rid",nullable = false,unique = true)
+    @JoinColumn(name = "id",referencedColumnName = "id",nullable = false,unique = true)
     private Race races;
 
 }

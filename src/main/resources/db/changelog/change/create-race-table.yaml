@@ -7,7 +7,7 @@ databaseChangeLog:
           tableName: race
           columns:
             - column:
-                name: rid
+                name: id
                 type: INT
                 autoIncrement: true
                 constraints:
@@ -48,3 +48,4 @@ databaseChangeLog:
                 type: VARCHAR(35)
                 constraints:
                   nullable: false
+                  unique: true

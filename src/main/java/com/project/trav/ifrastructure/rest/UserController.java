@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/1.0/users")
+@RequestMapping("/api/v1/users")
 public class UserController{
     private final UserMapper userMapper;
     private final UserService userService;

@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/1.0/tickets")
+@RequestMapping("api/v1/tickets")
 public class TicketController {
     private final TicketMapper ticketMapper;
     private final TicketService ticketService;
