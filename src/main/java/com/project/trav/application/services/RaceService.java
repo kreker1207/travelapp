@@ -12,25 +12,25 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class RaceService {
-    private static final String RACE_ERROR_TEMPLATE = "Race was not found by id";
+    private static final String NOT_FOUND_ERROR = "Race was not found by id";
     private final RaceRepository raceRepository;
 
     public List<Race> getRaces(){return raceRepository.findAll();}
     public Race getRace(Long id) {
         return raceRepository.findById(id).orElseThrow(() -> {
-            throw new EntityNotFoundByIdException(RACE_ERROR_TEMPLATE);
+            throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         });
     }
     public void addRace(Race race){ raceRepository.save(race);}
     public void deleteRace(Long id){
         if(!raceRepository.existsById(id)){
-            throw new EntityNotFoundByIdException(RACE_ERROR_TEMPLATE);
+            throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
         raceRepository.deleteById(id);
     }
     public void updateRace(Race race,Long id){
         if(!raceRepository.existsById(id)){
-            throw new EntityNotFoundByIdException(RACE_ERROR_TEMPLATE);
+            throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
         Race oldRace = getRace(id);
         raceRepository.save(Race.builder()
