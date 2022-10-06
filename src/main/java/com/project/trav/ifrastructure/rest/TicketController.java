@@ -1,8 +1,8 @@
 package com.project.trav.ifrastructure.rest;
 
-import com.project.trav.application.services.RaceService;
-import com.project.trav.ifrastructure.dto.RaceDto;
-import com.project.trav.ifrastructure.mapper.RaceMapper;
+import com.project.trav.application.services.TicketService;
+import com.project.trav.ifrastructure.dto.TicketDto;
+import com.project.trav.ifrastructure.mapper.TicketMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,30 +18,29 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/races")
 @RequiredArgsConstructor
-public class RaceController {
-    private final RaceMapper raceMapper;
-    private final RaceService raceService;
+@RequestMapping("api/v1/tickets")
+public class TicketController {
+    private final TicketMapper ticketMapper;
+    private final TicketService ticketService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<RaceDto> getRaces(){return raceMapper.toRaceDtos(raceService.getRaces());}
+    public List<TicketDto> getTickets(){return ticketMapper.toTicketDtos(ticketService.getTickets());}
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RaceDto getRace(@PathVariable Long id){return raceMapper.toRaceDto(raceService.getRace(id));}
+    public TicketDto getTicket(@PathVariable Long id){return ticketMapper.toTicketDto(ticketService.getTicket(id));}
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addRace(@RequestBody RaceDto raceDto){raceService.addRace(raceMapper.toRace(raceDto));}
+    public void addTicket(@RequestBody TicketDto ticketDto){ticketService.addTicket(ticketMapper.toTicket(ticketDto));}
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateTicket(@PathVariable Long id,@RequestBody TicketDto ticketDto){ticketService.updateTicket(ticketMapper.toTicket(ticketDto),id);}
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRace(@PathVariable Long id){raceService.deleteRace(id);}
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void updateRace(@RequestBody RaceDto raceDto, @PathVariable Long id){
-        raceService.updateRace(raceMapper.toRace(raceDto),id);}
+    public void deleteTicket(@PathVariable Long id){ticketService.deleteTicket(id);}
 }

@@ -38,4 +38,6 @@ public class Race {
     private String travelTime;
     @Column(name = "airline")
     private String airline;
+    @Column(name = "race_number")
+    private String raceNumber;
 }

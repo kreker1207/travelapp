@@ -48,3 +48,4 @@ databaseChangeLog:
                 type: VARCHAR(35)
                 constraints:
                   nullable: false
+                  unique: true

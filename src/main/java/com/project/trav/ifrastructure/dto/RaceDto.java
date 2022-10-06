@@ -11,4 +11,5 @@ public class RaceDto {
     private String arrivalCity;
     private String travelTime;
     private String airline;
+    private String raceNumber;
 }
