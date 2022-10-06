@@ -36,8 +36,8 @@ public class Ticket {
     private String placeClass;
     @Column(name = "cost")
     private String cost;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "race_id",referencedColumnName = "id",nullable = false,unique = true)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id",referencedColumnName = "rid",nullable = false,unique = true)
     private Race races;
 
 }

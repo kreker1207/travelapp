@@ -41,4 +41,4 @@ databaseChangeLog:
                 constraints:
                   nullable: false
                   foreignKeyName: race_fk
-                  references: race(id)
+                  references: race(rid)

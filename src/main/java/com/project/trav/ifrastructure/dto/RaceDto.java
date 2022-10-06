@@ -4,11 +4,12 @@ import lombok.Data;
 
 @Data
 public class RaceDto {
-    private Long id;
+    private Long rid;
     private String departureTime;
     private String arrivalTime;
     private String departureCity;
     private String arrivalCity;
     private String travelTime;
     private String airline;
+    private String raceNumber;
 }

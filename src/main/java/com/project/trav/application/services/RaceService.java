@@ -34,7 +34,7 @@ public class RaceService {
         }
         Race oldRace = getRace(id);
         raceRepository.save(Race.builder()
-                .id(id)
+                .rid(id)
                 .departureTime(Objects.isNull(race.getDepartureTime())?oldRace.getDepartureTime():race.getDepartureTime())
                 .arrivalTime(Objects.isNull(race.getArrivalTime())?oldRace.getArrivalTime(): race.getArrivalTime())
                 .departureCity(Objects.isNull(race.getDepartureCity())?oldRace.getDepartureCity(): race.getDepartureCity())

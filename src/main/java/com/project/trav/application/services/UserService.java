@@ -12,7 +12,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private static final String ERROR_TEMPLATE = "User was not found";
+    private static final String USER_ERROR_TEMPLATE = "User was not found";
     private final UserRepository userRepository;
 
     public List<User> getUsers(){
@@ -20,7 +20,7 @@ public class UserService {
     }
     public User getUser(Long id){
         return userRepository.findById(id).orElseThrow(()->{
-            throw new EntityNotFoundByIdException(ERROR_TEMPLATE);
+            throw new EntityNotFoundByIdException(USER_ERROR_TEMPLATE);
         });
     }
     public void addUser(User user){
@@ -28,7 +28,7 @@ public class UserService {
     }
     public void updateUser(User user, Long id){
         if(!userRepository.existsById(id)){
-            throw new EntityNotFoundByIdException(ERROR_TEMPLATE);
+            throw new EntityNotFoundByIdException(USER_ERROR_TEMPLATE);
         }
         User oldUser = getUser(id);
         userRepository.save(User.builder()
@@ -44,7 +44,7 @@ public class UserService {
     }
     public void deleteUser(Long id){
         if(!userRepository.existsById(id)){
-            throw new EntityNotFoundByIdException(ERROR_TEMPLATE);
+            throw new EntityNotFoundByIdException(USER_ERROR_TEMPLATE);
         }
         userRepository.deleteById(id);
     }
