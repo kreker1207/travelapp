@@ -1,10 +1,9 @@
 package com.project.trav.ifrastructure.rest;
 
-import com.project.trav.application.services.UserService;
-import com.project.trav.ifrastructure.dto.UserDto;
-import com.project.trav.ifrastructure.mapper.UserMapper;
+import com.project.trav.application.services.RaceService;
+import com.project.trav.ifrastructure.dto.RaceDto;
+import com.project.trav.ifrastructure.mapper.RaceMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,33 +16,32 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-@Slf4j
+
 @RestController
+@RequestMapping("/api/1.0/races")
 @RequiredArgsConstructor
-@RequestMapping("/api/1.0/users")
-public class UserController{
-    private final UserMapper userMapper;
-    private final UserService userService;
+public class RaceController {
+    private final RaceMapper raceMapper;
+    private final RaceService raceService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getUsers(){return userMapper.toUserDtos(userService.getUsers());}
+    public List<RaceDto> getRaces(){return raceMapper.toRaceDtos(raceService.getRaces());}
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getUser(@PathVariable Long id){return userMapper.toUserDto(userService.getUser(id));}
+    public RaceDto getRace(@PathVariable Long id){return raceMapper.toRaceDto(raceService.getRace(id));}
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addUser(@RequestBody UserDto userDto){userService.addUser(userMapper.toUser(userDto));}
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateUser(@RequestBody UserDto userDto, @PathVariable Long id){
-        userService.updateUser(userMapper.toUser(userDto),id);
-    }
+    public void addRace(@RequestBody RaceDto raceDto){raceService.addRace(raceMapper.toRace(raceDto));}
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id){userService.deleteUser(id);}
+    public void deleteRace(@PathVariable Long id){raceService.deleteRace(id);}
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void updateRace(@RequestBody RaceDto raceDto, @PathVariable Long id){
+        raceService.updateRace(raceMapper.toRace(raceDto),id);}
 }
