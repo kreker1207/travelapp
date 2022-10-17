@@ -82,7 +82,6 @@ public class RaceServiceTest {
                 "Berlin","1","Mau","Wr23-ww");
 
         Mockito.when(raceRepository.existsById(1L)).thenReturn(true);
-        Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(sourceRace));
 
         raceService.updateRace(sourceRace,1L);
         Mockito.verify(raceRepository).save(raceArgumentCaptor.capture());

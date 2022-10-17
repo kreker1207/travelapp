@@ -72,7 +72,6 @@ public class UserServiceTest {
                 "+380956954604","kreker","admin", Role.USER, Status.ACTIVE,null);
 
         Mockito.when(userRepository.existsById(1L)).thenReturn(true);
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(sourceUser));
 
         userService.updateUser(sourceUser,1L);
         Mockito.verify(userRepository).save(userArgumentCaptor.capture());
