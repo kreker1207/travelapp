@@ -19,7 +19,6 @@ databaseChangeLog:
                 constraints:
                   foreignKeyName: user_fk
                   references: users(id)
-                  nullable: false
             - column:
                 name: place
                 type: VARCHAR(4)

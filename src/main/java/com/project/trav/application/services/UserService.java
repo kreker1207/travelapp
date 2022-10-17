@@ -30,19 +30,7 @@ public class UserService {
         if(!userRepository.existsById(id)){
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
-        User oldUser = getUser(id);
-        userRepository.save(User.builder()
-                .id(id)
-                .name(Objects.isNull(user.getName())?oldUser.getName():user.getName())
-                .surname(Objects.isNull(user.getSurname())?oldUser.getSurname():user.getSurname())
-                .mail(Objects.isNull(user.getMail())?oldUser.getMail():user.getMail())
-                .phone(Objects.isNull(user.getPhone())?oldUser.getPhone():user.getPhone())
-                .login(Objects.isNull(user.getLogin())?oldUser.getLogin():user.getLogin())
-                .password(Objects.isNull(user.getPassword())?oldUser.getPassword():user.getPassword())
-                .role(Objects.isNull(user.getRole())?oldUser.getRole():user.getRole())
-                .status(Objects.isNull(user.getStatus())?oldUser.getStatus():user.getStatus())
-                .build()
-        );
+        userRepository.save(user);
     }
     public void deleteUser(Long id){
         if(!userRepository.existsById(id)){

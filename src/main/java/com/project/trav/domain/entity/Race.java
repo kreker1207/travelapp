@@ -2,6 +2,7 @@ package com.project.trav.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,9 +18,10 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@EqualsAndHashCode
 @Table(name = "race")
 public class Race {
     @Id

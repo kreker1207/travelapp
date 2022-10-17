@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -34,13 +33,6 @@ public class TicketService {
         if(!ticketRepository.existsById(id)){
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
-        Ticket oldTicket = getTicket(id);
-        ticketRepository.save(Ticket.builder()
-                .id(id)
-                .userId(Objects.isNull(ticket.getUserId())?oldTicket.getUserId():ticket.getUserId())
-                .place(Objects.isNull(ticket.getPlace())?oldTicket.getPlace():ticket.getPlace())
-                .placeClass(Objects.isNull(ticket.getPlaceClass())?oldTicket.getPlaceClass():ticket.getPlaceClass())
-                .cost(Objects.isNull(ticket.getCost())?oldTicket.getCost():ticket.getCost())
-                .build());
+        ticketRepository.save(ticket);
     }
 }

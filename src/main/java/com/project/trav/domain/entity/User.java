@@ -1,8 +1,10 @@
 package com.project.trav.domain.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 @Table(name = "users")
 public class User {
     @Id
@@ -42,6 +45,7 @@ public class User {
     private String phone;
     @Column(name = "login")
     private String login;
+    @JsonIgnore
     @Column(name = "password")
     private String password;
     @Enumerated(value = EnumType.STRING)
@@ -53,5 +57,4 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Ticket> tickets;
-
 }
