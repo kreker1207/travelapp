@@ -39,6 +39,8 @@ public class UserService {
                 .phone(Objects.isNull(user.getPhone())?oldUser.getPhone():user.getPhone())
                 .login(Objects.isNull(user.getLogin())?oldUser.getLogin():user.getLogin())
                 .password(Objects.isNull(user.getPassword())?oldUser.getPassword():user.getPassword())
+                .role(Objects.isNull(user.getRole())?oldUser.getRole():user.getRole())
+                .status(Objects.isNull(user.getStatus())?oldUser.getStatus():user.getStatus())
                 .build()
         );
     }

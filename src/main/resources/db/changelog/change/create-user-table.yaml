@@ -46,3 +46,16 @@ databaseChangeLog:
                 type: VARCHAR(35)
                 constraints:
                   nullable: false
+            - column:
+                name: role
+                type: VARCHAR(35)
+                defaultValue: USER
+                constraints:
+                  nullable: false
+            - column:
+                name: status
+                type: VARCHAR(35)
+                defaultValue: ACTIVE
+                constraints:
+                  nullable: false
+
