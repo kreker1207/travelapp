@@ -1,5 +1,6 @@
 package com.project.trav.application.services;
 
+import com.project.trav.domain.entity.Status;
 import com.project.trav.domain.entity.User;
 import com.project.trav.domain.repository.UserRepository;
 import com.project.trav.exeption.EntityNotFoundByIdException;
@@ -7,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +38,14 @@ public class UserService {
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
         userRepository.deleteById(id);
+    }
+    public void deactivateUser(Long id){
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isEmpty()){
+            throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
+        }
+        User user = userOptional.get();
+        user.setStatus(Status.BANNED);
+        updateUser(user,id);
     }
 }

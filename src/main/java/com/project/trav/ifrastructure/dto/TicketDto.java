@@ -1,6 +1,7 @@
 package com.project.trav.ifrastructure.dto;
 
 import com.project.trav.domain.entity.Race;
+import com.project.trav.domain.entity.TicketStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,6 @@ public class TicketDto {
     @NonNull
     private String cost;
     @NonNull
+    private TicketStatus ticketStatus;
     private Race races;
-
 }

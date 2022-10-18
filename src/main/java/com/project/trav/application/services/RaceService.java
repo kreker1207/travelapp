@@ -33,4 +33,7 @@ public class RaceService {
         }
         raceRepository.save(race);
     }
+    public List<Race> searchByParams(String departureCityParam,String arrivalCityParam,String departureTimeParam,String arrivalTimeParam){
+        return raceRepository.findByDepartureCityAndArrivalCityOrDepartureTimeAndArrivalTime(departureCityParam,arrivalCityParam,departureTimeParam,arrivalTimeParam);
+    }
 }
