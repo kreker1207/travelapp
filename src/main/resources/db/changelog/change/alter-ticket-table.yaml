@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: addColumn-ticket
+      author: kreker
+      changes:
+      - addColumn:
+          tableName: ticket
+          columns:
+            - column:
+                name: ticket_status
+                type: varchar(50)
+                defaultValue: AVAILABLE
+                constraints:
+                  nullable: false
