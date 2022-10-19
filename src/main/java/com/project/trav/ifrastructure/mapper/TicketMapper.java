@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",uses = RaceMapper.class,injectionStrategy = InjectionStrategy.FIELD)
+@Mapper(componentModel = "spring",uses = RaceMapper.class)
 public interface TicketMapper {
     TicketDto toTicketDto(Ticket ticket);
     List<TicketDto> toTicketDtos(List<Ticket> tickets);
