@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",injectionStrategy = InjectionStrategy.FIELD)
+@Mapper(componentModel = "spring",injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface RaceMapper {
     RaceDto toRaceDto(Race race);
 
