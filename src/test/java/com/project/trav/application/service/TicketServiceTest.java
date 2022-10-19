@@ -3,6 +3,7 @@ package com.project.trav.application.service;
 import com.project.trav.application.services.TicketService;
 import com.project.trav.domain.entity.Race;
 import com.project.trav.domain.entity.Ticket;
+import com.project.trav.domain.entity.TicketStatus;
 import com.project.trav.domain.repository.TicketRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,9 +36,9 @@ public class TicketServiceTest {
     void getRaces(){
         List<Ticket> ticketList  = Arrays.asList(
                 new Ticket(1L,1L,"A23","econom",
-                        "200",race),
+                        "200",TicketStatus.AVAILABLE,race),
                 new Ticket(1L,1L,"A23","econom",
-                        "200",race)
+                        "200",TicketStatus.AVAILABLE,race)
         );
         Mockito.when(ticketRepository.findAll()).thenReturn(ticketList);
         List<Ticket> expectedList = ticketService.getTickets();
@@ -46,7 +47,7 @@ public class TicketServiceTest {
     @Test
     void getRace_success(){
         Ticket sourceTicket = new Ticket(1L,1L,"A23","econom",
-                "200",race);
+                "200", TicketStatus.AVAILABLE,race);
         Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(sourceTicket));
         Ticket expectedTicket = ticketService.getTicket(1L);
         assertThat(sourceTicket).isEqualTo(expectedTicket);
@@ -73,16 +74,16 @@ public class TicketServiceTest {
     @Test
     void addRace(){
         Ticket ticket = new Ticket(1L,1L,"A23","econom",
-                "200",race);
+                "200",TicketStatus.AVAILABLE,race);
         ticketService.addTicket(ticket);
         Mockito.verify(ticketRepository).save(ticket);
     }
     @Test
     void updateRace_success(){
         Ticket sourceTicket =new Ticket(1L,1L,"A23","econom",
-                "200",race);
+                "200",TicketStatus.AVAILABLE,race);
         Ticket expectedTicket = new Ticket(1L,1L,"A23","econom",
-                "200",race);
+                "200",TicketStatus.AVAILABLE,race);
 
         Mockito.when(ticketRepository.existsById(1L)).thenReturn(true);
 
@@ -93,7 +94,7 @@ public class TicketServiceTest {
     @Test
     void updateRace_failure(){
         Ticket ticket = new Ticket(1L,1L,"A23","econom",
-                "200",race);
+                "200",TicketStatus.AVAILABLE,race);
         Mockito.when(ticketRepository.existsById(1L)).thenReturn(false);
         String expectedMessage = "Ticket was not found by id";
         String actualMessage = Assertions.assertThrows(EntityNotFoundException.class,()->
