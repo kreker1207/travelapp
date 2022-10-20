@@ -4,6 +4,8 @@ import com.project.trav.domain.entity.Role;
 import com.project.trav.domain.entity.Status;
 import com.project.trav.domain.entity.User;
 import com.project.trav.ifrastructure.dto.UserDto;
+import com.project.trav.ifrastructure.mapper.RaceMapperImpl;
+import com.project.trav.ifrastructure.mapper.TicketMapperImpl;
 import com.project.trav.ifrastructure.mapper.UserMapper;
 import com.project.trav.ifrastructure.mapper.UserMapperImpl;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {UserMapperImpl.class})
+@ContextConfiguration(classes = {UserMapperImpl.class, TicketMapperImpl.class, RaceMapperImpl.class})
 public class UserMapperTest {
     @Autowired
     private UserMapper mapper;
@@ -33,7 +35,7 @@ public class UserMapperTest {
             .setPassword("admin")
             .setRole(Role.ADMIN)
             .setStatus(Status.ACTIVE)
-            .setTickets(null);
+            .setTicketsDto(null);
     var resultUser = mapper.toUser(sourceUserDto);
     var expectedUser = new User()
             .setId(1L)
@@ -72,7 +74,7 @@ public class UserMapperTest {
                 .setPassword("admin")
                 .setRole(Role.ADMIN)
                 .setStatus(Status.ACTIVE)
-                .setTickets(null);
+                .setTicketsDto(null);
         assertThat(resultUserDto).isEqualTo(expectedUserDto);
     }
     @Test
@@ -109,7 +111,7 @@ public class UserMapperTest {
                 .setPassword("admin")
                 .setRole(Role.ADMIN)
                 .setStatus(Status.ACTIVE)
-                .setTickets(null),new UserDto()
+                .setTicketsDto(null),new UserDto()
                 .setId(1L)
                 .setName("Ivan")
                 .setSurname("Baranetskyi")
@@ -119,7 +121,7 @@ public class UserMapperTest {
                 .setPassword("admin")
                 .setRole(Role.ADMIN)
                 .setStatus(Status.ACTIVE)
-                .setTickets(null));
+                .setTicketsDto(null));
         assertThat(resultUserDtos).isEqualTo(expectedUserDtos);
 
     }
