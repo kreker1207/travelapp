@@ -4,6 +4,7 @@ import com.project.trav.domain.entity.Role;
 import com.project.trav.domain.entity.Status;
 import com.project.trav.domain.entity.User;
 import com.project.trav.ifrastructure.dto.UserDto;
+import com.project.trav.ifrastructure.mapper.CityMapperImpl;
 import com.project.trav.ifrastructure.mapper.RaceMapperImpl;
 import com.project.trav.ifrastructure.mapper.TicketMapperImpl;
 import com.project.trav.ifrastructure.mapper.UserMapper;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {UserMapperImpl.class, TicketMapperImpl.class, RaceMapperImpl.class})
+@ContextConfiguration(classes = {UserMapperImpl.class, TicketMapperImpl.class, RaceMapperImpl.class, CityMapperImpl.class})
 public class UserMapperTest {
     @Autowired
     private UserMapper mapper;

@@ -5,6 +5,7 @@ import com.project.trav.domain.entity.Ticket;
 import com.project.trav.domain.entity.TicketStatus;
 import com.project.trav.ifrastructure.dto.RaceDto;
 import com.project.trav.ifrastructure.dto.TicketDto;
+import com.project.trav.ifrastructure.mapper.CityMapperImpl;
 import com.project.trav.ifrastructure.mapper.RaceMapperImpl;
 import com.project.trav.ifrastructure.mapper.TicketMapper;
 import com.project.trav.ifrastructure.mapper.TicketMapperImpl;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TicketMapperImpl.class, RaceMapperImpl.class})
+@ContextConfiguration(classes = {TicketMapperImpl.class, RaceMapperImpl.class, CityMapperImpl.class})
 public class TicketMapperTest {
     @Autowired private TicketMapper mapper;
 
@@ -33,7 +34,9 @@ public class TicketMapperTest {
                 .setArrivalTime("15-00")
                 .setTravelTime("3")
                 .setAirline("Mau")
-                .setRaceNumber("Wz-air-222");
+                .setRaceNumber("Wz-air-222")
+                .setDepartureCityIdDto(null)
+                .setArrivalCityIdDto(null);
         var race = new Race()
                 .setId(1L)
                 .setDepartureCity("Kiev")
@@ -42,7 +45,9 @@ public class TicketMapperTest {
                 .setArrivalTime("15-00")
                 .setTravelTime("3")
                 .setAirline("Mau")
-                .setRaceNumber("Wz-air-222");
+                .setRaceNumber("Wz-air-222")
+                .setDepartureCityId(null)
+                .setArrivalCityId(null);
         var sourceTicketDto = new TicketDto()
                 .setId(1L)
                 .setUserId(1L)
@@ -72,7 +77,9 @@ public class TicketMapperTest {
                 .setArrivalTime("15-00")
                 .setTravelTime("3")
                 .setAirline("Mau")
-                .setRaceNumber("Wz-air-222");
+                .setRaceNumber("Wz-air-222")
+                .setDepartureCityIdDto(null)
+                .setArrivalCityIdDto(null);
         var race = new Race()
                 .setId(1L)
                 .setDepartureCity("Kiev")
@@ -81,7 +88,9 @@ public class TicketMapperTest {
                 .setArrivalTime("15-00")
                 .setTravelTime("3")
                 .setAirline("Mau")
-                .setRaceNumber("Wz-air-222");
+                .setRaceNumber("Wz-air-222")
+                .setDepartureCityId(null)
+                .setArrivalCityId(null);
         var sourceTicket = new Ticket()
                 .setId(1L)
                 .setUserId(1L)
@@ -111,7 +120,9 @@ public class TicketMapperTest {
                 .setArrivalTime("15-00")
                 .setTravelTime("3")
                 .setAirline("Mau")
-                .setRaceNumber("Wz-air-222");
+                .setRaceNumber("Wz-air-222")
+                .setDepartureCityIdDto(null)
+                .setArrivalCityIdDto(null);
         var race = new Race()
                 .setId(1L)
                 .setDepartureCity("Kiev")
@@ -120,7 +131,9 @@ public class TicketMapperTest {
                 .setArrivalTime("15-00")
                 .setTravelTime("3")
                 .setAirline("Mau")
-                .setRaceNumber("Wz-air-222");
+                .setRaceNumber("Wz-air-222")
+                .setDepartureCityId(null)
+                .setArrivalCityId(null);
         var sourceTicketList = Arrays.asList(new Ticket()
                 .setId(1L)
                 .setUserId(1L)
