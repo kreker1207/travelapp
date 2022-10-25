@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -34,7 +33,7 @@ public class UserServiceTest {
 
     @Test
     void getUsers(){
-        List<User> userList = Arrays.asList(
+        var userList = Arrays.asList(
                 new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                         .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                         .setTickets(new ArrayList<>()),
@@ -42,16 +41,16 @@ public class UserServiceTest {
                         .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                         .setTickets(new ArrayList<>()));
         Mockito.when(userRepository.findAll()).thenReturn(userList);
-        List<User> expectedList = userService.getUsers();
+        var expectedList = userService.getUsers();
         assertThat(expectedList).isEqualTo(userList);
     }
     @Test
     void getUser_success(){
-        User sourceUser = new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
+        var sourceUser = new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                 .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                 .setTickets(new ArrayList<>());
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(sourceUser));
-        User expectedUser = userService.getUser(1L);
+        var expectedUser = userService.getUser(1L);
         assertThat(expectedUser).isEqualTo(sourceUser);
     }
     @Test
@@ -62,7 +61,7 @@ public class UserServiceTest {
     }
     @Test
     void addUser(){
-        User user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
+        var user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                 .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                 .setTickets(new ArrayList<>());
         userService.addUser(user);
@@ -70,10 +69,10 @@ public class UserServiceTest {
     }
     @Test
     void updateUser_success(){
-        User sourceUser =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
+        var sourceUser =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                 .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                 .setTickets(new ArrayList<>());
-        User expectedUser = new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
+        var expectedUser = new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                 .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                 .setTickets(new ArrayList<>());
 
@@ -85,7 +84,7 @@ public class UserServiceTest {
     }
     @Test
     void updateUser_failure(){
-        User user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
+        var user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                 .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                 .setTickets(new ArrayList<>());
 

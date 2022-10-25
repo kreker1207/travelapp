@@ -21,7 +21,7 @@ public class CityService {
         if (Objects.isNull(city)){
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
-        else return cityRepository.findByName(name);
+        else return city;
     }
     public void addCity(City city){ cityRepository.save(city);}
     public void deleteCity(Long id){

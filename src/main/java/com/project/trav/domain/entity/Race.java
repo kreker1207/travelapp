@@ -1,11 +1,6 @@
 package com.project.trav.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.CascadeType;
@@ -19,13 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
-@Getter
-@Setter
+@Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@EqualsAndHashCode
 @Accessors(chain = true)
 @Table(name = "race")
 public class Race {

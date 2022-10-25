@@ -2,7 +2,6 @@ package com.project.trav.application.service;
 
 import com.project.trav.application.services.CityService;
 import com.project.trav.domain.entity.City;
-import com.project.trav.domain.entity.Race;
 import com.project.trav.domain.repository.CityRepository;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -31,19 +29,19 @@ public class CityServiceTest {
     private ArgumentCaptor<City> cityArgumentCaptor;
     @Test
     void getCities(){
-        List<City> cityList = Arrays.asList(new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+        var cityList = Arrays.asList(new City().setId(1L).setName("Kiev").setCountry("Ukraine")
                         .setPopulation("3.2 million").setInformation("capital"),
                 new City().setName("Kiev").setCountry("Ukraine").setPopulation("3.2 million").setInformation("capital"));
         Mockito.when(cityRepository.findAll()).thenReturn(cityList);
-        List<City> result = cityService.getCities();
+        var result = cityService.getCities();
         assertThat(cityList).isEqualTo(result);
     }
     @Test
     void getCity_success(){
-        City sourceCity = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+        var sourceCity = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
                 .setPopulation("3.2 million").setInformation("capital");
         Mockito.when(cityRepository.findByName("Kiev")).thenReturn(sourceCity);
-        City expectedCity = cityService.getCityInfo("Kiev");
+        var expectedCity = cityService.getCityInfo("Kiev");
         AssertionsForClassTypes.assertThat(sourceCity).isEqualTo(expectedCity);
     }
     @Test
@@ -53,7 +51,7 @@ public class CityServiceTest {
     }
     @Test
     void add_city(){
-        City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+        var city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
                 .setPopulation("3.2 million").setInformation("capital");
         cityService.addCity(city);
         Mockito.verify(cityRepository).save(city);
@@ -74,9 +72,9 @@ public class CityServiceTest {
     }
     @Test
     void updateCity_success(){
-        City sourceCity =new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+        var sourceCity =new City().setId(1L).setName("Kiev").setCountry("Ukraine")
                 .setPopulation("3.2 million").setInformation("capital");
-        City expectedCity = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+        var expectedCity = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
                 .setPopulation("3.2 million").setInformation("capital");
 
         Mockito.when(cityRepository.existsById(1L)).thenReturn(true);
@@ -87,7 +85,7 @@ public class CityServiceTest {
     }
     @Test
     void updateRace_failure(){
-        City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+        var city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
                 .setPopulation("3.2 million").setInformation("capital");
         Mockito.when(cityRepository.existsById(1L)).thenReturn(false);
         String expectedMessage = "City was not found";

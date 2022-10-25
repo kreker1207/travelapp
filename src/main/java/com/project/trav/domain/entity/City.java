@@ -1,11 +1,6 @@
 package com.project.trav.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
@@ -15,13 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Getter
-@Setter
+@Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@EqualsAndHashCode
 @Accessors(chain = true)
 @Table(name = "city")
 public class City {

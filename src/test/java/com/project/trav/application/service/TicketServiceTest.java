@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -36,22 +35,22 @@ public class TicketServiceTest {
             .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city);
     @Test
     void getRaces(){
-        List<Ticket> ticketList  = Arrays.asList(
+        var ticketList  = Arrays.asList(
                 new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
                         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race),
                 new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
                         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race)
         );
         Mockito.when(ticketRepository.findAll()).thenReturn(ticketList);
-        List<Ticket> expectedList = ticketService.getTickets();
+        var expectedList = ticketService.getTickets();
         assertThat(expectedList).isEqualTo(ticketList);
     }
     @Test
     void getRace_success(){
-        Ticket sourceTicket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        var sourceTicket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
                 .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
         Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(sourceTicket));
-        Ticket expectedTicket = ticketService.getTicket(1L);
+        var expectedTicket = ticketService.getTicket(1L);
         assertThat(sourceTicket).isEqualTo(expectedTicket);
     }
     @Test
@@ -75,16 +74,16 @@ public class TicketServiceTest {
     }
     @Test
     void addRace(){
-        Ticket ticket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        var ticket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
                 .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
         ticketService.addTicket(ticket);
         Mockito.verify(ticketRepository).save(ticket);
     }
     @Test
     void updateRace_success(){
-        Ticket sourceTicket =new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        var sourceTicket =new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
                 .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
-        Ticket expectedTicket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        var expectedTicket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
                 .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
 
         Mockito.when(ticketRepository.existsById(1L)).thenReturn(true);
@@ -95,7 +94,7 @@ public class TicketServiceTest {
     }
     @Test
     void updateRace_failure(){
-        Ticket ticket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        var ticket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
                 .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
         Mockito.when(ticketRepository.existsById(1L)).thenReturn(false);
         String expectedMessage = "Ticket was not found by id";

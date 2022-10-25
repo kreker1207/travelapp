@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -32,22 +31,22 @@ public class RaceServiceTest {
     City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine").setPopulation("2.7 million").setInformation("Capital");
     @Test
     void getRaces(){
-        List<Race> raceList  = Arrays.asList(
+       var raceList  = Arrays.asList(
                 new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
                         .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city),
                 new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
                         .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city)
         );
         Mockito.when(raceRepository.findAll()).thenReturn(raceList);
-        List<Race> expectedList = raceService.getRaces();
+        var expectedList = raceService.getRaces();
         assertThat(expectedList).isEqualTo(raceList);
     }
     @Test
     void getRace_success(){
-        Race sourceRace = new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
+        var sourceRace = new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
                 .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city);
         Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(sourceRace));
-        Race expectedRace = raceService.getRace(1L);
+        var expectedRace = raceService.getRace(1L);
         assertThat(sourceRace).isEqualTo(expectedRace);
     }
     @Test
@@ -71,16 +70,16 @@ public class RaceServiceTest {
     }
     @Test
     void addRace(){
-        Race race = new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
+        var race = new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
                 .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city);
         raceService.addRace(race);
         Mockito.verify(raceRepository).save(race);
     }
     @Test
     void updateRace_success(){
-        Race sourceRace =new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
+        var sourceRace =new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
                 .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city);
-        Race expectedRace = new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
+        var expectedRace = new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
                 .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city);
 
         Mockito.when(raceRepository.existsById(1L)).thenReturn(true);
@@ -91,7 +90,7 @@ public class RaceServiceTest {
     }
     @Test
     void updateRace_failure(){
-        Race race = new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
+        var race = new Race().setId(1L).setDepartureTime("12-00").setArrivalTime("13-00").setDepartureCity("Kiev").setArrivalCity("Berlin")
                 .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city);
         Mockito.when(raceRepository.existsById(1L)).thenReturn(false);
         String expectedMessage = "Race was not found by id";
