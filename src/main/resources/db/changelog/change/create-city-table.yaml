@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-city
+      author: kreker
+      changes:
+      - createTable:
+          tableName: city
+          columns:
+            - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+            - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+            - column:
+                  name: country
+                  type: VARCHAR(35)
+                  constraints:
+                    nullable: false
+            - column:
+                  name: population
+                  type: VARCHAR(11)
+                  constraints:
+                    nullable: false
+            - column:
+                  name: info
+                  type: VARCHAR(255)

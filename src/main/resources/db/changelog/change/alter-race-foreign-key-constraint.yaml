@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: addColumn-race-cities
+      author: kreker
+      changes:
+        - addColumn:
+            tableName: race
+            columns:
+              - column:
+                  name: departure_city_id
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: departure_city_id_fk
+                    references: city(id)
+              - column:
+                  name: arrival_city_id
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: arrival_city_id_fk
+                    references: city(id)

@@ -26,4 +26,6 @@ public class RaceDto {
     private String airline;
     @NonNull
     private String raceNumber;
+    private CityDto departureCityIdDto;
+    private CityDto arrivalCityIdDto;
 }

@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/change/create-race-table.yaml
   - include:
       file: db/changelog/change/create-ticket-table.yaml
+  - include:
+      file: db/changelog/change/create-city-table.yaml
