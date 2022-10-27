@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -59,8 +60,9 @@ public class RaceController {
     public List<RaceDto> searchByParams(@RequestParam(required = false)String departureCityParam,
                                         @RequestParam(required = false) String arrivalCityParam,
                                         @RequestParam(required = false) String departureTimeParam,
-                                        @RequestParam(required = false) String arrivalTimeParam){
-        return raceMapper.toRaceDtos(raceService.searchByParams(departureCityParam, arrivalCityParam, departureTimeParam, arrivalTimeParam));
+                                        @RequestParam(required = false) String arrivalTimeParam, HttpServletRequest request){
+        String username = request.getUserPrincipal().getName();
+        return raceMapper.toRaceDtos(raceService.searchByParams(departureCityParam, arrivalCityParam, departureTimeParam, arrivalTimeParam,username));
 
     }
 
