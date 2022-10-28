@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,21 +26,19 @@ public class UserService {
         });
     }
     public void addUser(User user){
-        if(Objects.isNull(userRepository.findByLogin(user.getLogin())) ||
-                Objects.isNull(userRepository.findByMail(user.getMail()))) {
-            userRepository.save(user);
+        if(userRepository.existsUserByLoginOrMail(user.getLogin(), user.getMail())) {
+            throw new EntityAlreadyExists("User already exists");
         }
-        else throw new EntityAlreadyExists("User already exists");
+        userRepository.save(user);
     }
     public void updateUser(User user, Long id){
         if(!userRepository.existsById(id)){
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
-        if(Objects.isNull(userRepository.findByLogin(user.getLogin())) ||
-                Objects.isNull(userRepository.findByMail(user.getMail()))) {
-            userRepository.save(user);
+        if(userRepository.existsUserByLoginOrMail(user.getLogin(), user.getMail())) {
+            throw new EntityAlreadyExists("User already exists");
         }
-        else throw new EntityAlreadyExists("User already exists");
+        userRepository.save(user);
     }
     public void deleteUser(Long id){
         if(!userRepository.existsById(id)){

@@ -80,7 +80,7 @@ public class RaceServiceTest {
                 .setDepartureTime(LocalTime.parse("12:00")).setArrivalTime(LocalTime.parse("15:00"))
                 .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wz-air-222")
                 .setDepartureCityId(city).setArrivalCityId(city);
-        Mockito.when(raceRepository.findByRaceNumber("Wz-air-222").isEmpty()).thenReturn(null);
+        Mockito.when(raceRepository.existsRaceByRaceNumber("Wz-air-222")).thenReturn(false);
         raceService.addRace(race);
         Mockito.verify(raceRepository).save(race);
     }
@@ -90,7 +90,7 @@ public class RaceServiceTest {
                 .setDepartureTime(LocalTime.parse("12:00")).setArrivalTime(LocalTime.parse("15:00"))
                 .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wz-air-222")
                 .setDepartureCityId(city).setArrivalCityId(city);
-        Mockito.when(raceRepository.findByRaceNumber("Wz-air-222")).thenReturn(Optional.ofNullable(race));
+        Mockito.when(raceRepository.existsRaceByRaceNumber("Wz-air-222")).thenReturn(true);
         String expectedMessage = "Race with this Number already exists";
         String actualMessage = Assertions.assertThrows(EntityAlreadyExists.class,()->
                 raceService.addRace(race)).getMessage();
@@ -108,7 +108,7 @@ public class RaceServiceTest {
                 .setDepartureCityId(city).setArrivalCityId(city);
 
         Mockito.when(raceRepository.existsById(1L)).thenReturn(true);
-        Mockito.when(raceRepository.findByRaceNumber("Wz-air-222").isEmpty()).thenReturn(null);
+        Mockito.when(raceRepository.existsRaceByRaceNumber("Wz-air-222")).thenReturn(false);
         raceService.updateRace(sourceRace,1L);
         Mockito.verify(raceRepository).save(raceArgumentCaptor.capture());
         assertThat(raceArgumentCaptor.getValue()).isEqualTo(expectedRace);
@@ -131,7 +131,7 @@ public class RaceServiceTest {
                 .setDepartureTime(LocalTime.parse("12:00")).setArrivalTime(LocalTime.parse("15:00"))
                 .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wz-air-222")
                 .setDepartureCityId(city).setArrivalCityId(city);
-        Mockito.when(raceRepository.findByRaceNumber("Wz-air-222")).thenReturn(Optional.ofNullable(race));
+        Mockito.when(raceRepository.existsRaceByRaceNumber("Wz-air-222")).thenReturn(true);
         String expectedMessage = "Race with this Number already exists";
         String actualMessage = Assertions.assertThrows(EntityAlreadyExists.class,()->
                 raceService.addRace(race)).getMessage();

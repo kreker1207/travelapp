@@ -65,28 +65,16 @@ public class UserServiceTest {
         var user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                 .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                 .setTickets(new ArrayList<>());
-         Mockito.when(userRepository.findByLogin("kreker").isEmpty()&&
-               userRepository.findByMail("baranetskiy@gmail.com").isEmpty()).thenReturn(null);
+        Mockito.when(userRepository.existsUserByLoginOrMail(user.getLogin(), user.getMail())).thenReturn(false);
         userService.addUser(user);
         Mockito.verify(userRepository).save(user);
     }
     @Test
-    void addUser_foundByLogin_failure(){
+    void addUser_foundByLoginOrMail_failure(){
         var user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                 .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                 .setTickets(new ArrayList<>());
-        Mockito.when(userRepository.findByLogin("kreker")).thenReturn(Optional.ofNullable(user));
-        String expectedMessage = "User already exists";
-        String actualMessage = Assertions.assertThrows(EntityAlreadyExists.class,()->
-                userService.addUser(user)).getMessage();
-        assertThat(actualMessage).isEqualTo(expectedMessage);
-    }
-    @Test
-    void addUser_foundByMail_failure(){
-        var user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
-                .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
-                .setTickets(new ArrayList<>());
-        Mockito.when(userRepository.findByMail("baranetskiy@gmail.com")).thenReturn(Optional.ofNullable(user));
+        Mockito.when(userRepository.existsUserByLoginOrMail(user.getLogin(), user.getMail())).thenReturn(true);
         String expectedMessage = "User already exists";
         String actualMessage = Assertions.assertThrows(EntityAlreadyExists.class,()->
                 userService.addUser(user)).getMessage();
@@ -102,8 +90,7 @@ public class UserServiceTest {
                 .setTickets(new ArrayList<>());
 
         Mockito.when(userRepository.existsById(1L)).thenReturn(true);
-        Mockito.when(userRepository.findByLogin("kreker").isEmpty()&&
-                userRepository.findByMail("baranetskiy@gmail.com").isEmpty()).thenReturn(null);
+        Mockito.when(userRepository.existsUserByLoginOrMail(sourceUser.getLogin(), sourceUser.getMail())).thenReturn(false);
         userService.updateUser(sourceUser,1L);
         Mockito.verify(userRepository).save(userArgumentCaptor.capture());
         assertThat(userArgumentCaptor.getValue()).isEqualTo(expectedUser);
@@ -121,26 +108,13 @@ public class UserServiceTest {
         assertThat(actualMessage).isEqualTo(expectedMessage);
     }
     @Test
-    void updateUser_foundByLogin_failure(){
+    void updateUser_foundByLoginOrMail_failure(){
         var user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
                 .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
                 .setTickets(new ArrayList<>());
 
         Mockito.when(userRepository.existsById(1L)).thenReturn(true);
-        Mockito.when(userRepository.findByLogin("kreker")).thenReturn(Optional.ofNullable(user));
-        String expectedMessage = "User already exists";
-        String actualMessage = Assertions.assertThrows(EntityAlreadyExists.class,()->
-                userService.updateUser(user,1L)).getMessage();
-        assertThat(actualMessage).isEqualTo(expectedMessage);
-    }
-    @Test
-    void updateUser_foundByMail_failure(){
-        var user =new User().setId(1L).setName("Ivan").setSurname("Baranetskyi").setMail("baranetskiy@gmail.com")
-                .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER).setStatus(Status.ACTIVE)
-                .setTickets(new ArrayList<>());
-
-        Mockito.when(userRepository.existsById(1L)).thenReturn(true);
-        Mockito.when(userRepository.findByMail("baranetskiy@gmail.com")).thenReturn(Optional.ofNullable(user));
+        Mockito.when(userRepository.existsUserByLoginOrMail(user.getLogin(), user.getMail())).thenReturn(true);
         String expectedMessage = "User already exists";
         String actualMessage = Assertions.assertThrows(EntityAlreadyExists.class,()->
                 userService.updateUser(user,1L)).getMessage();

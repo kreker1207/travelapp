@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +23,10 @@ public class RaceService {
         });
     }
     public void addRace(Race race){
-        if (Objects.isNull(raceRepository.findByRaceNumber(race.getRaceNumber()))) {
-            raceRepository.save(race);
+        if (raceRepository.existsRaceByRaceNumber(race.getRaceNumber())) {
+        throw new EntityAlreadyExists("Race with this Number already exists");
         }
-        else throw new EntityAlreadyExists("Race with this Number already exists");
+        raceRepository.save(race);
     }
     public void deleteRace(Long id){
         if(!raceRepository.existsById(id)){
@@ -39,10 +38,10 @@ public class RaceService {
         if(!raceRepository.existsById(id)){
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
-        if (Objects.isNull(raceRepository.findByRaceNumber(race.getRaceNumber()))) {
-            raceRepository.save(race);
+        if (raceRepository.existsRaceByRaceNumber(race.getRaceNumber())) {
+            throw new EntityAlreadyExists("Race with this Number already exists");
         }
-        else throw new EntityAlreadyExists("Race with this Number already exists");
+        raceRepository.save(race);
     }
     public List<Race> searchByParams(String departureCityParam, String arrivalCityParam, LocalTime departureTimeParam, LocalTime arrivalTimeParam){
         return raceRepository.findByDepartureCityAndArrivalCityOrDepartureTimeAndArrivalTime(departureCityParam,arrivalCityParam,departureTimeParam,arrivalTimeParam);
