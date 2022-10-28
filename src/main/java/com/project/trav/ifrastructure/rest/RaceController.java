@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -58,8 +59,8 @@ public class RaceController {
     @PreAuthorize("permitAll()")
     public List<RaceDto> searchByParams(@RequestParam(required = false)String departureCityParam,
                                         @RequestParam(required = false) String arrivalCityParam,
-                                        @RequestParam(required = false) String departureTimeParam,
-                                        @RequestParam(required = false) String arrivalTimeParam){
+                                        @RequestParam(required = false) LocalTime departureTimeParam,
+                                        @RequestParam(required = false) LocalTime arrivalTimeParam){
         return raceMapper.toRaceDtos(raceService.searchByParams(departureCityParam, arrivalCityParam, departureTimeParam, arrivalTimeParam));
 
     }

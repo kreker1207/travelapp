@@ -2,11 +2,14 @@ package com.project.trav.application.services;
 
 import com.project.trav.domain.entity.Race;
 import com.project.trav.domain.repository.RaceRepository;
+import com.project.trav.exeption.EntityAlreadyExists;
 import com.project.trav.exeption.EntityNotFoundByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,12 @@ public class RaceService {
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         });
     }
-    public void addRace(Race race){ raceRepository.save(race);}
+    public void addRace(Race race){
+        if (Objects.isNull(raceRepository.findByRaceNumber(race.getRaceNumber()))) {
+            raceRepository.save(race);
+        }
+        else throw new EntityAlreadyExists("Race with this Number already exists");
+    }
     public void deleteRace(Long id){
         if(!raceRepository.existsById(id)){
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
@@ -31,9 +39,12 @@ public class RaceService {
         if(!raceRepository.existsById(id)){
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
-        raceRepository.save(race);
+        if (Objects.isNull(raceRepository.findByRaceNumber(race.getRaceNumber()))) {
+            raceRepository.save(race);
+        }
+        else throw new EntityAlreadyExists("Race with this Number already exists");
     }
-    public List<Race> searchByParams(String departureCityParam,String arrivalCityParam,String departureTimeParam,String arrivalTimeParam){
+    public List<Race> searchByParams(String departureCityParam, String arrivalCityParam, LocalTime departureTimeParam, LocalTime arrivalTimeParam){
         return raceRepository.findByDepartureCityAndArrivalCityOrDepartureTimeAndArrivalTime(departureCityParam,arrivalCityParam,departureTimeParam,arrivalTimeParam);
     }
 }

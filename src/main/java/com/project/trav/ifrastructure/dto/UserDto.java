@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Size;
 import java.util.List;
 @Data
 @AllArgsConstructor
@@ -20,12 +21,15 @@ public class UserDto {
     @NonNull
     private String surname;
     @NonNull
+    @Size(min = 6, max = 50)
     private String mail;
     @NonNull
     private String phone;
     @NonNull
+    @Size(min = 3, max = 20)
     private String login;
     @NonNull
+    @Size(min = 3, max = 12)
     private String password;
     @NonNull
     private Role role;

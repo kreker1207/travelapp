@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -31,8 +32,17 @@ public class TicketServiceTest {
     @Captor
     private ArgumentCaptor<Ticket> ticketArgumentCaptor;
     City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine").setPopulation("2.7 million").setInformation("Capital");
-    Race race = new Race().setDepartureCity("Kiev").setArrivalCity("Berlin")
-            .setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city);
+    Race race = new Race()
+            .setId(1L)
+            .setDepartureCity("Kiev")
+            .setArrivalCity("Berlin")
+            .setDepartureTime(LocalTime.parse("12:00"))
+            .setArrivalTime(LocalTime.parse("15:00"))
+            .setTravelTime(LocalTime.parse("03:00"))
+            .setAirline("Mau")
+            .setRaceNumber("Wz-air-222")
+            .setDepartureCityId(city)
+            .setArrivalCityId(city);
     @Test
     void getRaces(){
         var ticketList  = Arrays.asList(

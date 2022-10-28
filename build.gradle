@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-openfeign:3.1.4'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
     implementation 'org.springframework.boot:spring-boot-starter-web'
