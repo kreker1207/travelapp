@@ -1,9 +1,9 @@
 package com.project.trav.infrastructure.mapper;
 
-import com.project.trav.domain.entity.City;
-import com.project.trav.ifrastructure.dto.CityDto;
-import com.project.trav.ifrastructure.mapper.CityMapper;
-import com.project.trav.ifrastructure.mapper.CityMapperImpl;
+import com.project.trav.model.entity.City;
+import com.project.trav.model.dto.CityDto;
+import com.project.trav.mapper.CityMapper;
+import com.project.trav.mapper.CityMapperImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

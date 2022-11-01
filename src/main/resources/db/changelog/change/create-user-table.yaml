@@ -8,7 +8,7 @@ databaseChangeLog:
           columns:
             - column:
                 name: id
-                type: INT
+                type: BIGINT
                 autoIncrement: true
                 constraints:
                   primaryKey: true
@@ -43,7 +43,7 @@ databaseChangeLog:
                   unique: true
             - column:
                 name: password
-                type: VARCHAR(35)
+                type: VARCHAR(255)
                 constraints:
                   nullable: false
             - column:

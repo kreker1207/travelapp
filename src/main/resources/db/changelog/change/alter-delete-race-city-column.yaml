@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: dropColumn-race
+      author: kreker
+      changes:
+        - dropColumn:
+            tableName: race
+            columns:
+              - column:
+                  name: departure_city
+              - column:
+                  name: arrival_city
+

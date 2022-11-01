@@ -1,14 +1,14 @@
 package com.project.trav.infrastructure.mapper;
 
-import com.project.trav.domain.entity.Role;
-import com.project.trav.domain.entity.Status;
-import com.project.trav.domain.entity.User;
-import com.project.trav.ifrastructure.dto.UserDto;
-import com.project.trav.ifrastructure.mapper.CityMapperImpl;
-import com.project.trav.ifrastructure.mapper.RaceMapperImpl;
-import com.project.trav.ifrastructure.mapper.TicketMapperImpl;
-import com.project.trav.ifrastructure.mapper.UserMapper;
-import com.project.trav.ifrastructure.mapper.UserMapperImpl;
+import com.project.trav.model.entity.Role;
+import com.project.trav.model.entity.Status;
+import com.project.trav.model.entity.User;
+import com.project.trav.model.dto.UserDto;
+import com.project.trav.mapper.CityMapperImpl;
+import com.project.trav.mapper.RaceMapperImpl;
+import com.project.trav.mapper.TicketMapperImpl;
+import com.project.trav.mapper.UserMapper;
+import com.project.trav.mapper.UserMapperImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
