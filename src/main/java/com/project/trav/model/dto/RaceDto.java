@@ -12,20 +12,19 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class RaceDto {
-
-  private Long id;
-  @NotNull
-  private String departureTime;
-  @NotNull
-  private String arrivalTime;
-  @NotNull
-  private String travelTime;
-  @NotNull
-  private String airline;
-  @NotNull
-  private String raceNumber;
-  @NotNull
-  private CityDto departureCityIdDto;
-  @NotNull
-  private CityDto arrivalCityIdDto;
+    private Long id;
+    @NotNull
+    private String departureTime;
+    @NotNull
+    private String arrivalTime;
+    @NotNull
+    private String travelTime;
+    @NotNull
+    private String airline;
+    @NotNull
+    private String raceNumber;
+    @NotNull
+    private CityDto departureCityIdDto;
+    @NotNull
+    private CityDto arrivalCityIdDto;
 }

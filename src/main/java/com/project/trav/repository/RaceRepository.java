@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RaceRepository extends JpaRepository<Race, Long> {
-
-  List<Race> DepartureTimeAndArrivalTime(String departureTime, String arrivalTime);
+public interface RaceRepository extends JpaRepository<Race,Long> {
+    List<Race> DepartureTimeAndArrivalTime(String departureTime, String arrivalTime);
 
 }

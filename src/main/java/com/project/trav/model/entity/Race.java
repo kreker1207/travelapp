@@ -19,26 +19,25 @@ import javax.persistence.Table;
 @Accessors(chain = true)
 @Table(name = "race")
 public class Race {
-
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  @Column(name = "departure_time")
-  private String departureTime;
-  @Column(name = "arrival_time")
-  private String arrivalTime;
-  @Column(name = "travel_time")
-  private String travelTime;
-  @Column(name = "airline")
-  private String airline;
-  @Column(name = "race_number")
-  private String raceNumber;
-  @ManyToOne(cascade = CascadeType.MERGE)
-  @JoinColumn(name = "departure_city_id", referencedColumnName = "id")
-  private City departureCityId;
-  @ManyToOne(cascade = CascadeType.MERGE)
-  @JoinColumn(name = "arrival_city_id", referencedColumnName = "id")
-  private City arrivalCityId;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "departure_time")
+    private String departureTime;
+    @Column(name = "arrival_time")
+    private String arrivalTime;
+    @Column(name = "travel_time")
+    private String travelTime;
+    @Column(name = "airline")
+    private String airline;
+    @Column(name = "race_number")
+    private String raceNumber;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "departure_city_id",referencedColumnName = "id")
+    private City departureCityId;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "arrival_city_id",referencedColumnName = "id")
+    private City arrivalCityId;
 
 }

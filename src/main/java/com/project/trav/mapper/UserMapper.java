@@ -7,14 +7,11 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = TicketMapper.class)
+@Mapper(componentModel = "spring",uses = TicketMapper.class)
 public interface UserMapper {
-
-  @Mapping(target = "ticketsDto", source = "tickets")
-  UserDto toUserDto(User user);
-
-  List<UserDto> toUserDtos(List<User> users);
-
-  @Mapping(target = "tickets", source = "ticketsDto")
-  User toUser(UserDto userDto);
+    @Mapping(target = "ticketsDto",source = "tickets")
+    UserDto toUserDto(User user);
+    List<UserDto> toUserDtos(List<User> users);
+    @Mapping(target = "tickets",source = "ticketsDto")
+    User toUser(UserDto userDto);
 }

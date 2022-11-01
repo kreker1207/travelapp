@@ -24,53 +24,42 @@ import java.util.List;
 @RequestMapping("/api/v1/races")
 @RequiredArgsConstructor
 public class RaceController {
+    private final RaceService raceService;
 
-  private final RaceService raceService;
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('users','admins')")
+    public List<RaceDto> getRaces(){return raceService.getRaces();}
 
-  @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("hasAnyAuthority('users','admins')")
-  public List<RaceDto> getRaces() {
-    return raceService.getRaces();
-  }
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('users','admins')")
+    public RaceDto getRace(@PathVariable Long id){return raceService.getRace(id);}
 
-  @GetMapping("/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("hasAnyAuthority('users','admins')")
-  public RaceDto getRace(@PathVariable Long id) {
-    return raceService.getRace(id);
-  }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('admins')")
+    public void addRace(@Valid @RequestBody RaceDto raceDto){raceService.addRace(raceDto);}
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasAuthority('admins')")
-  public void addRace(@Valid @RequestBody RaceDto raceDto) {
-    raceService.addRace(raceDto);
-  }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('admins')")
+    public void deleteRace(@PathVariable Long id){raceService.deleteRace(id);}
 
-  @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PreAuthorize("hasAuthority('admins')")
-  public void deleteRace(@PathVariable Long id) {
-    raceService.deleteRace(id);
-  }
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAuthority('admins')")
+    public void updateRace(@Valid @RequestBody RaceDto raceDto, @PathVariable Long id){
+        raceService.updateRace(raceDto,id);}
+    @GetMapping("/find")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("permitAll()")
+    public List<RaceDto> searchByParams(
+                                        @RequestParam(required = false) String departureTimeParam,
+                                        @RequestParam(required = false) String arrivalTimeParam){
+        return raceService.searchByParams(departureTimeParam, arrivalTimeParam);
 
-  @PutMapping("/{id}")
-  @ResponseStatus(HttpStatus.ACCEPTED)
-  @PreAuthorize("hasAuthority('admins')")
-  public void updateRace(@Valid @RequestBody RaceDto raceDto, @PathVariable Long id) {
-    raceService.updateRace(raceDto, id);
-  }
-
-  @GetMapping("/find")
-  @ResponseBody
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("permitAll()")
-  public List<RaceDto> searchByParams(
-      @RequestParam(required = false) String departureTimeParam,
-      @RequestParam(required = false) String arrivalTimeParam) {
-    return raceService.searchByParams(departureTimeParam, arrivalTimeParam);
-
-  }
+    }
 
 }

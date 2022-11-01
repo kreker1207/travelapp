@@ -13,17 +13,16 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class TicketDto {
-
-  private Long id;
-  private Long userId;
-  @NotNull
-  private String place;
-  @NotNull
-  private String placeClass;
-  @NotNull
-  private String cost;
-  @NotNull
-  private TicketStatus ticketStatus;
-  @NotNull
-  private RaceDto racesDto;
+    private Long id;
+    private Long userId;
+    @NotNull
+    private String place;
+    @NotNull
+    private String placeClass;
+    @NotNull
+    private String cost;
+    @NotNull
+    private TicketStatus ticketStatus;
+    @NotNull
+    private RaceDto racesDto;
 }

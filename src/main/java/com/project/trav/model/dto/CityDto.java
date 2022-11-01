@@ -12,14 +12,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class CityDto {
-
-  private Long id;
-  @NotNull
-  private String name;
-  @NotNull
-  private String country;
-  @NotNull
-  private String population;
-  @NotNull
-  private String information;
+    private Long id;
+    @NotNull
+    private String name;
+    @NotNull
+    private String country;
+    @NotNull
+    private String population;
+    @NotNull
+    private String information;
 }

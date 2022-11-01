@@ -24,38 +24,32 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthenticationControllerV1 {
-
-  private final AuthenticationManager authenticationManager;
-  private UserRepository userRepository;
-  private JwtTokenProvider jwtTokenProvider;
-
-  public AuthenticationControllerV1(AuthenticationManager authenticationManager,
-      UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
-    this.authenticationManager = authenticationManager;
-    this.userRepository = userRepository;
-    this.jwtTokenProvider = jwtTokenProvider;
-  }
-
-  @PostMapping("/login")
-  public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto requestDto) {
-    try {
-      authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(requestDto.getLogin(), requestDto.getPassword()));
-      User user = userRepository.findByLogin(requestDto.getLogin())
-          .orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
-      String token = jwtTokenProvider.createToken(requestDto.getLogin(), user.getRole().name());
-      Map<Object, Object> response = new HashMap<>();
-      response.put("login", requestDto.getLogin());
-      response.put("token", token);
-      return ResponseEntity.ok(response);
-    } catch (JwtAuthenticationException e) {
-      return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
+    private final AuthenticationManager authenticationManager;
+    private  UserRepository userRepository;
+    private  JwtTokenProvider jwtTokenProvider;
+    public AuthenticationControllerV1(AuthenticationManager authenticationManager,UserRepository userRepository, JwtTokenProvider jwtTokenProvider){
+        this.authenticationManager=authenticationManager;
+        this.userRepository=userRepository;
+        this.jwtTokenProvider=jwtTokenProvider;
     }
-  }
 
-  @PostMapping("/logout")
-  public void logout(HttpServletRequest request, HttpServletResponse response) {
-    SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
-    securityContextLogoutHandler.logout(request, response, null);
-  }
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto requestDto){
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getLogin(),requestDto.getPassword()));
+            User user = userRepository.findByLogin(requestDto.getLogin()).orElseThrow(()->new UsernameNotFoundException("User does not exist"));
+            String token = jwtTokenProvider.createToken(requestDto.getLogin(), user.getRole().name());
+            Map<Object,Object> response = new HashMap<>();
+            response.put("login",requestDto.getLogin());
+            response.put("token",token);
+            return ResponseEntity.ok(response);
+        }catch (JwtAuthenticationException e){
+            return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
+        }
+    }
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response){
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        securityContextLogoutHandler.logout(request,response,null);
+    }
 }

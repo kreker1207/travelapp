@@ -22,41 +22,31 @@ import java.util.List;
 @RequestMapping("/api/v1/city")
 @RequiredArgsConstructor
 public class CityController {
+    private final CityService cityService;
 
-  private final CityService cityService;
+    @GetMapping("/{cityName}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('users','admins')")
+    public CityDto getCityInfo(@PathVariable String cityName){return cityService.getCityInfo(cityName);}
 
-  @GetMapping("/{cityName}")
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("hasAnyAuthority('users','admins')")
-  public CityDto getCityInfo(@PathVariable String cityName) {
-    return cityService.getCityInfo(cityName);
-  }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('users','admins')")
+    public List<CityDto> getCities(){return cityService.getCities();}
 
-  @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("hasAnyAuthority('users','admins')")
-  public List<CityDto> getCities() {
-    return cityService.getCities();
-  }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('admins')")
+    public void addCity(@Valid @RequestBody CityDto cityDto){cityService.addCity(cityDto);}
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasAuthority('admins')")
-  public void addCity(@Valid @RequestBody CityDto cityDto) {
-    cityService.addCity(cityDto);
-  }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('admins')")
+    public void deleteCity(@PathVariable Long id){cityService.deleteCity(id);}
 
-  @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PreAuthorize("hasAuthority('admins')")
-  public void deleteCity(@PathVariable Long id) {
-    cityService.deleteCity(id);
-  }
-
-  @PutMapping("/{id}")
-  @ResponseStatus(HttpStatus.ACCEPTED)
-  @PreAuthorize("hasAuthority('admins')")
-  public void updateCity(@Valid @RequestBody CityDto cityDto, @PathVariable Long id) {
-    cityService.updateCity(cityDto, id);
-  }
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAuthority('admins')")
+    public void updateCity(@Valid @RequestBody CityDto cityDto, @PathVariable Long id){
+        cityService.updateCity(cityDto,id);}
 }

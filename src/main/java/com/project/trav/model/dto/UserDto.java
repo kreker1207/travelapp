@@ -9,29 +9,27 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
 public class UserDto {
-
-  private Long id;
-  @NotNull
-  private String name;
-  @NotNull
-  private String surname;
-  @NotNull
-  private String mail;
-  @NotNull
-  private String phone;
-  @NotNull
-  private String login;
-  @NotNull
-  private String password;
-  @NotNull
-  private Role role;
-  @NotNull
-  private Status status;
-  private List<TicketDto> ticketsDto;
+    private Long id;
+    @NotNull
+    private String name;
+    @NotNull
+    private String surname;
+    @NotNull
+    private String mail;
+    @NotNull
+    private String phone;
+    @NotNull
+    private String login;
+    @NotNull
+    private String password;
+    @NotNull
+    private Role role;
+    @NotNull
+    private Status status;
+    private List<TicketDto> ticketsDto;
 }
