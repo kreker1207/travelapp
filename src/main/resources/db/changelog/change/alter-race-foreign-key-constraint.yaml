@@ -8,14 +8,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: departure_city_id
-                  type: INT
+                  type: BIGINT
                   constraints:
                     nullable: false
                     foreignKeyName: departure_city_id_fk
                     references: city(id)
               - column:
                   name: arrival_city_id
-                  type: INT
+                  type: BIGINT
                   constraints:
                     nullable: false
                     foreignKeyName: arrival_city_id_fk

@@ -35,10 +35,24 @@ public class UserService {
         if(!userRepository.existsById(id)){
             throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
         }
-        if(userRepository.existsUserByLoginOrMail(user.getLogin(), user.getMail())) {
-            throw new EntityAlreadyExists("User already exists");
+        User oldUser = getUser(id);
+        if(user.getLogin()!=null && !user.getLogin().equals(oldUser.getLogin()) && userRepository.existsUserByLogin(user.getLogin())){
+            throw new EntityAlreadyExists("User with this login already exist");
         }
-        userRepository.save(user);
+        if(user.getMail()!=null && !user.getMail().equals(oldUser.getMail()) && userRepository.existsUserByMail(user.getMail())){
+            throw new EntityAlreadyExists("User with this mail already exist");
+        }
+        userRepository.save(new User()
+                .setId(id)
+                .setLogin(user.getLogin() == null ? oldUser.getLogin() : user.getLogin())
+                .setName(user.getSurname() == null ? oldUser.getSurname() : user.getSurname())
+                .setSurname(user.getSurname() == null ? oldUser.getSurname() : user.getSurname())
+                .setPassword(user.getPassword()==null?oldUser.getPassword():user.getPassword())
+                .setMail(user.getMail() == null ? oldUser.getMail() : user.getMail())
+                .setPhone(user.getPhone() == null ? oldUser.getPhone() : user.getPhone())
+                .setRole(user.getRole()==null?oldUser.getRole():user.getRole())
+                .setStatus(user.getStatus()==null?oldUser.getStatus():user.getStatus())
+                );
     }
     public void deleteUser(Long id){
         if(!userRepository.existsById(id)){

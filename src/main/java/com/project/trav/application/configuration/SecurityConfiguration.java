@@ -22,33 +22,37 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-    public static final String USERS = "/users**";
+
     private final JwtConfiguration jwtConfiguration;
     private final AuthenticationConfiguration configuration;
+
     @Bean
-    public AuthenticationManager authenticationManagerBean() throws  Exception{
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return configuration.getAuthenticationManager();
     }
 
     @Bean
-    protected PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder(12);}
+    protected PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests(authorize->authorize
-                        .antMatchers("/").permitAll()
-                        .antMatchers("/api/v1/auth/login").permitAll()
-                        .antMatchers(HttpMethod.POST,USERS).permitAll()
-                        .anyRequest()
-                        .authenticated()
-                )
-                .apply(jwtConfiguration)
-                .and()
-                .httpBasic(withDefaults());
+            .csrf().disable()
+            .authorizeHttpRequests(authorize -> authorize
+                .antMatchers("/").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+                .anyRequest()
+                .authenticated()
+            )
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .apply(jwtConfiguration)
+            .and()
+            .httpBasic(withDefaults());
         return http.build();
     }
 }
