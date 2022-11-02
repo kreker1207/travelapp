@@ -25,7 +25,7 @@ databaseChangeLog:
                   nullable: false
             - column:
                 name: mail
-                type: VARCHAR(35)
+                type: VARCHAR(255)
                 constraints:
                   nullable: false
                   unique: true

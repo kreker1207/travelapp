@@ -2,6 +2,7 @@ package com.project.trav.controller;
 
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -67,8 +68,8 @@ public class RaceController {
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("permitAll()")
   public List<RaceDto> searchByParams(
-      @RequestParam(required = false) String departureTimeParam,
-      @RequestParam(required = false) String arrivalTimeParam) {
+      @RequestParam(required = false) LocalTime departureTimeParam,
+      @RequestParam(required = false) LocalTime arrivalTimeParam) {
     return raceService.searchByParams(departureTimeParam, arrivalTimeParam);
 
   }

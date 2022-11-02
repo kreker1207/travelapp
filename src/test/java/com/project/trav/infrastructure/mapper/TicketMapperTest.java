@@ -9,6 +9,8 @@ import com.project.trav.mapper.CityMapperImpl;
 import com.project.trav.mapper.RaceMapperImpl;
 import com.project.trav.mapper.TicketMapper;
 import com.project.trav.mapper.TicketMapperImpl;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +33,18 @@ public class TicketMapperTest {
   void toTicket() {
     var raceDto = new RaceDto()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityIdDto(null)
         .setArrivalCityIdDto(null);
     var race = new Race()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityId(null)
@@ -71,18 +73,18 @@ public class TicketMapperTest {
   void toTicketDto() {
     var raceDto = new RaceDto()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityIdDto(null)
         .setArrivalCityIdDto(null);
     var race = new Race()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityId(null)
@@ -111,18 +113,18 @@ public class TicketMapperTest {
   void toTicketDtos() {
     var raceDto = new RaceDto()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityIdDto(null)
         .setArrivalCityIdDto(null);
     var race = new Race()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityId(null)
