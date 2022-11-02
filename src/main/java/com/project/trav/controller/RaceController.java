@@ -24,42 +24,53 @@ import java.util.List;
 @RequestMapping("/api/v1/races")
 @RequiredArgsConstructor
 public class RaceController {
-    private final RaceService raceService;
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('users','admins')")
-    public List<RaceDto> getRaces(){return raceService.getRaces();}
+  private final RaceService raceService;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('users','admins')")
-    public RaceDto getRace(@PathVariable Long id){return raceService.getRace(id);}
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public List<RaceDto> getRaces() {
+    return raceService.getRaces();
+  }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('admins')")
-    public void addRace(@Valid @RequestBody RaceDto raceDto){raceService.addRace(raceDto);}
+  @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public RaceDto getRace(@PathVariable Long id) {
+    return raceService.getRace(id);
+  }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('admins')")
-    public void deleteRace(@PathVariable Long id){raceService.deleteRace(id);}
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasAuthority('admins')")
+  public void addRace(@Valid @RequestBody RaceDto raceDto) {
+    raceService.addRace(raceDto);
+  }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAuthority('admins')")
-    public void updateRace(@Valid @RequestBody RaceDto raceDto, @PathVariable Long id){
-        raceService.updateRace(raceDto,id);}
-    @GetMapping("/find")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("permitAll()")
-    public List<RaceDto> searchByParams(
-                                        @RequestParam(required = false) String departureTimeParam,
-                                        @RequestParam(required = false) String arrivalTimeParam){
-        return raceService.searchByParams(departureTimeParam, arrivalTimeParam);
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasAuthority('admins')")
+  public void deleteRace(@PathVariable Long id) {
+    raceService.deleteRace(id);
+  }
 
-    }
+  @PutMapping("/{id}")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  @PreAuthorize("hasAuthority('admins')")
+  public void updateRace(@Valid @RequestBody RaceDto raceDto, @PathVariable Long id) {
+    raceService.updateRace(raceDto, id);
+  }
+
+  @GetMapping("/find")
+  @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("permitAll()")
+  public List<RaceDto> searchByParams(
+      @RequestParam(required = false) String departureTimeParam,
+      @RequestParam(required = false) String arrivalTimeParam) {
+    return raceService.searchByParams(departureTimeParam, arrivalTimeParam);
+
+  }
 
 }

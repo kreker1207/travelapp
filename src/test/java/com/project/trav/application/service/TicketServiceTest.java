@@ -26,80 +26,94 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class TicketServiceTest {
-    @Mock
-    private TicketRepository ticketRepository;
-    @Mock
-    private TicketMapper ticketMapper;
-    @InjectMocks
-    private TicketService ticketService;
-    City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine").setPopulation("2.7 million").setInformation("Capital");
-    Race race = new Race().setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city).setArrivalCityId(city);
-    CityDto cityDto = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine").setPopulation("2.7 million").setInformation("Capital");
-    RaceDto raceDto = new RaceDto().setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityIdDto(cityDto).setArrivalCityIdDto(cityDto);
-    @Test
-    void getRaces(){
-        var ticketList  = Arrays.asList(
-                new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
-                        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto),
-                new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
-                        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto)
-        );
-        Mockito.when(ticketMapper.toTicketDtos(Mockito.anyList())).thenReturn(ticketList);
-        var expectedList = ticketService.getTickets();
-        assertThat(expectedList).isEqualTo(ticketList);
-    }
-    @Test
-    void getRace_success(){
-        var sourceTicket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
-                .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
-        Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(sourceTicket));
-        var expectedTicket = ticketService.getTicket(1L);
-        assertThat(ticketMapper.toTicketDto(sourceTicket)).isEqualTo(expectedTicket);
-    }
-    @Test
-    void getRace_failure(){
-        Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.empty());
-        Assertions.assertThrows(EntityNotFoundException.class,()->ticketService.getTicket(1L));
-    }
-    @Test
-    void deleteRace_success(){
-        Mockito.when(ticketRepository.existsById(1L)).thenReturn(true);
-        ticketService.deleteTicket(1L);
-        Mockito.verify(ticketRepository).deleteById(1L);
-    }
-    @Test
-    void deleteRace_failure(){
-        Mockito.when(ticketRepository.existsById(1L)).thenReturn(false);
-        String expectedMessage = "Ticket was not found by id";
-        String actualMessage = Assertions.assertThrows(EntityNotFoundException.class,()->
-                ticketService.deleteTicket(1L)).getMessage();
-        assertThat(expectedMessage).isEqualTo(actualMessage);
-    }
-    @Test
-    void addRace(){
-        var ticket = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
-                .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
-        ticketService.addTicket(ticket);
-        Mockito.verify(ticketRepository).save(ticketMapper.toTicket(ticket));
-    }
-    @Test
-    void updateRace_success(){
-        var sourceTicket =new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
-                .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
 
-        Mockito.when(ticketRepository.existsById(1L)).thenReturn(true);
+  @Mock
+  private TicketRepository ticketRepository;
+  @Mock
+  private TicketMapper ticketMapper;
+  @InjectMocks
+  private TicketService ticketService;
+  City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+      .setPopulation("2.7 million").setInformation("Capital");
+  Race race = new Race().setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww")
+      .setDepartureCityId(city).setArrivalCityId(city);
+  CityDto cityDto = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine")
+      .setPopulation("2.7 million").setInformation("Capital");
+  RaceDto raceDto = new RaceDto().setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww")
+      .setDepartureCityIdDto(cityDto).setArrivalCityIdDto(cityDto);
 
-        ticketService.updateTicket(sourceTicket,1L);
-        Mockito.verify(ticketRepository).save(ticketMapper.toTicket(sourceTicket));
-    }
-    @Test
-    void updateRace_failure(){
-        var ticketDto = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
-                .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
-        Mockito.when(ticketRepository.existsById(1L)).thenReturn(false);
-        String expectedMessage = "Ticket was not found by id";
-        String actualMessage = Assertions.assertThrows(EntityNotFoundException.class,()->
-                ticketService.updateTicket(ticketDto,1L)).getMessage();
-        assertThat(actualMessage).isEqualTo(expectedMessage);
-    }
+  @Test
+  void getRaces() {
+    var ticketList = Arrays.asList(
+        new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+            .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto),
+        new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+            .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto)
+    );
+    Mockito.when(ticketMapper.toTicketDtos(Mockito.anyList())).thenReturn(ticketList);
+    var expectedList = ticketService.getTickets();
+    assertThat(expectedList).isEqualTo(ticketList);
+  }
+
+  @Test
+  void getRace_success() {
+    var sourceTicket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
+    Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(sourceTicket));
+    var expectedTicket = ticketService.getTicket(1L);
+    assertThat(ticketMapper.toTicketDto(sourceTicket)).isEqualTo(expectedTicket);
+  }
+
+  @Test
+  void getRace_failure() {
+    Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.empty());
+    Assertions.assertThrows(EntityNotFoundException.class, () -> ticketService.getTicket(1L));
+  }
+
+  @Test
+  void deleteRace_success() {
+    Mockito.when(ticketRepository.existsById(1L)).thenReturn(true);
+    ticketService.deleteTicket(1L);
+    Mockito.verify(ticketRepository).deleteById(1L);
+  }
+
+  @Test
+  void deleteRace_failure() {
+    Mockito.when(ticketRepository.existsById(1L)).thenReturn(false);
+    String expectedMessage = "Ticket was not found by id";
+    String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
+        ticketService.deleteTicket(1L)).getMessage();
+    assertThat(expectedMessage).isEqualTo(actualMessage);
+  }
+
+  @Test
+  void addRace() {
+    var ticket = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
+    ticketService.addTicket(ticket);
+    Mockito.verify(ticketRepository).save(ticketMapper.toTicket(ticket));
+  }
+
+  @Test
+  void updateRace_success() {
+    var sourceTicket = new TicketDto().setId(1L).setUserId(1L).setPlace("a23")
+        .setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
+
+    Mockito.when(ticketRepository.existsById(1L)).thenReturn(true);
+
+    ticketService.updateTicket(sourceTicket, 1L);
+    Mockito.verify(ticketRepository).save(ticketMapper.toTicket(sourceTicket));
+  }
+
+  @Test
+  void updateRace_failure() {
+    var ticketDto = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
+    Mockito.when(ticketRepository.existsById(1L)).thenReturn(false);
+    String expectedMessage = "Ticket was not found by id";
+    String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
+        ticketService.updateTicket(ticketDto, 1L)).getMessage();
+    assertThat(actualMessage).isEqualTo(expectedMessage);
+  }
 }
