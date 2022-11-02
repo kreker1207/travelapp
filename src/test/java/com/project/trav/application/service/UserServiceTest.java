@@ -82,15 +82,16 @@ public class UserServiceTest {
 
   @Test
   void updateUser_success() {
-    var sourceUser = new UserDto().setId(1L).setName("Ivan").setSurname("Baranetskyi")
+    var sourceUser = new User().setId(1L).setName("Ivan").setSurname("Baranetskyi")
         .setMail("baranetskiy@gmail.com")
         .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER)
         .setStatus(Status.ACTIVE)
-        .setTicketsDto(new ArrayList<>());
+        .setTickets(null);
     Mockito.when(userRepository.existsById(1L)).thenReturn(true);
-
-    userService.updateUser(sourceUser, 1L);
-    Mockito.verify(userRepository).save(userMapper.toUser(sourceUser));
+    Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(sourceUser));
+    Mockito.when(userMapper.toUser(userService.getUser(1L))).thenReturn(sourceUser);
+    userService.updateUser(userMapper.toUserDto(sourceUser), 1L);
+    Mockito.verify(userRepository).save(sourceUser);
   }
 
   @Test

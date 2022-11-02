@@ -10,6 +10,8 @@ import com.project.trav.model.entity.Race;
 import com.project.trav.model.entity.Ticket;
 import com.project.trav.model.entity.TicketStatus;
 import com.project.trav.repository.TicketRepository;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,11 +37,15 @@ public class TicketServiceTest {
   private TicketService ticketService;
   City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
-  Race race = new Race().setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww")
+  Race race = new Race().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+      .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+      .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
       .setDepartureCityId(city).setArrivalCityId(city);
   CityDto cityDto = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
-  RaceDto raceDto = new RaceDto().setTravelTime("1").setAirline("Mau").setRaceNumber("Wr23-ww")
+  RaceDto raceDto = new RaceDto().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+      .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+      .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
       .setDepartureCityIdDto(cityDto).setArrivalCityIdDto(cityDto);
 
   @Test

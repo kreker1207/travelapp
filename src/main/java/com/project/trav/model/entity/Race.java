@@ -1,5 +1,7 @@
 package com.project.trav.model.entity;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Data
@@ -25,11 +28,14 @@ public class Race {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column(name = "departure_time")
-  private String departureTime;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+  private LocalDateTime departureTime;
   @Column(name = "arrival_time")
-  private String arrivalTime;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+  private LocalDateTime arrivalTime;
   @Column(name = "travel_time")
-  private String travelTime;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+  private LocalTime travelTime;
   @Column(name = "airline")
   private String airline;
   @Column(name = "race_number")

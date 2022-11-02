@@ -7,6 +7,8 @@ import com.project.trav.model.dto.RaceDto;
 import com.project.trav.mapper.CityMapperImpl;
 import com.project.trav.mapper.RaceMapper;
 import com.project.trav.mapper.RaceMapperImpl;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +35,9 @@ public class RaceMapperTest {
   void toRace() {
     var sourceRaceDto = new RaceDto()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityIdDto(cityDto)
@@ -43,9 +45,9 @@ public class RaceMapperTest {
     var resultRace = mapper.toRace(sourceRaceDto);
     var raceExpected = new Race()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityId(city)
@@ -57,17 +59,17 @@ public class RaceMapperTest {
   void toRaceDtos() {
     var sourceRaceList = Arrays.asList(new Race()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityId(city)
         .setArrivalCityId(city), new Race()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityId(city)
@@ -75,17 +77,17 @@ public class RaceMapperTest {
     var resultRacesDto = mapper.toRaceDtos(sourceRaceList);
     var expectedRaceList = Arrays.asList(new RaceDto()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityIdDto(cityDto)
         .setArrivalCityIdDto(cityDto), new RaceDto()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityIdDto(cityDto)
@@ -97,9 +99,9 @@ public class RaceMapperTest {
   void toRaceDto() {
     var sourceRace = new Race()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityId(city)
@@ -107,9 +109,9 @@ public class RaceMapperTest {
     var resultRaceDto = mapper.toRaceDto(sourceRace);
     var raceDtoExpected = new RaceDto()
         .setId(1L)
-        .setDepartureTime("12-00")
-        .setArrivalTime("15-00")
-        .setTravelTime("3")
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityIdDto(cityDto)
