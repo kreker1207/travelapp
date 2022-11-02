@@ -7,5 +7,8 @@ import javax.persistence.EntityNotFoundException;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class EntityNotFoundByIdException extends EntityNotFoundException {
-    public EntityNotFoundByIdException(String message){super(message);}
+
+  public EntityNotFoundByIdException(String message) {
+    super(message);
+  }
 }

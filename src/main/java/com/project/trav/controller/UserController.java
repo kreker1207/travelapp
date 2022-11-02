@@ -18,42 +18,54 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-public class UserController{
-    private final UserService userService;
+public class UserController {
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('admins')")
-    public List<UserDto> getUsers(){return userService.getUsers();}
+  private final UserService userService;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('admins')")
-    public UserDto getUser(@PathVariable Long id){return userService.getUser(id);}
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('admins')")
+  public List<UserDto> getUsers() {
+    return userService.getUsers();
+  }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("permitAll()")
-    public void addUser(@Valid @RequestBody UserDto userDto){userService.addUser(userDto);}
+  @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('admins')")
+  public UserDto getUser(@PathVariable Long id) {
+    return userService.getUser(id);
+  }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('users','admins')")
-    public void updateUser(@RequestBody UserDto userDto, @PathVariable Long id){
-        userService.updateUser(userDto,id);
-    }
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("permitAll()")
+  public void addUser(@Valid @RequestBody UserDto userDto) {
+    userService.addUser(userDto);
+  }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('admins')")
-    public void deleteUser(@PathVariable Long id){userService.deleteUser(id);}
+  @PutMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public void updateUser(@RequestBody UserDto userDto, @PathVariable Long id) {
+    userService.updateUser(userDto, id);
+  }
 
-    @PutMapping("/deactivate/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('admins')")
-    public void deactivateUser(@PathVariable Long id){userService.deactivateUser(id);}
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasAuthority('admins')")
+  public void deleteUser(@PathVariable Long id) {
+    userService.deleteUser(id);
+  }
+
+  @PutMapping("/deactivate/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('admins')")
+  public void deactivateUser(@PathVariable Long id) {
+    userService.deactivateUser(id);
+  }
 }

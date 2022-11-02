@@ -15,16 +15,17 @@ import javax.persistence.Table;
 @Accessors(chain = true)
 @Table(name = "city")
 public class City {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "country")
-    private String country;
-    @Column(name = "population")
-    private String population;
-    @Column(name = "info")
-    private String information;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
+  @Column(name = "name")
+  private String name;
+  @Column(name = "country")
+  private String country;
+  @Column(name = "population")
+  private String population;
+  @Column(name = "info")
+  private String information;
 }

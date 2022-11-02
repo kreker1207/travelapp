@@ -23,45 +23,57 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/tickets")
 public class TicketController {
-    private final TicketService ticketService;
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('users','admins')")
-    public List<TicketDto> getTickets(){return ticketService.getTickets();}
+  private final TicketService ticketService;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('users','admins')")
-    public TicketDto getTicket(@PathVariable Long id){return ticketService.getTicket(id);}
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public List<TicketDto> getTickets() {
+    return ticketService.getTickets();
+  }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('admins')")
-    public void addTicket(@Valid @RequestBody TicketDto ticketDto){ticketService.addTicket(ticketDto);}
+  @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public TicketDto getTicket(@PathVariable Long id) {
+    return ticketService.getTicket(id);
+  }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('admins')")
-    public void updateTicket(@Valid @PathVariable Long id,@RequestBody TicketDto ticketDto){ticketService.updateTicket(ticketDto,id);}
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasAuthority('admins')")
+  public void addTicket(@Valid @RequestBody TicketDto ticketDto) {
+    ticketService.addTicket(ticketDto);
+  }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('admins')")
-    public void deleteTicket(@PathVariable Long id){ticketService.deleteTicket(id);}
+  @PutMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('admins')")
+  public void updateTicket(@Valid @PathVariable Long id, @RequestBody TicketDto ticketDto) {
+    ticketService.updateTicket(ticketDto, id);
+  }
 
-    @PutMapping("buy/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('users','admins')")
-    public void buyTicket(@PathVariable Long id, HttpServletRequest request){
-        String username = request.getUserPrincipal().getName();
-        ticketService.buyTicket(id,username);
-    }
-    @PutMapping("book/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('users','admins')")
-    public void bookTicket(@PathVariable Long id, HttpServletRequest request){
-        String username = request.getUserPrincipal().getName();
-        ticketService.bookTicket(id,username);
-    }
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasAuthority('admins')")
+  public void deleteTicket(@PathVariable Long id) {
+    ticketService.deleteTicket(id);
+  }
+
+  @PutMapping("buy/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public void buyTicket(@PathVariable Long id, HttpServletRequest request) {
+    String username = request.getUserPrincipal().getName();
+    ticketService.buyTicket(id, username);
+  }
+
+  @PutMapping("book/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public void bookTicket(@PathVariable Long id, HttpServletRequest request) {
+    String username = request.getUserPrincipal().getName();
+    ticketService.bookTicket(id, username);
+  }
 }
