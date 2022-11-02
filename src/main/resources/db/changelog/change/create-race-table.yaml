@@ -8,19 +8,19 @@ databaseChangeLog:
           columns:
             - column:
                 name: id
-                type: INT
+                type: BIGINT
                 autoIncrement: true
                 constraints:
                   primaryKey: true
                   nullable: false
             - column:
                 name: departure_time
-                type: TIME
+                type: VARCHAR(35)
                 constraints:
                   nullable: false
             - column:
                 name: arrival_time
-                type: TIME
+                type: VARCHAR(35)
                 constraints:
                   nullable: false
             - column:
@@ -35,7 +35,7 @@ databaseChangeLog:
                   nullable: false
             - column:
                 name: travel_time
-                type: TIME
+                type: VARCHAR(35)
                 constraints:
                   nullable: false
             - column:

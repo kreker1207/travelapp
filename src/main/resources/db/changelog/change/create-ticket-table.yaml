@@ -8,14 +8,14 @@ databaseChangeLog:
           columns:
             - column:
                 name: id
-                type: INT
+                type: BIGINT
                 autoIncrement: true
                 constraints:
                   primaryKey: true
                   nullable: false
             - column:
                 name: user_id
-                type: INT
+                type: BIGINT
                 constraints:
                   foreignKeyName: user_fk
                   references: users(id)
@@ -36,7 +36,7 @@ databaseChangeLog:
                   nullable: false
             - column:
                 name: race_id
-                type: INT
+                type: BIGINT
                 constraints:
                   nullable: false
                   foreignKeyName: race_fk
