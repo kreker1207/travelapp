@@ -39,7 +39,7 @@ public class UserService {
     existByIdUser(id);
     User oldUser = userMapper.toUser(getUser(id));
     User user = userMapper.toUser(userDto);
-    validUpdate(user,oldUser);
+    validUpdate(user, oldUser);
     userRepository.save(new User()
         .setId(id)
         .setLogin(user.getLogin() == null ? oldUser.getLogin() : user.getLogin())
@@ -76,7 +76,8 @@ public class UserService {
       throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
     }
   }
-  private void validUpdate(User user,User oldUser){
+
+  private void validUpdate(User user, User oldUser) {
     if (user.getLogin() != null && !user.getLogin().equals(oldUser.getLogin())
         && userRepository.existsUserByLogin(user.getLogin())) {
       throw new EntityAlreadyExists("User with this login already exist");

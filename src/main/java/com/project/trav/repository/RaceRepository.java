@@ -11,6 +11,7 @@ import java.util.List;
 public interface RaceRepository extends JpaRepository<Race, Long> {
 
   List<Race> DepartureTimeAndArrivalTime(LocalTime departureTime, LocalTime arrivalTime);
+
   Boolean existsRaceByRaceNumber(String raceNumber);
 
 }

@@ -43,7 +43,8 @@ public class TicketServiceTest {
       .setDepartureCityId(city).setArrivalCityId(city);
   CityDto cityDto = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
-  RaceDto raceDto = new RaceDto().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+  RaceDto raceDto = new RaceDto().setId(1L)
+      .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
       .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
       .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
       .setDepartureCityIdDto(cityDto).setArrivalCityIdDto(cityDto);
