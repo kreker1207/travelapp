@@ -6,5 +6,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class EntityAlreadyExists extends EntityExistsException {
-  public EntityAlreadyExists(String message){super(message);}
+
+  public EntityAlreadyExists(String message) {
+    super(message);
+  }
 }

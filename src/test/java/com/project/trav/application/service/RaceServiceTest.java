@@ -60,7 +60,8 @@ public class RaceServiceTest {
   void getRace_success() {
     var sourceRace = new Race().setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityId(city)
+        .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setDepartureCityId(city)
         .setArrivalCityId(city);
     Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(sourceRace));
     var expectedRace = raceService.getRace(1L);
@@ -101,7 +102,8 @@ public class RaceServiceTest {
 
   @Test
   void updateRace_success() {
-    var sourceRace = new Race().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+    var sourceRace = new Race().setId(1L)
+        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
         .setDepartureCityId(city).setArrivalCityId(city);

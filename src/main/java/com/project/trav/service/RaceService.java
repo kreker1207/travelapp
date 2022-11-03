@@ -42,7 +42,7 @@ public class RaceService {
     existByIdRace(id);
     Race race = raceMapper.toRace(raceDto);
     Race oldRace = raceMapper.toRace(getRace(id));
-    existByNumber(race,oldRace);
+    existByNumber(race, oldRace);
     raceRepository.save(new Race()
         .setId(id)
         .setDepartureTime(
@@ -78,11 +78,13 @@ public class RaceService {
       throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
     }
   }
-  private void existByNumber(String number){
+
+  private void existByNumber(String number) {
     if (!number.isEmpty() && raceRepository.existsRaceByRaceNumber(number)) {
       throw new EntityAlreadyExists("Race with this Number already exists");
     }
   }
+
   private void existByNumber(Race race, Race oldRace) {
     if (race.getRaceNumber() != null && !race.getRaceNumber().equals(oldRace.getRaceNumber())
         && raceRepository.existsRaceByRaceNumber(race.getRaceNumber())) {
