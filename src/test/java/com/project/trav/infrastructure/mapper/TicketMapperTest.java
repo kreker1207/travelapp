@@ -33,22 +33,22 @@ public class TicketMapperTest {
   void toTicket() {
     var raceDto = new RaceDto()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityIdDto(null)
-        .setArrivalCityIdDto(null);
+        .setDepartureCityDto(null)
+        .setArrivalCityDto(null);
     var race = new Race()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityId(null)
-        .setArrivalCityId(null);
+        .setDepartureCity(null)
+        .setArrivalCity(null);
     var sourceTicketDto = new TicketDto()
         .setId(1L)
         .setUserId(1L)
@@ -73,22 +73,22 @@ public class TicketMapperTest {
   void toTicketDto() {
     var raceDto = new RaceDto()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityIdDto(null)
-        .setArrivalCityIdDto(null);
+        .setDepartureCityDto(null)
+        .setArrivalCityDto(null);
     var race = new Race()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityId(null)
-        .setArrivalCityId(null);
+        .setDepartureCity(null)
+        .setArrivalCity(null);
     var sourceTicket = new Ticket()
         .setId(1L)
         .setUserId(1L)
@@ -113,22 +113,22 @@ public class TicketMapperTest {
   void toTicketDtos() {
     var raceDto = new RaceDto()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityIdDto(null)
-        .setArrivalCityIdDto(null);
+        .setDepartureCityDto(null)
+        .setArrivalCityDto(null);
     var race = new Race()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityId(null)
-        .setArrivalCityId(null);
+        .setDepartureCity(null)
+        .setArrivalCity(null);
     var sourceTicketList = Arrays.asList(new Ticket()
         .setId(1L)
         .setUserId(1L)

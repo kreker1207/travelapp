@@ -5,6 +5,7 @@ import com.project.trav.model.entity.User;
 import com.project.trav.repository.UserRepository;
 import com.project.trav.exeption.JwtAuthenticationException;
 import com.project.trav.model.dto.AuthenticationRequestDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,21 +24,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthenticationControllerV1 {
+@RequiredArgsConstructor
+public class AuthenticationController {
 
   private final AuthenticationManager authenticationManager;
-  private UserRepository userRepository;
-  private JwtTokenProvider jwtTokenProvider;
-
-  public AuthenticationControllerV1(AuthenticationManager authenticationManager,
-      UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
-    this.authenticationManager = authenticationManager;
-    this.userRepository = userRepository;
-    this.jwtTokenProvider = jwtTokenProvider;
-  }
+  private final UserRepository userRepository;
+  private final JwtTokenProvider jwtTokenProvider;
 
   @PostMapping("/login")
-  public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto requestDto) {
+  public ResponseEntity<Object> authenticate(@RequestBody AuthenticationRequestDto requestDto) {
     try {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(requestDto.getLogin(), requestDto.getPassword()));

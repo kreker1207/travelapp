@@ -22,8 +22,8 @@ public class CityService {
     return cityMapper.toCityDtos(cityRepository.findAll());
   }
 
-  public CityDto getCityInfo(String name) {
-    return cityMapper.toCityDto(findByNameCity(name));
+  public CityDto getCity(Long id) {
+    return cityMapper.toCityDto(findById(id));
   }
 
   public void addCity(CityDto cityDto) {
@@ -31,24 +31,18 @@ public class CityService {
   }
 
   public void deleteCity(Long id) {
-    existByIdCity(id);
+    findById(id);
     cityRepository.deleteById(id);
   }
 
   public void updateCity(CityDto cityDto, Long id) {
-    existByIdCity(id);
+    findById(id);
     cityRepository.save(cityMapper.toCity(cityDto));
   }
 
-  private City findByNameCity(String name) {
-    return cityRepository.findByName(name).orElseThrow(() -> {
+  private City findById(Long id) {
+    return cityRepository.findById(id).orElseThrow(() -> {
       throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
     });
-  }
-
-  private void existByIdCity(Long id) {
-    if (!cityRepository.existsById(id)) {
-      throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
-    }
   }
 }

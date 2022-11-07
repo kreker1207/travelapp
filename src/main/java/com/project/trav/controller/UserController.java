@@ -51,7 +51,7 @@ public class UserController {
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  public void updateUser(@RequestBody UserDto userDto, @PathVariable Long id) {
+  public void updateUser(@Valid @RequestBody UserDto userDto, @PathVariable Long id) {
     userService.updateUser(userDto, id);
   }
 

@@ -36,25 +36,24 @@ public class UserService {
   }
 
   public void updateUser(UserDto userDto, Long id) {
-    existByIdUser(id);
     User oldUser = userMapper.toUser(getUser(id));
     User user = userMapper.toUser(userDto);
     validUpdate(user, oldUser);
     userRepository.save(new User()
         .setId(id)
-        .setLogin(user.getLogin() == null ? oldUser.getLogin() : user.getLogin())
-        .setName(user.getName() == null ? oldUser.getName() : user.getName())
-        .setSurname(user.getSurname() == null ? oldUser.getSurname() : user.getSurname())
-        .setPassword(user.getPassword() == null ? oldUser.getPassword() : user.getPassword())
-        .setMail(user.getMail() == null ? oldUser.getMail() : user.getMail())
-        .setPhone(user.getPhone() == null ? oldUser.getPhone() : user.getPhone())
-        .setRole(user.getRole() == null ? oldUser.getRole() : user.getRole())
-        .setStatus(user.getStatus() == null ? oldUser.getStatus() : user.getStatus())
+        .setLogin(user.getLogin())
+        .setName(user.getName())
+        .setSurname(user.getSurname())
+        .setPassword(user.getPassword())
+        .setMail(user.getMail())
+        .setPhone(user.getPhone())
+        .setRole(user.getRole())
+        .setStatus(user.getStatus())
     );
   }
 
   public void deleteUser(Long id) {
-    existByIdUser(id);
+    findByIdUser(id);
     userRepository.deleteById(id);
   }
 
@@ -70,19 +69,12 @@ public class UserService {
     });
 
   }
-
-  private void existByIdUser(Long id) {
-    if (!userRepository.existsById(id)) {
-      throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
-    }
-  }
-
   private void validUpdate(User user, User oldUser) {
-    if (user.getLogin() != null && !user.getLogin().equals(oldUser.getLogin())
+    if (!user.getLogin().equals(oldUser.getLogin())
         && userRepository.existsUserByLogin(user.getLogin())) {
       throw new EntityAlreadyExists("User with this login already exist");
     }
-    if (user.getMail() != null && !user.getMail().equals(oldUser.getMail())
+    if (!user.getMail().equals(oldUser.getMail())
         && userRepository.existsUserByMail(user.getMail())) {
       throw new EntityAlreadyExists("User with this mail already exist");
     }

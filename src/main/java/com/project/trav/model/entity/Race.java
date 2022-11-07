@@ -2,7 +2,9 @@ package com.project.trav.model.entity;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -27,12 +29,18 @@ public class Race {
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(name = "departure_time")
+  @OneToMany(
+      mappedBy = "races",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true
+  )
+  private List<Ticket> tickets;
+  @Column(name = "departure_date_time")
   @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-  private LocalDateTime departureTime;
-  @Column(name = "arrival_time")
+  private LocalDateTime departureDateTime;
+  @Column(name = "arrival_date_time")
   @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-  private LocalDateTime arrivalTime;
+  private LocalDateTime arrivalDateTime;
   @Column(name = "travel_time")
   @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
   private LocalTime travelTime;
@@ -41,10 +49,9 @@ public class Race {
   @Column(name = "race_number")
   private String raceNumber;
   @ManyToOne(cascade = CascadeType.MERGE)
-  @JoinColumn(name = "departure_city_id", referencedColumnName = "id")
-  private City departureCityId;
+  @JoinColumn(name = "departure_city", referencedColumnName = "id")
+  private City departureCity;
   @ManyToOne(cascade = CascadeType.MERGE)
-  @JoinColumn(name = "arrival_city_id", referencedColumnName = "id")
-  private City arrivalCityId;
-
+  @JoinColumn(name = "arrival_city", referencedColumnName = "id")
+  private City arrivalCity;
 }

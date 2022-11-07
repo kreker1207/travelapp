@@ -1,8 +1,8 @@
 package com.project.trav.controller;
 
+import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
-import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,19 +57,9 @@ public class RaceController {
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PreAuthorize("hasAuthority('admins')")
-  public void updateRace(@Valid @RequestBody RaceDto raceDto, @PathVariable Long id) {
-    raceService.updateRace(raceDto, id);
+  public void updateRace(@Valid @RequestBody RaceUpdateRequest raceUpdateRequest, @PathVariable Long id) {
+    raceService.updateRace(raceUpdateRequest, id);
   }
 
-  @GetMapping("/find")
-  @ResponseBody
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("permitAll()")
-  public List<RaceDto> searchByParams(
-      @RequestParam(required = false) LocalTime departureTimeParam,
-      @RequestParam(required = false) LocalTime arrivalTimeParam) {
-    return raceService.searchByParams(departureTimeParam, arrivalTimeParam);
-
-  }
 
 }

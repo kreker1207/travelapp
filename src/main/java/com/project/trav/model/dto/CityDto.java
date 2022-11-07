@@ -18,8 +18,6 @@ public class CityDto {
   private String name;
   @NotNull
   private String country;
-  @NotNull
   private String population;
-  @NotNull
   private String information;
 }

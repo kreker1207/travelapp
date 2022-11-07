@@ -14,12 +14,12 @@ databaseChangeLog:
                   primaryKey: true
                   nullable: false
             - column:
-                name: departure_time
+                name: departure_date_time
                 type: DATETIME
                 constraints:
                   nullable: false
             - column:
-                name: arrival_time
+                name: arrival_date_time
                 type: DATETIME
                 constraints:
                   nullable: false

@@ -25,11 +25,12 @@ public class CityController {
 
   private final CityService cityService;
 
-  @GetMapping("/{cityName}")
+  @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  public CityDto getCityInfo(@PathVariable String cityName) {
-    return cityService.getCityInfo(cityName);
+  //Why get city by name?
+  public CityDto getCity(@PathVariable Long id) {
+    return cityService.getCity(id);
   }
 
   @GetMapping

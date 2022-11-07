@@ -46,14 +46,14 @@ public class CityServiceTest {
     var sourceCity = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
         .setPopulation("3.2 million").setInformation("capital");
     Mockito.when(cityRepository.findByName("Kiev")).thenReturn(Optional.of(sourceCity));
-    var expectedCity = cityService.getCityInfo("Kiev");
+    var expectedCity = cityService.getCity(1L);
     AssertionsForClassTypes.assertThat(cityMapper.toCityDto(sourceCity)).isEqualTo(expectedCity);
   }
 
   @Test
   void getCity_failure() {
     Mockito.when(cityRepository.findByName("Kiev")).thenReturn(Optional.empty());
-    Assertions.assertThrows(EntityNotFoundException.class, () -> cityService.getCityInfo("Kiev"));
+    Assertions.assertThrows(EntityNotFoundException.class, () -> cityService.getCity(1L));
   }
 
   @Test

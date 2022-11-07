@@ -3,6 +3,7 @@ package com.project.trav.application.service;
 import com.project.trav.mapper.RaceMapper;
 import com.project.trav.model.dto.CityDto;
 import com.project.trav.model.dto.RaceDto;
+import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
@@ -40,16 +41,16 @@ public class RaceServiceTest {
   @Test
   void getRaces() {
     var raceList = Arrays.asList(
-        new RaceDto().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-            .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        new RaceDto().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+            .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
             .setTravelTime(LocalTime.parse("03:00"))
-            .setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityIdDto(cityDto)
-            .setArrivalCityIdDto(cityDto),
-        new RaceDto().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-            .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+            .setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityDto(cityDto)
+            .setArrivalCityDto(cityDto),
+        new RaceDto().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+            .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
             .setTravelTime(LocalTime.parse("03:00"))
-            .setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityIdDto(cityDto)
-            .setArrivalCityIdDto(cityDto)
+            .setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityDto(cityDto)
+            .setArrivalCityDto(cityDto)
     );
     Mockito.when(raceMapper.toRaceDtos(Mockito.anyList())).thenReturn(raceList);
     var expectedList = raceService.getRaces();
@@ -58,11 +59,11 @@ public class RaceServiceTest {
 
   @Test
   void getRace_success() {
-    var sourceRace = new Race().setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+    var sourceRace = new Race().setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
-        .setDepartureCityId(city)
-        .setArrivalCityId(city);
+        .setDepartureCity(city)
+        .setArrivalCity(city);
     Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(sourceRace));
     var expectedRace = raceService.getRace(1L);
     assertThat(raceMapper.toRaceDto(sourceRace)).isEqualTo(expectedRace);
@@ -92,35 +93,48 @@ public class RaceServiceTest {
 
   @Test
   void addRace() {
-    var race = new RaceDto().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+    var race = new RaceDto().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
-        .setDepartureCityIdDto(cityDto).setArrivalCityIdDto(cityDto);
+        .setDepartureCityDto(cityDto).setArrivalCityDto(cityDto);
     raceService.addRace(race);
     Mockito.verify(raceRepository).save(raceMapper.toRace(race));
   }
 
   @Test
   void updateRace_success() {
-    var sourceRace = new Race().setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+    var race = new Race().setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
-        .setDepartureCityId(city).setArrivalCityId(city);
+        .setDepartureCity(city)
+        .setArrivalCity(city);
+    var sourceRace = new RaceUpdateRequest()
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setDepartureCityId(city.getId()).setDepartureCityName(city.getName()).setDepartureCityCountry(city.getCountry())
+        .setDepartureCityPopulation(city.getPopulation()).setDepartureCityInformation(city.getInformation())
+        .setArrivalCityId(city.getId()).setArrivalCityName(city.getName()).setArrivalCityCountry(city.getCountry())
+        .setArrivalCityPopulation(city.getPopulation()).setArrivalCityInformation(city.getInformation());
     Mockito.when(raceRepository.existsById(1L)).thenReturn(true);
-    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(sourceRace));
-    Mockito.when(raceMapper.toRace(raceService.getRace(1L))).thenReturn(sourceRace);
+    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(race));
+    Mockito.when(raceMapper.toRace(raceService.getRace(1L))).thenReturn(race);
 
-    raceService.updateRace(raceMapper.toRaceDto(sourceRace), 1L);
-    Mockito.verify(raceRepository).save(sourceRace);
+    raceService.updateRace(sourceRace, 1L);
+    Mockito.verify(raceRepository).save(race);
   }
 
   @Test
   void updateRace_failure() {
-    var race = new RaceDto().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+    var race = new RaceUpdateRequest()
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
-        .setDepartureCityIdDto(cityDto).setArrivalCityIdDto(cityDto);
+        .setDepartureCityId(city.getId()).setDepartureCityName(city.getName()).setDepartureCityCountry(city.getCountry())
+        .setDepartureCityPopulation(city.getPopulation()).setDepartureCityInformation(city.getInformation())
+        .setArrivalCityId(city.getId()).setArrivalCityName(city.getName()).setArrivalCityCountry(city.getCountry())
+        .setArrivalCityPopulation(city.getPopulation()).setArrivalCityInformation(city.getInformation());
+
     Mockito.when(raceRepository.existsById(1L)).thenReturn(false);
     String expectedMessage = "Race was not found by id";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->

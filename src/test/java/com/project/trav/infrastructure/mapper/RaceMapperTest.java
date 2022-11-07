@@ -35,23 +35,23 @@ public class RaceMapperTest {
   void toRace() {
     var sourceRaceDto = new RaceDto()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityIdDto(cityDto)
-        .setArrivalCityIdDto(cityDto);
+        .setDepartureCityDto(cityDto)
+        .setArrivalCityDto(cityDto);
     var resultRace = mapper.toRace(sourceRaceDto);
     var raceExpected = new Race()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityId(city)
-        .setArrivalCityId(city);
+        .setDepartureCity(city)
+        .setArrivalCity(city);
     assertThat(resultRace).isEqualTo(raceExpected);
   }
 
@@ -59,39 +59,39 @@ public class RaceMapperTest {
   void toRaceDtos() {
     var sourceRaceList = Arrays.asList(new Race()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityId(city)
-        .setArrivalCityId(city), new Race()
+        .setDepartureCity(city)
+        .setArrivalCity(city), new Race()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityId(city)
-        .setArrivalCityId(city));
+        .setDepartureCity(city)
+        .setArrivalCity(city));
     var resultRacesDto = mapper.toRaceDtos(sourceRaceList);
     var expectedRaceList = Arrays.asList(new RaceDto()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityIdDto(cityDto)
-        .setArrivalCityIdDto(cityDto), new RaceDto()
+        .setDepartureCityDto(cityDto)
+        .setArrivalCityDto(cityDto), new RaceDto()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityIdDto(cityDto)
-        .setArrivalCityIdDto(cityDto));
+        .setDepartureCityDto(cityDto)
+        .setArrivalCityDto(cityDto));
     assertThat(resultRacesDto).isEqualTo(expectedRaceList);
   }
 
@@ -99,23 +99,23 @@ public class RaceMapperTest {
   void toRaceDto() {
     var sourceRace = new Race()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityId(city)
-        .setArrivalCityId(city);
+        .setDepartureCity(city)
+        .setArrivalCity(city);
     var resultRaceDto = mapper.toRaceDto(sourceRace);
     var raceDtoExpected = new RaceDto()
         .setId(1L)
-        .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-        .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTime(LocalTime.parse("03:00"))
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
-        .setDepartureCityIdDto(cityDto)
-        .setArrivalCityIdDto(cityDto);
+        .setDepartureCityDto(cityDto)
+        .setArrivalCityDto(cityDto);
     assertThat(resultRaceDto).isEqualTo(raceDtoExpected);
   }
 

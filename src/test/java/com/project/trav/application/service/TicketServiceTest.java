@@ -37,17 +37,17 @@ public class TicketServiceTest {
   private TicketService ticketService;
   City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
-  Race race = new Race().setId(1L).setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-      .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+  Race race = new Race().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+      .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
       .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
-      .setDepartureCityId(city).setArrivalCityId(city);
+      .setDepartureCity(city).setArrivalCity(city);
   CityDto cityDto = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
   RaceDto raceDto = new RaceDto().setId(1L)
-      .setDepartureTime(LocalDateTime.parse("2022-11-02T12:00:00"))
-      .setArrivalTime(LocalDateTime.parse("2022-11-02T15:00"))
+      .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+      .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
       .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
-      .setDepartureCityIdDto(cityDto).setArrivalCityIdDto(cityDto);
+      .setDepartureCityDto(cityDto).setArrivalCityDto(cityDto);
 
   @Test
   void getRaces() {
