@@ -49,9 +49,9 @@ public class Race {
   @Column(name = "race_number")
   private String raceNumber;
   @ManyToOne(cascade = CascadeType.MERGE)
-  @JoinColumn(name = "departure_city", referencedColumnName = "id")
+  @JoinColumn(name = "departure_city_id", referencedColumnName = "id")
   private City departureCity;
   @ManyToOne(cascade = CascadeType.MERGE)
-  @JoinColumn(name = "arrival_city", referencedColumnName = "id")
+  @JoinColumn(name = "arrival_city_id", referencedColumnName = "id")
   private City arrivalCity;
 }
