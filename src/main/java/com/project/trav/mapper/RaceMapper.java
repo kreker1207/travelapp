@@ -12,11 +12,13 @@ public interface RaceMapper {
 
   @Mapping(target = "departureCityDto", source = "departureCity")
   @Mapping(target = "arrivalCityDto", source = "arrivalCity")
+  @Mapping(target = "ticketDtoList",source = "tickets")
   RaceDto toRaceDto(Race race);
 
   List<RaceDto> toRaceDtos(List<Race> races);
 
   @Mapping(target = "departureCity", source = "departureCityDto")
   @Mapping(target = "arrivalCity", source = "arrivalCityDto")
+  @Mapping(target = "tickets",source = "ticketDtoList")
   Race toRace(RaceDto raceDto);
 }

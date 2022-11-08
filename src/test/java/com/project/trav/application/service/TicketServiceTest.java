@@ -4,6 +4,7 @@ import com.project.trav.mapper.TicketMapper;
 import com.project.trav.model.dto.CityDto;
 import com.project.trav.model.dto.RaceDto;
 import com.project.trav.model.dto.TicketDto;
+import com.project.trav.repository.RaceRepository;
 import com.project.trav.service.TicketService;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
@@ -31,6 +32,8 @@ public class TicketServiceTest {
 
   @Mock
   private TicketRepository ticketRepository;
+  @Mock
+  private RaceRepository raceRepository;
   @Mock
   private TicketMapper ticketMapper;
   @InjectMocks
@@ -99,6 +102,7 @@ public class TicketServiceTest {
   void addTicket() {
     var ticket = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
+    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(race));
     ticketService.addTicket(ticket);
     Mockito.verify(ticketRepository).save(ticketMapper.toTicket(ticket));
   }
@@ -110,6 +114,7 @@ public class TicketServiceTest {
     var ticketDto = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
     Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
+    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(race));
     ticketService.updateTicket(ticketDto, 1L);
     Mockito.verify(ticketRepository).save(ticket);
   }

@@ -35,6 +35,7 @@ public class RaceMapperTest {
   void toRace() {
     var sourceRaceDto = new RaceDto()
         .setId(1L)
+        .setTicketDtoList(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -45,6 +46,7 @@ public class RaceMapperTest {
     var resultRace = mapper.toRace(sourceRaceDto);
     var raceExpected = new Race()
         .setId(1L)
+        .setTickets(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -59,6 +61,7 @@ public class RaceMapperTest {
   void toRaceDtos() {
     var sourceRaceList = Arrays.asList(new Race()
         .setId(1L)
+        .setTickets(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -67,6 +70,7 @@ public class RaceMapperTest {
         .setDepartureCity(city)
         .setArrivalCity(city), new Race()
         .setId(1L)
+        .setTickets(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -77,6 +81,7 @@ public class RaceMapperTest {
     var resultRacesDto = mapper.toRaceDtos(sourceRaceList);
     var expectedRaceList = Arrays.asList(new RaceDto()
         .setId(1L)
+        .setTicketDtoList(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -85,6 +90,7 @@ public class RaceMapperTest {
         .setDepartureCityDto(cityDto)
         .setArrivalCityDto(cityDto), new RaceDto()
         .setId(1L)
+        .setTicketDtoList(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -99,6 +105,7 @@ public class RaceMapperTest {
   void toRaceDto() {
     var sourceRace = new Race()
         .setId(1L)
+        .setTickets(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -109,6 +116,7 @@ public class RaceMapperTest {
     var resultRaceDto = mapper.toRaceDto(sourceRace);
     var raceDtoExpected = new RaceDto()
         .setId(1L)
+        .setTicketDtoList(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)

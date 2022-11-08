@@ -2,7 +2,10 @@ package com.project.trav.model.entity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -27,6 +30,12 @@ public class Race {
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @OneToMany(
+      mappedBy = "races",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true
+  )
+  private List<Ticket> tickets = new ArrayList<>();
   @Column(name = "departure_date_time")
   @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
   private LocalDateTime departureDateTime;

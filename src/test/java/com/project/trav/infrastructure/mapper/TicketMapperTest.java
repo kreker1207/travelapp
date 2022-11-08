@@ -33,6 +33,7 @@ public class TicketMapperTest {
   void toTicket() {
     var raceDto = new RaceDto()
         .setId(1L)
+        .setTicketDtoList(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -42,6 +43,7 @@ public class TicketMapperTest {
         .setArrivalCityDto(null);
     var race = new Race()
         .setId(1L)
+        .setTickets(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -73,6 +75,7 @@ public class TicketMapperTest {
   void toTicketDto() {
     var raceDto = new RaceDto()
         .setId(1L)
+        .setTicketDtoList(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -82,6 +85,7 @@ public class TicketMapperTest {
         .setArrivalCityDto(null);
     var race = new Race()
         .setId(1L)
+        .setTickets(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -113,6 +117,7 @@ public class TicketMapperTest {
   void toTicketDtos() {
     var raceDto = new RaceDto()
         .setId(1L)
+        .setTicketDtoList(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)
@@ -122,6 +127,7 @@ public class TicketMapperTest {
         .setArrivalCityDto(null);
     var race = new Race()
         .setId(1L)
+        .setTickets(null)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setTravelTimeDuration(Duration.ZERO)

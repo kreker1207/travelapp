@@ -1,11 +1,13 @@
 package com.project.trav.service;
 
+import com.project.trav.exeption.EntityAlreadyExists;
 import com.project.trav.mapper.TicketMapper;
 import com.project.trav.model.dto.TicketDto;
 import com.project.trav.model.entity.Race;
 import com.project.trav.model.entity.Ticket;
 import com.project.trav.model.entity.TicketStatus;
 import com.project.trav.model.entity.User;
+import com.project.trav.repository.RaceRepository;
 import com.project.trav.repository.TicketRepository;
 import com.project.trav.repository.UserRepository;
 import com.project.trav.exeption.EntityNotFoundByIdException;
@@ -21,6 +23,7 @@ public class TicketService {
 
   private final TicketMapper ticketMapper;
   private final UserRepository userRepository;
+  private final RaceRepository raceRepository;
   private final TicketRepository ticketRepository;
   private static final String NOT_FOUND_ERROR = "Ticket was not found by id";
 
@@ -32,6 +35,7 @@ public class TicketService {
     return ticketMapper.toTicketDto(findByIdTicket(id));
   }
   public void addTicket(TicketDto ticketDto) {
+    validPlace(ticketDto);
     ticketRepository.save(ticketMapper.toTicket(ticketDto));
   }
 
@@ -42,6 +46,7 @@ public class TicketService {
 
   public void updateTicket(TicketDto ticketDto, Long id) {
     Ticket oldTicket = findByIdTicket(id);
+    validPlace(ticketDto);
     ticketRepository.save(oldTicket.setId(id).setUserId(ticketDto.getUserId())
         .setPlace(ticketDto.getPlace()).setPlaceClass(ticketDto.getPlaceClass()).setCost(ticketDto.getCost())
         .setTicketStatus(ticketDto.getTicketStatus()).setRaces(new Race().setId(ticketDto.getId())));
@@ -70,5 +75,14 @@ public class TicketService {
     ticket.setUserId(user.getId());
     ticket.setTicketStatus(ticketStatus);
     updateTicket(ticketMapper.toTicketDto(ticket), ticketId);
+  }
+  private void validPlace(TicketDto ticketDto) {
+    Race race = raceRepository.findById(ticketDto.getRacesDto().getId()).orElseThrow(() ->
+        new EntityNotFoundByIdException("Race was not fond"));
+    List<Ticket> ticketList = race.getTickets();
+    ticketList.forEach(ticket -> {
+      if (ticket.getPlace().equals(ticketDto.getPlace()))
+        throw new EntityAlreadyExists("place on this race already exists");
+    });
   }
 }
