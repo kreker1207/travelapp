@@ -1,9 +1,7 @@
 package com.project.trav.model.dto;
 
-import com.project.trav.model.entity.Ticket;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,16 +19,14 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class RaceDto {
 
   private Long id;
-  private List<Ticket> tickets;
   @NotNull
   @DateTimeFormat(iso = ISO.DATE_TIME)
   private LocalDateTime departureDateTime;
   @NotNull
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   private LocalDateTime arrivalDateTime;
-  @NotNull
-  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-  private LocalTime travelTime;
+
+  private Duration travelTimeDuration;
   @NotNull
   private String airline;
   @NotNull

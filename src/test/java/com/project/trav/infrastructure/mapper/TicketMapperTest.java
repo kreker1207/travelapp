@@ -9,8 +9,8 @@ import com.project.trav.mapper.CityMapperImpl;
 import com.project.trav.mapper.RaceMapperImpl;
 import com.project.trav.mapper.TicketMapper;
 import com.project.trav.mapper.TicketMapperImpl;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class TicketMapperTest {
         .setId(1L)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00"))
+        .setTravelTimeDuration(Duration.ZERO)
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityDto(null)
@@ -44,7 +44,7 @@ public class TicketMapperTest {
         .setId(1L)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00"))
+        .setTravelTimeDuration(Duration.ZERO)
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCity(null)
@@ -75,7 +75,7 @@ public class TicketMapperTest {
         .setId(1L)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00"))
+        .setTravelTimeDuration(Duration.ZERO)
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityDto(null)
@@ -84,7 +84,7 @@ public class TicketMapperTest {
         .setId(1L)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00"))
+        .setTravelTimeDuration(Duration.ZERO)
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCity(null)
@@ -115,7 +115,7 @@ public class TicketMapperTest {
         .setId(1L)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00"))
+        .setTravelTimeDuration(Duration.ZERO)
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCityDto(null)
@@ -124,7 +124,7 @@ public class TicketMapperTest {
         .setId(1L)
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00"))
+        .setTravelTimeDuration(Duration.ZERO)
         .setAirline("Mau")
         .setRaceNumber("Wz-air-222")
         .setDepartureCity(null)

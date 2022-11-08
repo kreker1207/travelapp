@@ -1,10 +1,8 @@
 package com.project.trav.model.entity;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -29,21 +27,14 @@ public class Race {
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @OneToMany(
-      mappedBy = "races",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true
-  )
-  private List<Ticket> tickets;
   @Column(name = "departure_date_time")
   @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
   private LocalDateTime departureDateTime;
   @Column(name = "arrival_date_time")
   @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
   private LocalDateTime arrivalDateTime;
-  @Column(name = "travel_time")
-  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-  private LocalTime travelTime;
+  @Column(name = "duration")
+  private Duration travelTimeDuration;
   @Column(name = "airline")
   private String airline;
   @Column(name = "race_number")

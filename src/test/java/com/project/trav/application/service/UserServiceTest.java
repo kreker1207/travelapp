@@ -87,7 +87,6 @@ public class UserServiceTest {
         .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER)
         .setStatus(Status.ACTIVE)
         .setTickets(null);
-    Mockito.when(userRepository.existsById(1L)).thenReturn(true);
     Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(sourceUser));
     Mockito.when(userMapper.toUser(userService.getUser(1L))).thenReturn(sourceUser);
     userService.updateUser(userMapper.toUserDto(sourceUser), 1L);
@@ -102,7 +101,7 @@ public class UserServiceTest {
         .setStatus(Status.ACTIVE)
         .setTicketsDto(new ArrayList<>());
 
-    Mockito.when(userRepository.existsById(1L)).thenReturn(false);
+    Mockito.when(userRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "User was not found";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
         userService.updateUser(user, 1L)).getMessage();
@@ -111,15 +110,19 @@ public class UserServiceTest {
 
   @Test
   void deleteUser_success() {
-    Long id = 1L;
-    Mockito.when(userRepository.existsById(id)).thenReturn(true);
-    userService.deleteUser(id);
-    Mockito.verify(userRepository).deleteById(id);
+    var user = new User().setId(1L).setName("Ivan").setSurname("Baranetskyi")
+        .setMail("baranetskiy@gmail.com")
+        .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER)
+        .setStatus(Status.ACTIVE)
+        .setTickets(new ArrayList<>());
+    Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+    userService.deleteUser(1L);
+    Mockito.verify(userRepository).deleteById(1L);
   }
 
   @Test
   void deleteUser_failure() {
-    Mockito.when(userRepository.existsById(1L)).thenReturn(false);
+    Mockito.when(userRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "User was not found";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
         userService.deleteUser(1L)).getMessage();

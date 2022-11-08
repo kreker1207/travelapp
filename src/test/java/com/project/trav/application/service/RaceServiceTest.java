@@ -8,8 +8,8 @@ import com.project.trav.service.RaceService;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
 import com.project.trav.repository.RaceRepository;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,12 +43,12 @@ public class RaceServiceTest {
     var raceList = Arrays.asList(
         new RaceDto().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
             .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-            .setTravelTime(LocalTime.parse("03:00"))
+            .setTravelTimeDuration(Duration.ZERO)
             .setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityDto(cityDto)
             .setArrivalCityDto(cityDto),
         new RaceDto().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
             .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-            .setTravelTime(LocalTime.parse("03:00"))
+            .setTravelTimeDuration(Duration.ZERO)
             .setAirline("Mau").setRaceNumber("Wr23-ww").setDepartureCityDto(cityDto)
             .setArrivalCityDto(cityDto)
     );
@@ -61,7 +61,7 @@ public class RaceServiceTest {
   void getRace_success() {
     var sourceRace = new Race().setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
         .setDepartureCity(city)
         .setArrivalCity(city);
     Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(sourceRace));
@@ -77,14 +77,19 @@ public class RaceServiceTest {
 
   @Test
   void deleteRace_success() {
-    Mockito.when(raceRepository.existsById(1L)).thenReturn(true);
+    var sourceRace = new Race().setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setDepartureCity(city)
+        .setArrivalCity(city);
+    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(sourceRace));
     raceService.deleteRace(1L);
     Mockito.verify(raceRepository).deleteById(1L);
   }
 
   @Test
   void deleteRace_failure() {
-    Mockito.when(raceRepository.existsById(1L)).thenReturn(false);
+    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "Race was not found by id";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
         raceService.deleteRace(1L)).getMessage();
@@ -95,7 +100,7 @@ public class RaceServiceTest {
   void addRace() {
     var race = new RaceDto().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
         .setDepartureCityDto(cityDto).setArrivalCityDto(cityDto);
     raceService.addRace(race);
     Mockito.verify(raceRepository).save(raceMapper.toRace(race));
@@ -105,18 +110,17 @@ public class RaceServiceTest {
   void updateRace_success() {
     var race = new Race().setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
         .setDepartureCity(city)
         .setArrivalCity(city);
     var sourceRace = new RaceUpdateRequest()
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setAirline("Mau").setRaceNumber("Wr23-ww")
         .setDepartureCityId(city.getId()).setDepartureCityName(city.getName()).setDepartureCityCountry(city.getCountry())
         .setDepartureCityPopulation(city.getPopulation()).setDepartureCityInformation(city.getInformation())
         .setArrivalCityId(city.getId()).setArrivalCityName(city.getName()).setArrivalCityCountry(city.getCountry())
         .setArrivalCityPopulation(city.getPopulation()).setArrivalCityInformation(city.getInformation());
-    Mockito.when(raceRepository.existsById(1L)).thenReturn(true);
     Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(race));
     Mockito.when(raceMapper.toRace(raceService.getRace(1L))).thenReturn(race);
 
@@ -129,13 +133,13 @@ public class RaceServiceTest {
     var race = new RaceUpdateRequest()
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setAirline("Mau").setRaceNumber("Wr23-ww")
         .setDepartureCityId(city.getId()).setDepartureCityName(city.getName()).setDepartureCityCountry(city.getCountry())
         .setDepartureCityPopulation(city.getPopulation()).setDepartureCityInformation(city.getInformation())
         .setArrivalCityId(city.getId()).setArrivalCityName(city.getName()).setArrivalCityCountry(city.getCountry())
         .setArrivalCityPopulation(city.getPopulation()).setArrivalCityInformation(city.getInformation());
 
-    Mockito.when(raceRepository.existsById(1L)).thenReturn(false);
+    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "Race was not found by id";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
         raceService.updateRace(race, 1L)).getMessage();

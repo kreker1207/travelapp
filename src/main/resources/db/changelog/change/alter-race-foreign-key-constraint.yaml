@@ -7,14 +7,14 @@ databaseChangeLog:
             tableName: race
             columns:
               - column:
-                  name: departure_city
+                  name: departure_city_id
                   type: BIGINT
                   constraints:
                     nullable: false
                     foreignKeyName: departure_city_id_fk
                     references: city(id)
               - column:
-                  name: arrival_city
+                  name: arrival_city_id
                   type: BIGINT
                   constraints:
                     nullable: false

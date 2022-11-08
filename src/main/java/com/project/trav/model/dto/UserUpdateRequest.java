@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class UserUpdateRequest {
+  private Long id;
   private String name;
   private String surname;
   @Size(min = 6, max = 50)

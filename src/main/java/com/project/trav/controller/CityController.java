@@ -28,7 +28,6 @@ public class CityController {
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  //Why get city by name?
   public CityDto getCity(@PathVariable Long id) {
     return cityService.getCity(id);
   }

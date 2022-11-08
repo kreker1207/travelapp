@@ -8,6 +8,7 @@ import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
 import com.project.trav.repository.RaceRepository;
 import com.project.trav.exeption.EntityNotFoundByIdException;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,9 @@ public class RaceService {
   }
 
   public void addRace(RaceDto raceDto) {
-    existByNumber(raceDto.getRaceNumber());
+    verifyRaceExists(raceDto.getId(),raceDto.getRaceNumber());
+    Duration d =Duration.between(raceDto.getDepartureDateTime(),raceDto.getArrivalDateTime());
+    raceDto.setTravelTimeDuration(d.abs());
     raceRepository.save(raceMapper.toRace(raceDto));
   }
 
@@ -42,15 +45,15 @@ public class RaceService {
   public void updateRace(RaceUpdateRequest raceUpdateRequest, Long id) {
     findByIdRace(id);
     Race oldRace = raceMapper.toRace(getRace(id));
-    existByNumber(raceUpdateRequest, oldRace);
+    verifyRaceExists(raceUpdateRequest.getId(), raceUpdateRequest.getRaceNumber());
     raceRepository.save(oldRace
         .setId(id)
         .setDepartureDateTime(
             raceUpdateRequest.getDepartureDateTime())
         .setArrivalDateTime(
             raceUpdateRequest.getArrivalDateTime())
-        .setTravelTime(
-            raceUpdateRequest.getTravelTime())
+        .setTravelTimeDuration(
+            Duration.between(raceUpdateRequest.getArrivalDateTime(),raceUpdateRequest.getDepartureDateTime()).abs())
         .setAirline(raceUpdateRequest.getAirline())
         .setRaceNumber(
             raceUpdateRequest.getRaceNumber())
@@ -73,16 +76,14 @@ public class RaceService {
     });
 
   }
-  private void existByNumber(String number) {
-    if (!number.isEmpty() && raceRepository.existsRaceByRaceNumber(number)) {
-      throw new EntityAlreadyExists("Race with this Number already exists");
+  private void verifyRaceExists(Long raceId, String raceNumber) {
+    var raceOptional = raceRepository.findByRaceNumber(raceNumber);
+    if (raceId != null) {
+      raceOptional = raceOptional.filter(race -> !race.getId().equals(raceId));
     }
+    raceOptional.ifPresent(race -> {
+      throw new EntityAlreadyExists("Race with this Number already exists");
+    });
   }
 
-  private void existByNumber(RaceUpdateRequest race, Race oldRace) {
-    if (race.getRaceNumber() != null && !race.getRaceNumber().equals(oldRace.getRaceNumber())
-        && raceRepository.existsRaceByRaceNumber(race.getRaceNumber())) {
-      throw new EntityAlreadyExists("Race with this Number already exists");
-    }
-  }
 }

@@ -10,8 +10,8 @@ import com.project.trav.model.entity.Race;
 import com.project.trav.model.entity.Ticket;
 import com.project.trav.model.entity.TicketStatus;
 import com.project.trav.repository.TicketRepository;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,18 +39,18 @@ public class TicketServiceTest {
       .setPopulation("2.7 million").setInformation("Capital");
   Race race = new Race().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
       .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-      .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+      .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
       .setDepartureCity(city).setArrivalCity(city);
   CityDto cityDto = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
   RaceDto raceDto = new RaceDto().setId(1L)
       .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
       .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-      .setTravelTime(LocalTime.parse("03:00")).setAirline("Mau").setRaceNumber("Wr23-ww")
+      .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
       .setDepartureCityDto(cityDto).setArrivalCityDto(cityDto);
 
   @Test
-  void getRaces() {
+  void getTickets() {
     var ticketList = Arrays.asList(
         new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
             .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto),
@@ -63,7 +63,7 @@ public class TicketServiceTest {
   }
 
   @Test
-  void getRace_success() {
+  void getTicket_success() {
     var sourceTicket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
     Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(sourceTicket));
@@ -72,21 +72,23 @@ public class TicketServiceTest {
   }
 
   @Test
-  void getRace_failure() {
+  void getTicket_failure() {
     Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.empty());
     Assertions.assertThrows(EntityNotFoundException.class, () -> ticketService.getTicket(1L));
   }
 
   @Test
-  void deleteRace_success() {
-    Mockito.when(ticketRepository.existsById(1L)).thenReturn(true);
+  void deleteTicket_success() {
+    var sourceTicket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
+    Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(sourceTicket));
     ticketService.deleteTicket(1L);
     Mockito.verify(ticketRepository).deleteById(1L);
   }
 
   @Test
-  void deleteRace_failure() {
-    Mockito.when(ticketRepository.existsById(1L)).thenReturn(false);
+  void deleteTicket_failure() {
+    Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "Ticket was not found by id";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
         ticketService.deleteTicket(1L)).getMessage();
@@ -94,7 +96,7 @@ public class TicketServiceTest {
   }
 
   @Test
-  void addRace() {
+  void addTicket() {
     var ticket = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
     ticketService.addTicket(ticket);
@@ -102,22 +104,21 @@ public class TicketServiceTest {
   }
 
   @Test
-  void updateRace_success() {
-    var sourceTicket = new TicketDto().setId(1L).setUserId(1L).setPlace("a23")
-        .setPlaceClass("econom")
+  void updateTicket_success() {
+    var ticket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
+    var ticketDto = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
-
-    Mockito.when(ticketRepository.existsById(1L)).thenReturn(true);
-
-    ticketService.updateTicket(sourceTicket, 1L);
-    Mockito.verify(ticketRepository).save(ticketMapper.toTicket(sourceTicket));
+    Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
+    ticketService.updateTicket(ticketDto, 1L);
+    Mockito.verify(ticketRepository).save(ticket);
   }
 
   @Test
-  void updateRace_failure() {
-    var ticketDto = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
+  void updateTicket_failure() {
+    var ticketDto = new TicketDto().setId(1L).setUserId(null).setPlace("a23").setPlaceClass("econom")
         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
-    Mockito.when(ticketRepository.existsById(1L)).thenReturn(false);
+    Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "Ticket was not found by id";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
         ticketService.updateTicket(ticketDto, 1L)).getMessage();

@@ -34,8 +34,8 @@ databaseChangeLog:
                 constraints:
                   nullable: false
             - column:
-                name: travel_time
-                type: TIME
+                name: duration
+                type: BIGINT
                 constraints:
                   nullable: false
             - column:

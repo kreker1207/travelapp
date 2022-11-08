@@ -70,13 +70,9 @@ public class UserService {
 
   }
   private void validUpdate(User user, User oldUser) {
-    if (!user.getLogin().equals(oldUser.getLogin())
-        && userRepository.existsUserByLogin(user.getLogin())) {
+    if (!user.getLogin().equals(oldUser.getLogin())&&!user.getMail().equals(oldUser.getMail())
+        && userRepository.existsUserByLoginOrMail(user.getLogin(),user.getMail())) {
       throw new EntityAlreadyExists("User with this login already exist");
-    }
-    if (!user.getMail().equals(oldUser.getMail())
-        && userRepository.existsUserByMail(user.getMail())) {
-      throw new EntityAlreadyExists("User with this mail already exist");
     }
   }
 }

@@ -1,7 +1,6 @@
 package com.project.trav.model.dto;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,12 +14,11 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class RaceUpdateRequest {
+  private Long id;
   @DateTimeFormat(iso = ISO.DATE_TIME)
   private LocalDateTime departureDateTime;
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   private LocalDateTime arrivalDateTime;
-  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-  private LocalTime travelTime;
   private String airline;
   @Size(min = 3, max = 20)
   private String raceNumber;
