@@ -3,6 +3,8 @@ package com.project.trav.model.entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.CascadeType;
@@ -37,6 +39,8 @@ public class Ticket {
   @Enumerated(value = EnumType.STRING)
   @Column(name = "ticket_status")
   private TicketStatus ticketStatus;
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
   @JoinColumn(name = "race_id", referencedColumnName = "id")
   private Race races;

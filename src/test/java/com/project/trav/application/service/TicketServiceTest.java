@@ -4,6 +4,7 @@ import com.project.trav.mapper.TicketMapper;
 import com.project.trav.model.dto.CityDto;
 import com.project.trav.model.dto.RaceDto;
 import com.project.trav.model.dto.TicketDto;
+import com.project.trav.model.dto.TicketUpdateRequest;
 import com.project.trav.repository.RaceRepository;
 import com.project.trav.service.TicketService;
 import com.project.trav.model.entity.City;
@@ -111,18 +112,21 @@ public class TicketServiceTest {
   void updateTicket_success() {
     var ticket = new Ticket().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
-    var ticketDto = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
-        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
+    var ticketRequest = new TicketUpdateRequest().setUserId(1L).setPlace("a23")
+        .setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesId(1L);
     Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
+    Mockito.when(ticketMapper.toTicket(ticketService.getTicket(1L))).thenReturn(ticket);
     Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(race));
-    ticketService.updateTicket(ticketDto, 1L);
+    ticketService.updateTicket(ticketRequest, 1L);
     Mockito.verify(ticketRepository).save(ticket);
   }
 
   @Test
   void updateTicket_failure() {
-    var ticketDto = new TicketDto().setId(1L).setUserId(null).setPlace("a23").setPlaceClass("econom")
-        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
+    var ticketDto = new TicketUpdateRequest().setUserId(null).setPlace("a23")
+        .setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesId(1L);
     Mockito.when(ticketRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "Ticket was not found by id";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->

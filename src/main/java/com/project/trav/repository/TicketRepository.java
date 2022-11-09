@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
-  Optional<Boolean> existsByPlace(String place);
+  Optional<Ticket> findByPlaceAndRaces_RaceNumber(String place, String raceNumber);
 }

@@ -36,8 +36,10 @@ public class CityService {
   }
 
   public void updateCity(CityDto cityDto, Long id) {
-    findById(id);
-    cityRepository.save(cityMapper.toCity(cityDto));
+    City oldCity = findById(id);
+    City city = cityMapper.toCity(cityDto);
+    cityRepository.save(oldCity.setName(city.getName()).setCountry(city.getCountry()).setPopulation(
+        city.getPopulation()).setInformation(city.getInformation()));
   }
 
   private City findById(Long id) {

@@ -57,7 +57,8 @@ public class RaceController {
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PreAuthorize("hasAuthority('admins')")
-  public void updateRace(@Valid @RequestBody RaceUpdateRequest raceUpdateRequest, @PathVariable Long id) {
+  public void updateRace(@Valid @RequestBody RaceUpdateRequest raceUpdateRequest,
+      @PathVariable Long id) {
     raceService.updateRace(raceUpdateRequest, id);
   }
 

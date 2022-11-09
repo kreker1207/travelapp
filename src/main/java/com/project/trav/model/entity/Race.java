@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.CascadeType;
@@ -30,10 +32,11 @@ public class Race {
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   @OneToMany(
       mappedBy = "races",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true
+      cascade = CascadeType.ALL
   )
   private List<Ticket> tickets = new ArrayList<>();
   @Column(name = "departure_date_time")

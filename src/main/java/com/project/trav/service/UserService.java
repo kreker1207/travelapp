@@ -29,7 +29,8 @@ public class UserService {
   }
 
   public void addUser(UserDto userDto) {
-    if (userRepository.existsUserByLoginOrMail(userDto.getLogin(), userDto.getMail())) {
+    if (userRepository.existsUserByLoginOrMailOrPhone(userDto.getLogin(), userDto.getMail(),
+        userDto.getPhone())) {
       throw new EntityAlreadyExists("User with this login/mail already exists");
     }
     userRepository.save(userMapper.toUser(userDto));
@@ -69,10 +70,13 @@ public class UserService {
     });
 
   }
+
   private void validUpdate(User user, User oldUser) {
-    if (!user.getLogin().equals(oldUser.getLogin())&&!user.getMail().equals(oldUser.getMail())
-        && userRepository.existsUserByLoginOrMail(user.getLogin(),user.getMail())) {
-      throw new EntityAlreadyExists("User with this login already exist");
+    if ((!user.getLogin().equals(oldUser.getLogin()) || !user.getMail().equals(oldUser.getMail())
+        || !user.getPhone().equals(oldUser.getPhone()))
+        && userRepository.existsUserByLoginOrMailOrPhone(user.getLogin(), user.getMail(),
+        user.getPhone())) {
+      throw new EntityAlreadyExists("User with this login/mail already exist");
     }
   }
 }

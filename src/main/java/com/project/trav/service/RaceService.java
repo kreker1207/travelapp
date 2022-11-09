@@ -31,8 +31,8 @@ public class RaceService {
   }
 
   public void addRace(RaceDto raceDto) {
-    verifyRaceExists(raceDto.getId(),raceDto.getRaceNumber());
-    Duration d =Duration.between(raceDto.getDepartureDateTime(),raceDto.getArrivalDateTime());
+    verifyRaceExists(raceDto.getId(), raceDto.getRaceNumber());
+    Duration d = Duration.between(raceDto.getDepartureDateTime(), raceDto.getArrivalDateTime());
     raceDto.setTravelTimeDuration(d.abs());
     raceRepository.save(raceMapper.toRace(raceDto));
   }
@@ -47,13 +47,13 @@ public class RaceService {
     Race oldRace = raceMapper.toRace(getRace(id));
     verifyRaceExists(raceUpdateRequest.getId(), raceUpdateRequest.getRaceNumber());
     raceRepository.save(oldRace
-        .setId(id)
         .setDepartureDateTime(
             raceUpdateRequest.getDepartureDateTime())
         .setArrivalDateTime(
             raceUpdateRequest.getArrivalDateTime())
         .setTravelTimeDuration(
-            Duration.between(raceUpdateRequest.getArrivalDateTime(),raceUpdateRequest.getDepartureDateTime()).abs())
+            Duration.between(raceUpdateRequest.getArrivalDateTime(),
+                raceUpdateRequest.getDepartureDateTime()).abs())
         .setAirline(raceUpdateRequest.getAirline())
         .setRaceNumber(
             raceUpdateRequest.getRaceNumber())
@@ -76,6 +76,7 @@ public class RaceService {
     });
 
   }
+
   private void verifyRaceExists(Long raceId, String raceNumber) {
     var raceOptional = raceRepository.findByRaceNumber(raceNumber);
     if (raceId != null) {
