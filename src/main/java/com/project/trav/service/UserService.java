@@ -1,13 +1,17 @@
 package com.project.trav.service;
 
 import com.project.trav.exeption.EntityAlreadyExists;
+import com.project.trav.exeption.PasswordMatchException;
 import com.project.trav.mapper.UserMapper;
+import com.project.trav.model.dto.UpdateUserPasswordRequest;
 import com.project.trav.model.dto.UserDto;
+import com.project.trav.model.dto.UserUpdateRequest;
 import com.project.trav.model.entity.Status;
 import com.project.trav.model.entity.User;
 import com.project.trav.repository.UserRepository;
 import com.project.trav.exeption.EntityNotFoundByIdException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,23 +37,21 @@ public class UserService {
         userDto.getPhone())) {
       throw new EntityAlreadyExists("User with this login/mail already exists");
     }
+    userDto.setPassword(BCryptPassword(userDto.getPassword()));
     userRepository.save(userMapper.toUser(userDto));
   }
 
-  public void updateUser(UserDto userDto, Long id) {
+  public void updateUser(UserUpdateRequest userUpdateRequest, Long id) {
     User oldUser = userMapper.toUser(getUser(id));
-    User user = userMapper.toUser(userDto);
-    validUpdate(user, oldUser);
-    userRepository.save(new User()
-        .setId(id)
-        .setLogin(user.getLogin())
-        .setName(user.getName())
-        .setSurname(user.getSurname())
-        .setPassword(user.getPassword())
-        .setMail(user.getMail())
-        .setPhone(user.getPhone())
-        .setRole(user.getRole())
-        .setStatus(user.getStatus())
+    validUpdate(userUpdateRequest, oldUser);
+    userRepository.save(oldUser
+        .setLogin(userUpdateRequest.getLogin())
+        .setName(userUpdateRequest.getName())
+        .setSurname(userUpdateRequest.getSurname())
+        .setMail(userUpdateRequest.getMail())
+        .setPhone(userUpdateRequest.getPhone())
+        .setRole(userUpdateRequest.getRole())
+        .setStatus(userUpdateRequest.getStatus())
     );
   }
 
@@ -61,9 +63,16 @@ public class UserService {
   public void deactivateUser(Long id) {
     User user = findByIdUser(id);
     user.setStatus(Status.BANNED);
-    updateUser(userMapper.toUserDto(user), id);
+    userRepository.save(user);
   }
-
+  public void resetPassword(UpdateUserPasswordRequest userPasswordRequest,Long id){
+    User user = userMapper.toUser(getUser(id));
+    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(), user.getPassword())){
+      user.setPassword(BCryptPassword(userPasswordRequest.getNewPassword()));
+      userRepository.save(user);
+    }
+    else throw new PasswordMatchException("Check your password");
+  }
   private User findByIdUser(Long id) {
     return userRepository.findById(id).orElseThrow(() -> {
       throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
@@ -71,12 +80,15 @@ public class UserService {
 
   }
 
-  private void validUpdate(User user, User oldUser) {
+  private void validUpdate(UserUpdateRequest user, User oldUser) {
     if ((!user.getLogin().equals(oldUser.getLogin()) || !user.getMail().equals(oldUser.getMail())
         || !user.getPhone().equals(oldUser.getPhone()))
         && userRepository.existsUserByLoginOrMailOrPhone(user.getLogin(), user.getMail(),
         user.getPhone())) {
       throw new EntityAlreadyExists("User with this login/mail already exist");
     }
+  }
+  private String BCryptPassword(String password){
+    return new BCryptPasswordEncoder().encode(password);
   }
 }

@@ -2,6 +2,7 @@ package com.project.trav.application.service;
 
 import com.project.trav.mapper.UserMapper;
 import com.project.trav.model.dto.UserDto;
+import com.project.trav.model.dto.UserUpdateRequest;
 import com.project.trav.service.UserService;
 import com.project.trav.model.entity.Role;
 import com.project.trav.model.entity.Status;
@@ -87,20 +88,22 @@ public class UserServiceTest {
         .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER)
         .setStatus(Status.ACTIVE)
         .setTickets(null);
+    var updateUser = new UserUpdateRequest().setName("Ivan").setSurname("Baranetskyi")
+        .setMail("baranetskiy@gmail.com")
+        .setPhone("+380956954604").setLogin("kreker")
+        .setStatus(Status.ACTIVE);
     Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(sourceUser));
     Mockito.when(userMapper.toUser(userService.getUser(1L))).thenReturn(sourceUser);
-    userService.updateUser(userMapper.toUserDto(sourceUser), 1L);
+    userService.updateUser(updateUser, 1L);
     Mockito.verify(userRepository).save(sourceUser);
   }
 
   @Test
   void updateUser_failure() {
-    var user = new UserDto().setId(1L).setName("Ivan").setSurname("Baranetskyi")
+    var user = new UserUpdateRequest().setName("Ivan").setSurname("Baranetskyi")
         .setMail("baranetskiy@gmail.com")
-        .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER)
-        .setStatus(Status.ACTIVE)
-        .setTicketsDto(new ArrayList<>());
-
+        .setPhone("+380956954604").setLogin("kreker")
+        .setStatus(Status.ACTIVE);
     Mockito.when(userRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "User was not found";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
