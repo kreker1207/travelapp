@@ -45,15 +45,15 @@ public class CityServiceTest {
   void getCity_success() {
     var sourceCity = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
         .setPopulation("3.2 million").setInformation("capital");
-    Mockito.when(cityRepository.findByName("Kiev")).thenReturn(Optional.of(sourceCity));
-    var expectedCity = cityService.getCityInfo("Kiev");
+    Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.of(sourceCity));
+    var expectedCity = cityService.getCity(1L);
     AssertionsForClassTypes.assertThat(cityMapper.toCityDto(sourceCity)).isEqualTo(expectedCity);
   }
 
   @Test
   void getCity_failure() {
-    Mockito.when(cityRepository.findByName("Kiev")).thenReturn(Optional.empty());
-    Assertions.assertThrows(EntityNotFoundException.class, () -> cityService.getCityInfo("Kiev"));
+    Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.empty());
+    Assertions.assertThrows(EntityNotFoundException.class, () -> cityService.getCity(1L));
   }
 
   @Test
@@ -66,14 +66,16 @@ public class CityServiceTest {
 
   @Test
   void deleteCity_success() {
-    Mockito.when(cityRepository.existsById(1L)).thenReturn(true);
+    var city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+        .setPopulation("3.2 million").setInformation("capital");
+    Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
     cityService.deleteCity(1L);
     Mockito.verify(cityRepository).deleteById(1L);
   }
 
   @Test
   void deleteCity_failure() {
-    Mockito.when(cityRepository.existsById(1L)).thenReturn(false);
+    Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "City was not found";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
         cityService.deleteCity(1L)).getMessage();
@@ -84,18 +86,19 @@ public class CityServiceTest {
   void updateCity_success() {
     var sourceCity = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine")
         .setPopulation("3.2 million").setInformation("capital");
-
-    Mockito.when(cityRepository.existsById(1L)).thenReturn(true);
-
+    var city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
+        .setPopulation("3.2 million").setInformation("capital");
+    Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
+    Mockito.when(cityMapper.toCity(sourceCity)).thenReturn(city);
     cityService.updateCity(sourceCity, 1L);
-    Mockito.verify(cityRepository).save(cityMapper.toCity(sourceCity));
+    Mockito.verify(cityRepository).save(city);
   }
 
   @Test
   void updateRace_failure() {
     var city = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine")
         .setPopulation("3.2 million").setInformation("capital");
-    Mockito.when(cityRepository.existsById(1L)).thenReturn(false);
+    Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "City was not found";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
         cityService.updateCity(city, 1L)).getMessage();

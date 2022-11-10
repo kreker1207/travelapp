@@ -1,5 +1,7 @@
 package com.project.trav.controller;
 
+import com.project.trav.model.dto.UpdateUserPasswordRequest;
+import com.project.trav.model.dto.UserUpdateRequest;
 import com.project.trav.service.UserService;
 import com.project.trav.model.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +53,8 @@ public class UserController {
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  public void updateUser(@RequestBody UserDto userDto, @PathVariable Long id) {
-    userService.updateUser(userDto, id);
+  public void updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest, @PathVariable Long id) {
+    userService.updateUser(userUpdateRequest, id);
   }
 
   @DeleteMapping("/{id}")
@@ -67,5 +69,11 @@ public class UserController {
   @PreAuthorize("hasAnyAuthority('admins')")
   public void deactivateUser(@PathVariable Long id) {
     userService.deactivateUser(id);
+  }
+  @PutMapping("/resetPassword/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('admins','users')")
+  public void resetPassword(@Valid @RequestBody UpdateUserPasswordRequest userPasswordRequest,@PathVariable Long id) {
+    userService.resetPassword(userPasswordRequest,id);
   }
 }

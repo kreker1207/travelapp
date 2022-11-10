@@ -1,23 +1,18 @@
 package com.project.trav.model.dto;
 
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class CityDto {
-
-  private Long id;
+public class UpdateUserPasswordRequest {
   @NotNull
-  private String name;
+  String oldPassword;
   @NotNull
-  private String country;
-  private String population;
-  private String information;
+  String newPassword;
 }

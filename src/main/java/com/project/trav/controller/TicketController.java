@@ -1,5 +1,6 @@
 package com.project.trav.controller;
 
+import com.project.trav.model.dto.TicketUpdateRequest;
 import com.project.trav.service.TicketService;
 import com.project.trav.model.dto.TicketDto;
 import lombok.RequiredArgsConstructor;
@@ -50,8 +51,9 @@ public class TicketController {
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAuthority('admins')")
-  public void updateTicket(@Valid @PathVariable Long id, @RequestBody TicketDto ticketDto) {
-    ticketService.updateTicket(ticketDto, id);
+  public void updateTicket(@Valid @RequestBody TicketUpdateRequest ticketUpdateRequest,
+      @PathVariable Long id) {
+    ticketService.updateTicket(ticketUpdateRequest, id);
   }
 
   @DeleteMapping("/{id}")

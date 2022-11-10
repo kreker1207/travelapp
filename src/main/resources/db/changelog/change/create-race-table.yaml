@@ -14,13 +14,13 @@ databaseChangeLog:
                   primaryKey: true
                   nullable: false
             - column:
-                name: departure_time
-                type: VARCHAR(35)
+                name: departure_date_time
+                type: DATETIME
                 constraints:
                   nullable: false
             - column:
-                name: arrival_time
-                type: VARCHAR(35)
+                name: arrival_date_time
+                type: DATETIME
                 constraints:
                   nullable: false
             - column:
@@ -34,8 +34,8 @@ databaseChangeLog:
                 constraints:
                   nullable: false
             - column:
-                name: travel_time
-                type: VARCHAR(35)
+                name: duration
+                type: BIGINT
                 constraints:
                   nullable: false
             - column:
