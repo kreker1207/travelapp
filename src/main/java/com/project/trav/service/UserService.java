@@ -37,7 +37,7 @@ public class UserService {
         userDto.getPhone())) {
       throw new EntityAlreadyExists("User with this login/mail already exists");
     }
-    userDto.setPassword(bCryptPassword(userDto.getPassword()));
+    userDto.setPassword(encryptPassword(userDto.getPassword()));
     userRepository.save(userMapper.toUser(userDto));
   }
 
@@ -68,7 +68,7 @@ public class UserService {
   public void resetPassword(UpdateUserPasswordRequest userPasswordRequest,Long id){
     User user = userMapper.toUser(getUser(id));
     if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(), user.getPassword())){
-      user.setPassword(bCryptPassword(userPasswordRequest.getNewPassword()));
+      user.setPassword(encryptPassword(userPasswordRequest.getNewPassword()));
       userRepository.save(user);
     }
     else throw new PasswordMatchException("Check your password");
@@ -88,7 +88,7 @@ public class UserService {
       throw new EntityAlreadyExists("User with this login/mail already exist");
     }
   }
-  private String bCryptPassword(String password){
+  private String encryptPassword(String password){
     return new BCryptPasswordEncoder().encode(password);
   }
 }

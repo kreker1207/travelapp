@@ -89,9 +89,9 @@ public class CityServiceTest {
     var city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
         .setPopulation("3.2 million").setInformation("capital");
     Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
-
+    Mockito.when(cityMapper.toCity(sourceCity)).thenReturn(city);
     cityService.updateCity(sourceCity, 1L);
-    Mockito.verify(cityRepository).save(cityMapper.toCity(sourceCity));
+    Mockito.verify(cityRepository).save(city);
   }
 
   @Test
