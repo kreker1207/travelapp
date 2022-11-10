@@ -43,23 +43,23 @@ public class RaceController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAuthority('admins')")
-  public void addRace(@Valid @RequestBody RaceDto raceDto) {
-    raceService.addRace(raceDto);
+  public RaceDto addRace(@Valid @RequestBody RaceDto raceDto) {
+    return raceService.addRace(raceDto);
   }
 
   @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAuthority('admins')")
-  public void deleteRace(@PathVariable Long id) {
-    raceService.deleteRace(id);
+  public RaceDto deleteRace(@PathVariable Long id) {
+     return raceService.deleteRace(id);
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PreAuthorize("hasAuthority('admins')")
-  public void updateRace(@Valid @RequestBody RaceUpdateRequest raceUpdateRequest,
+  public RaceDto updateRace(@Valid @RequestBody RaceUpdateRequest raceUpdateRequest,
       @PathVariable Long id) {
-    raceService.updateRace(raceUpdateRequest, id);
+    return raceService.updateRace(raceUpdateRequest, id);
   }
 
 

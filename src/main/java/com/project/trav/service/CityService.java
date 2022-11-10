@@ -26,20 +26,23 @@ public class CityService {
     return cityMapper.toCityDto(findById(id));
   }
 
-  public void addCity(CityDto cityDto) {
+  public CityDto addCity(CityDto cityDto) {
     cityRepository.save(cityMapper.toCity(cityDto));
+    return cityDto;
   }
 
-  public void deleteCity(Long id) {
-    findById(id);
+  public CityDto deleteCity(Long id) {
+    City city = findById(id);
     cityRepository.deleteById(id);
+    return cityMapper.toCityDto(city);
   }
 
-  public void updateCity(CityDto cityDto, Long id) {
+  public CityDto updateCity(CityDto cityDto, Long id) {
     City oldCity = findById(id);
     City city = cityMapper.toCity(cityDto);
     cityRepository.save(oldCity.setName(city.getName()).setCountry(city.getCountry()).setPopulation(
         city.getPopulation()).setInformation(city.getInformation()));
+    return cityDto;
   }
 
   private City findById(Long id) {

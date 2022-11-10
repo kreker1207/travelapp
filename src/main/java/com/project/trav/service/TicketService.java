@@ -36,17 +36,19 @@ public class TicketService {
     return ticketMapper.toTicketDto(findByIdTicket(id));
   }
 
-  public void addTicket(TicketDto ticketDto) {
+  public TicketDto addTicket(TicketDto ticketDto) {
     validPlaceAdd(ticketDto);
     ticketRepository.save(ticketMapper.toTicket(ticketDto));
+    return ticketDto;
   }
 
-  public void deleteTicket(Long id) {
-    findByIdTicket(id);
+  public TicketDto deleteTicket(Long id) {
+    Ticket ticket = findByIdTicket(id);
     ticketRepository.deleteById(id);
+    return ticketMapper.toTicketDto(ticket);
   }
 
-  public void updateTicket(TicketUpdateRequest ticketUpdateRequest, Long id) {
+  public TicketDto updateTicket(TicketUpdateRequest ticketUpdateRequest, Long id) {
     findByIdTicket(id);
     Ticket oldTicket = ticketMapper.toTicket(getTicket(id));
     validPlaceUpdate(ticketUpdateRequest, oldTicket);
@@ -64,14 +66,15 @@ public class TicketService {
             .setTravelTimeDuration(race.getTravelTimeDuration())
             .setArrivalDateTime(race.getArrivalDateTime())
             .setDepartureCity(race.getDepartureCity()).setArrivalCity(race.getArrivalCity())));
+    return ticketMapper.toTicketDto(oldTicket);
   }
 
-  public void buyTicket(Long ticketId, String username) {
-    prepareTicket(TicketStatus.BOUGHT, ticketId, username);
+  public TicketDto buyTicket(Long ticketId, String username) {
+    return ticketMapper.toTicketDto(prepareTicket(TicketStatus.BOUGHT, ticketId, username));
   }
 
-  public void bookTicket(Long ticketId, String username) {
-    prepareTicket(TicketStatus.BOOKED, ticketId, username);
+  public TicketDto bookTicket(Long ticketId, String username) {
+    return ticketMapper.toTicketDto(prepareTicket(TicketStatus.BOOKED, ticketId, username));
   }
 
   private Ticket findByIdTicket(Long id) {
@@ -81,7 +84,7 @@ public class TicketService {
 
   }
 
-  private void prepareTicket(TicketStatus ticketStatus, Long ticketId, String username) {
+  private Ticket prepareTicket(TicketStatus ticketStatus, Long ticketId, String username) {
     User user = userRepository.findByLogin(username).orElseThrow(() ->
         new EntityNotFoundByIdException("User was not found"));
     Ticket ticket = findByIdTicket(ticketId);
@@ -91,6 +94,7 @@ public class TicketService {
     ticket.setUserId(user.getId());
     ticket.setTicketStatus(ticketStatus);
     ticketRepository.save(ticket);
+    return ticket;
   }
 
   private void validPlaceUpdate(TicketUpdateRequest ticketUpdateRequest, Ticket ticket) {
