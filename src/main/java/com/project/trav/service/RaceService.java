@@ -30,19 +30,21 @@ public class RaceService {
     return raceMapper.toRaceDto(findByIdRace(id));
   }
 
-  public void addRace(RaceDto raceDto) {
+  public RaceDto addRace(RaceDto raceDto) {
     verifyRaceExists(raceDto.getId(), raceDto.getRaceNumber());
     Duration d = Duration.between(raceDto.getDepartureDateTime(), raceDto.getArrivalDateTime());
     raceDto.setTravelTimeDuration(d.abs());
     raceRepository.save(raceMapper.toRace(raceDto));
+    return raceDto;
   }
 
-  public void deleteRace(Long id) {
-    findByIdRace(id);
+  public RaceDto deleteRace(Long id) {
+    Race race = findByIdRace(id);
     raceRepository.deleteById(id);
+    return raceMapper.toRaceDto(race);
   }
 
-  public void updateRace(RaceUpdateRequest raceUpdateRequest, Long id) {
+  public RaceDto updateRace(RaceUpdateRequest raceUpdateRequest, Long id) {
     findByIdRace(id);
     Race oldRace = raceMapper.toRace(getRace(id));
     verifyRaceExists(raceUpdateRequest.getId(), raceUpdateRequest.getRaceNumber());
@@ -68,6 +70,7 @@ public class RaceService {
             .setCountry(raceUpdateRequest.getArrivalCityCountry())
             .setPopulation(raceUpdateRequest.getArrivalCityPopulation())
             .setInformation(raceUpdateRequest.getArrivalCityInformation())));
+    return raceMapper.toRaceDto(oldRace);
   }
 
   private Race findByIdRace(Long id) {

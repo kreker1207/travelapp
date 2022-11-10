@@ -44,38 +44,38 @@ public class TicketController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAuthority('admins')")
-  public void addTicket(@Valid @RequestBody TicketDto ticketDto) {
-    ticketService.addTicket(ticketDto);
+  public TicketDto addTicket(@Valid @RequestBody TicketDto ticketDto) {
+    return ticketService.addTicket(ticketDto);
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAuthority('admins')")
-  public void updateTicket(@Valid @RequestBody TicketUpdateRequest ticketUpdateRequest,
+  public TicketDto updateTicket(@Valid @RequestBody TicketUpdateRequest ticketUpdateRequest,
       @PathVariable Long id) {
-    ticketService.updateTicket(ticketUpdateRequest, id);
+    return ticketService.updateTicket(ticketUpdateRequest, id);
   }
 
   @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAuthority('admins')")
-  public void deleteTicket(@PathVariable Long id) {
-    ticketService.deleteTicket(id);
+  public TicketDto deleteTicket(@PathVariable Long id) {
+    return ticketService.deleteTicket(id);
   }
 
   @PutMapping("buy/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  public void buyTicket(@PathVariable Long id, HttpServletRequest request) {
+  public TicketDto buyTicket(@PathVariable Long id, HttpServletRequest request) {
     String username = request.getUserPrincipal().getName();
-    ticketService.buyTicket(id, username);
+    return ticketService.buyTicket(id, username);
   }
 
   @PutMapping("book/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  public void bookTicket(@PathVariable Long id, HttpServletRequest request) {
+  public TicketDto bookTicket(@PathVariable Long id, HttpServletRequest request) {
     String username = request.getUserPrincipal().getName();
-    ticketService.bookTicket(id, username);
+    return ticketService.bookTicket(id, username);
   }
 }

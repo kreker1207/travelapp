@@ -46,29 +46,35 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("permitAll()")
-  public void addUser(@Valid @RequestBody UserDto userDto) {
-    userService.addUser(userDto);
+  public UserDto addUser(@Valid @RequestBody UserDto userDto) {
+    return userService.addUser(userDto);
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  public void updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest, @PathVariable Long id) {
-    userService.updateUser(userUpdateRequest, id);
+  public UserDto updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest, @PathVariable Long id) {
+   return userService.updateUser(userUpdateRequest, id);
   }
 
   @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAuthority('admins')")
-  public void deleteUser(@PathVariable Long id) {
-    userService.deleteUser(id);
+  public UserDto deleteUser(@PathVariable Long id) {
+    return userService.deleteUser(id);
   }
 
   @PutMapping("/deactivate/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('admins')")
-  public void deactivateUser(@PathVariable Long id) {
-    userService.deactivateUser(id);
+  public UserDto deactivateUser(@PathVariable Long id) {
+    return userService.deactivateUser(id);
+  }
+  @PutMapping("/activate/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('admins')")
+  public UserDto activateUser(@PathVariable Long id) {
+    return userService.activateUser(id);
   }
   @PutMapping("/resetPassword/{id}")
   @ResponseStatus(HttpStatus.OK)

@@ -32,16 +32,17 @@ public class UserService {
     return userMapper.toUserDto(findByIdUser(id));
   }
 
-  public void addUser(UserDto userDto) {
+  public UserDto addUser(UserDto userDto) {
     if (userRepository.existsUserByLoginOrMailOrPhone(userDto.getLogin(), userDto.getMail(),
         userDto.getPhone())) {
       throw new EntityAlreadyExists("User with this login/mail already exists");
     }
     userDto.setPassword(encryptPassword(userDto.getPassword()));
     userRepository.save(userMapper.toUser(userDto));
+    return userDto;
   }
 
-  public void updateUser(UserUpdateRequest userUpdateRequest, Long id) {
+  public UserDto updateUser(UserUpdateRequest userUpdateRequest, Long id) {
     User oldUser = userMapper.toUser(getUser(id));
     validUpdate(userUpdateRequest, oldUser);
     userRepository.save(oldUser
@@ -53,17 +54,26 @@ public class UserService {
         .setRole(userUpdateRequest.getRole())
         .setStatus(userUpdateRequest.getStatus())
     );
+    return userMapper.toUserDto(oldUser);
   }
 
-  public void deleteUser(Long id) {
-    findByIdUser(id);
+  public UserDto deleteUser(Long id) {
+    User user = findByIdUser(id);
     userRepository.deleteById(id);
+    return userMapper.toUserDto(user);
   }
 
-  public void deactivateUser(Long id) {
+  public UserDto deactivateUser(Long id) {
     User user = findByIdUser(id);
     user.setStatus(Status.BANNED);
     userRepository.save(user);
+    return userMapper.toUserDto(user);
+  }
+  public UserDto activateUser(Long id) {
+    User user = findByIdUser(id);
+    user.setStatus(Status.ACTIVE);
+    userRepository.save(user);
+    return userMapper.toUserDto(user);
   }
   public void resetPassword(UpdateUserPasswordRequest userPasswordRequest,Long id){
     User user = userMapper.toUser(getUser(id));

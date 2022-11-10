@@ -42,21 +42,21 @@ public class CityController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAuthority('admins')")
-  public void addCity(@Valid @RequestBody CityDto cityDto) {
-    cityService.addCity(cityDto);
+  public CityDto addCity(@Valid @RequestBody CityDto cityDto) {
+    return cityService.addCity(cityDto);
   }
 
   @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAuthority('admins')")
-  public void deleteCity(@PathVariable Long id) {
-    cityService.deleteCity(id);
+  public CityDto deleteCity(@PathVariable Long id) {
+    return cityService.deleteCity(id);
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @PreAuthorize("hasAuthority('admins')")
-  public void updateCity(@Valid @RequestBody CityDto cityDto, @PathVariable Long id) {
-    cityService.updateCity(cityDto, id);
+  public CityDto updateCity(@Valid @RequestBody CityDto cityDto, @PathVariable Long id) {
+    return cityService.updateCity(cityDto, id);
   }
 }
