@@ -1,9 +1,13 @@
 package com.project.trav.controller;
 
 import com.project.trav.model.dto.RaceUpdateRequest;
+import com.project.trav.model.entity.Race;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
+import java.awt.print.Pageable;
+import javax.sql.rowset.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +27,6 @@ import java.util.List;
 @RequestMapping("/api/v1/races")
 @RequiredArgsConstructor
 public class RaceController {
-
   private final RaceService raceService;
 
   @GetMapping
@@ -61,6 +64,11 @@ public class RaceController {
       @PathVariable Long id) {
     return raceService.updateRace(raceUpdateRequest, id);
   }
-
+  @GetMapping("/search")
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public List<RaceDto> searchRace(@QuerydslPredicate(root = Race.class) Predicate predicate,
+      Pageable pageable){
+    return raceService.searchRaces(predicate,pageable);
+  }
 
 }
