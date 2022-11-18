@@ -1,6 +1,7 @@
 package com.project.trav.configuration;
 
 import com.project.trav.service.security.JwtConfiguration;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,16 +16,31 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+import static io.swagger.v3.oas.annotations.enums.SecuritySchemeIn.HEADER;
+import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@SecurityScheme(name = SecurityConfiguration.SECURITY_CONFIG_NAME, in = HEADER, type = HTTP, scheme = "bearer", bearerFormat = "JWT")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
   private final JwtConfiguration jwtConfiguration;
   private final AuthenticationConfiguration configuration;
+  public static final String SECURITY_CONFIG_NAME = "App Bearer token";
+
+  private static final String[] SWAGGER_WHITELIST = {
+      "/swagger-ui/**",
+      "/swagger-ui.html",
+      "/swagger-ui.html/**",
+      "/configuration/ui",
+      "/swagger-resources/**",
+      "/v3/api-docs/**",
+      "/configuration/**",
+      "/swagger-resources/**",
+      "/webjars/**"
+  };
 
   @Bean
   public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -41,18 +57,17 @@ public class SecurityConfiguration {
     http
         .csrf().disable()
         .authorizeHttpRequests(authorize -> authorize
-            .antMatchers("/").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+            .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
+            .antMatchers(SWAGGER_WHITELIST).permitAll()
+            .antMatchers(HttpMethod.POST, "/v1/auth/login").permitAll()
             .anyRequest()
             .authenticated()
         )
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .apply(jwtConfiguration)
-        .and()
-        .httpBasic(withDefaults());
+        .apply(jwtConfiguration);
     return http.build();
   }
 }

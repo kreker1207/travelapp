@@ -1,8 +1,11 @@
 package com.project.trav.controller;
 
+import static com.project.trav.configuration.SecurityConfiguration.SECURITY_CONFIG_NAME;
+
 import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,12 +23,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/races")
+@RequestMapping("/v1/races")
 @RequiredArgsConstructor
+@SecurityRequirement(name = SECURITY_CONFIG_NAME)
 public class RaceController {
 
   private final RaceService raceService;
-
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")

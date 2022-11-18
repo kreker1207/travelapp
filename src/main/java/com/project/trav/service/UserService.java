@@ -75,8 +75,16 @@ public class UserService {
     userRepository.save(user);
     return userMapper.toUserDto(user);
   }
-  public void resetPassword(UpdateUserPasswordRequest userPasswordRequest,Long id){
+  public void resetPasswordById(UpdateUserPasswordRequest userPasswordRequest,Long id){
     User user = userMapper.toUser(getUser(id));
+    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(), user.getPassword())){
+      user.setPassword(encryptPassword(userPasswordRequest.getNewPassword()));
+      userRepository.save(user);
+    }
+    else throw new PasswordMatchException("Check your password");
+  }
+  public void resetPassword(UpdateUserPasswordRequest userPasswordRequest,String username){
+    User user = userRepository.findByLogin(username).get();
     if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(), user.getPassword())){
       user.setPassword(encryptPassword(userPasswordRequest.getNewPassword()));
       userRepository.save(user);

@@ -1,7 +1,10 @@
 package com.project.trav.controller;
 
+import static com.project.trav.configuration.SecurityConfiguration.SECURITY_CONFIG_NAME;
+
 import com.project.trav.service.CityService;
 import com.project.trav.model.dto.CityDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +22,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/city")
+@RequestMapping("/v1/city")
+@SecurityRequirement(name = SECURITY_CONFIG_NAME)
 @RequiredArgsConstructor
 public class CityController {
 

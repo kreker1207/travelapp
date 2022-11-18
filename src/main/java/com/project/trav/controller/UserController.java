@@ -4,6 +4,7 @@ import com.project.trav.model.dto.UpdateUserPasswordRequest;
 import com.project.trav.model.dto.UserUpdateRequest;
 import com.project.trav.service.UserService;
 import com.project.trav.model.dto.UserDto;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/v1/users")
 public class UserController {
 
   private final UserService userService;
@@ -45,11 +46,9 @@ public class UserController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("permitAll()")
   public UserDto addUser(@Valid @RequestBody UserDto userDto) {
     return userService.addUser(userDto);
   }
-
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('users','admins')")
@@ -70,16 +69,27 @@ public class UserController {
   public UserDto deactivateUser(@PathVariable Long id) {
     return userService.deactivateUser(id);
   }
+
   @PutMapping("/activate/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAnyAuthority('admins')")
   public UserDto activateUser(@PathVariable Long id) {
     return userService.activateUser(id);
   }
-  @PutMapping("/resetPassword/{id}")
+
+  @PutMapping("/resetPasswordById/{id}")
   @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("hasAnyAuthority('admins','users')")
-  public void resetPassword(@Valid @RequestBody UpdateUserPasswordRequest userPasswordRequest,@PathVariable Long id) {
-    userService.resetPassword(userPasswordRequest,id);
+  @PreAuthorize("hasAuthority('admins')")
+  public void resetPasswordById(@Valid @RequestBody UpdateUserPasswordRequest userPasswordRequest,@PathVariable Long id) {
+    userService.resetPasswordById(userPasswordRequest,id);
+  }
+
+  @PutMapping("/resetPassword")
+  @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('admins','users')")
+  public void resetPasswordById(@Valid @RequestBody UpdateUserPasswordRequest userPasswordRequest,
+      HttpServletRequest httpServletRequest) {
+    String username = httpServletRequest.getUserPrincipal().getName();
+    userService.resetPassword(userPasswordRequest,username);
   }
 }
