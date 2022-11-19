@@ -5,10 +5,6 @@ import static com.project.trav.configuration.SecurityConfiguration.SECURITY_CONF
 import com.project.trav.model.dto.TicketUpdateRequest;
 import com.project.trav.service.TicketService;
 import com.project.trav.model.dto.TicketDto;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,14 +44,6 @@ public class TicketController {
   public TicketDto getTicket(@PathVariable Long id) {
     return ticketService.getTicket(id);
   }
-  @Operation(summary ="Create ticket", responses = {
-      @ApiResponse(responseCode = "201", description = "Ticket created",
-          content = {@Content(mediaType = "application/json", schema = @Schema(implementation = TicketDto.class))
-          }),
-      @ApiResponse(responseCode = "400",description = "Bad request ticket with this place on race already exist",content = @Content),
-      @ApiResponse(responseCode = "401",description = "Access denied for unauthorized user",content = @Content),
-      @ApiResponse(responseCode = "403",description = "Not enough permissions",content = @Content)
-  })
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
