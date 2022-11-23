@@ -18,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeIn.HEADER;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -67,7 +68,9 @@ public class SecurityConfiguration {
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .apply(jwtConfiguration);
+        .apply(jwtConfiguration)
+        .and()
+        .httpBasic(withDefaults());
     return http.build();
   }
 }

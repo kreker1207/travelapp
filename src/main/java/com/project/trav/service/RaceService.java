@@ -3,9 +3,11 @@ package com.project.trav.service;
 import com.project.trav.exeption.EntityAlreadyExists;
 import com.project.trav.mapper.RaceMapper;
 import com.project.trav.model.dto.RaceDto;
+import com.project.trav.model.dto.RaceSacveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
+import com.project.trav.repository.CityRepository;
 import com.project.trav.repository.RaceRepository;
 import com.project.trav.exeption.EntityNotFoundByIdException;
 import java.time.Duration;
@@ -20,6 +22,7 @@ public class RaceService {
 
   private static final String NOT_FOUND_ERROR = "Race was not found by id";
   private final RaceRepository raceRepository;
+  private final CityRepository cityRepository;
   private final RaceMapper raceMapper;
 
   public List<RaceDto> getRaces() {
@@ -30,12 +33,15 @@ public class RaceService {
     return raceMapper.toRaceDto(findByIdRace(id));
   }
 
-  public RaceDto addRace(RaceDto raceDto) {
-    verifyRaceExists(raceDto.getId(), raceDto.getRaceNumber());
-    Duration d = Duration.between(raceDto.getDepartureDateTime(), raceDto.getArrivalDateTime());
-    raceDto.setTravelTimeDuration(d.abs());
-    raceRepository.save(raceMapper.toRace(raceDto));
-    return raceDto;
+  public RaceDto addRace(RaceSacveRequest raceSacveRequest) {
+    verifyRaceExists(null, raceSacveRequest.getRaceNumber());
+    Duration d = Duration.between(raceSacveRequest.getDepartureDateTime(), raceSacveRequest.getArrivalDateTime());
+    Race race = new Race().setTravelTimeDuration(d.abs()).setDepartureDateTime(raceSacveRequest.getDepartureDateTime()).setArrivalDateTime(raceSacveRequest.getArrivalDateTime())
+        .setRaceNumber(raceSacveRequest.getRaceNumber()).setAirline(raceSacveRequest.getAirline()).setTravelTimeDuration(d)
+        .setArrivalCity(cityRepository.findById(raceSacveRequest.getArrivalCityId()).orElseThrow(()-> {throw new EntityNotFoundByIdException("Arrival city was not found");}))
+        .setDepartureCity(cityRepository.findById(raceSacveRequest.getDepartureCityId()).orElseThrow(()->{throw new EntityNotFoundByIdException("Departure city was not found");}));
+    raceRepository.save(race);
+    return raceMapper.toRaceDto(race);
   }
 
   public RaceDto deleteRace(Long id) {

@@ -4,6 +4,7 @@ import com.project.trav.mapper.TicketMapper;
 import com.project.trav.model.dto.CityDto;
 import com.project.trav.model.dto.RaceDto;
 import com.project.trav.model.dto.TicketDto;
+import com.project.trav.model.dto.TicketSaveRequest;
 import com.project.trav.model.dto.TicketUpdateRequest;
 import com.project.trav.repository.RaceRepository;
 import com.project.trav.service.TicketService;
@@ -14,6 +15,7 @@ import com.project.trav.model.entity.TicketStatus;
 import com.project.trav.repository.TicketRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +44,10 @@ public class TicketServiceTest {
   City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
   Race race = new Race().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+      .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
+      .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
+      .setDepartureCity(city).setArrivalCity(city);
+  Race raceAdd = new Race().setId(1L).setTickets(new ArrayList<>()).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
       .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
       .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
       .setDepartureCity(city).setArrivalCity(city);
@@ -101,11 +107,15 @@ public class TicketServiceTest {
 
   @Test
   void addTicket() {
-    var ticket = new TicketDto().setId(1L).setUserId(1L).setPlace("a23").setPlaceClass("econom")
-        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesDto(raceDto);
-    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(race));
-    ticketService.addTicket(ticket);
-    Mockito.verify(ticketRepository).save(ticketMapper.toTicket(ticket));
+    var ticket = new Ticket().setId(null).setUserId(null).setPlace("a23").setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
+    var ticketSave = new TicketSaveRequest().setPlace("a23").setPlaceClass("econom")
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesId(1L);
+    Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(raceAdd));
+    Mockito.when(ticketRepository.findByPlaceAndRaces_RaceNumber(ticketSave.getPlace(), raceAdd.getRaceNumber()))
+        .thenReturn(Optional.empty());
+    ticketService.addTicket(ticketSave);
+    Mockito.verify(ticketRepository).save(ticket);
   }
 
   @Test

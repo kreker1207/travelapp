@@ -5,6 +5,7 @@ import com.project.trav.exeption.PasswordMatchException;
 import com.project.trav.mapper.UserMapper;
 import com.project.trav.model.dto.UpdateUserPasswordRequest;
 import com.project.trav.model.dto.UserDto;
+import com.project.trav.model.dto.UserSaveRequest;
 import com.project.trav.model.dto.UserUpdateRequest;
 import com.project.trav.model.entity.Status;
 import com.project.trav.model.entity.User;
@@ -31,15 +32,23 @@ public class UserService {
   public UserDto getUser(Long id) {
     return userMapper.toUserDto(findByIdUser(id));
   }
+  public UserDto getMyProfile(String username){
+    return userMapper.toUserDto(userRepository.findByLogin(username).get());}
 
-  public UserDto addUser(UserDto userDto) {
-    if (userRepository.existsUserByLoginOrMailOrPhone(userDto.getLogin(), userDto.getMail(),
-        userDto.getPhone())) {
+  public UserDto addUser(UserSaveRequest userSaveRequest) {
+    if (userRepository.existsUserByLoginOrMailOrPhone(userSaveRequest.getLogin(),
+        userSaveRequest.getMail(),
+        userSaveRequest.getPhone())) {
       throw new EntityAlreadyExists("User with this login/mail already exists");
     }
-    userDto.setPassword(encryptPassword(userDto.getPassword()));
-    userRepository.save(userMapper.toUser(userDto));
-    return userDto;
+    User user = new User().setName(userSaveRequest.getName()).setSurname(
+            userSaveRequest.getSurname()).setMail(userSaveRequest.getMail()).setPhone(
+            userSaveRequest.getPhone()).setLogin(userSaveRequest.getLogin())
+        .setPassword(encryptPassword(userSaveRequest.getPassword()))
+        .setRole(userSaveRequest.getRole())
+        .setStatus(userSaveRequest.getStatus());
+    userRepository.save(user);
+    return userMapper.toUserDto(user);
   }
 
   public UserDto updateUser(UserUpdateRequest userUpdateRequest, Long id) {
@@ -69,28 +78,36 @@ public class UserService {
     userRepository.save(user);
     return userMapper.toUserDto(user);
   }
+
   public UserDto activateUser(Long id) {
     User user = findByIdUser(id);
     user.setStatus(Status.ACTIVE);
     userRepository.save(user);
     return userMapper.toUserDto(user);
   }
-  public void resetPasswordById(UpdateUserPasswordRequest userPasswordRequest,Long id){
+
+  public void resetPasswordById(UpdateUserPasswordRequest userPasswordRequest, Long id) {
     User user = userMapper.toUser(getUser(id));
-    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(), user.getPassword())){
+    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(),
+        user.getPassword())) {
       user.setPassword(encryptPassword(userPasswordRequest.getNewPassword()));
       userRepository.save(user);
+    } else {
+      throw new PasswordMatchException("Check your password");
     }
-    else throw new PasswordMatchException("Check your password");
   }
-  public void resetPassword(UpdateUserPasswordRequest userPasswordRequest,String username){
+
+  public void resetPassword(UpdateUserPasswordRequest userPasswordRequest, String username) {
     User user = userRepository.findByLogin(username).get();
-    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(), user.getPassword())){
+    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(),
+        user.getPassword())) {
       user.setPassword(encryptPassword(userPasswordRequest.getNewPassword()));
       userRepository.save(user);
+    } else {
+      throw new PasswordMatchException("Check your password");
     }
-    else throw new PasswordMatchException("Check your password");
   }
+
   private User findByIdUser(Long id) {
     return userRepository.findById(id).orElseThrow(() -> {
       throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
@@ -106,7 +123,8 @@ public class UserService {
       throw new EntityAlreadyExists("User with this login/mail already exist");
     }
   }
-  private String encryptPassword(String password){
+
+  private String encryptPassword(String password) {
     return new BCryptPasswordEncoder().encode(password);
   }
 }
