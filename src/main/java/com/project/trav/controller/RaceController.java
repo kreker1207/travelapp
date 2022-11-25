@@ -30,7 +30,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RaceController {
   private final RaceService raceService;
-  private final RaceRepository raceRepository;
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
@@ -69,9 +68,8 @@ public class RaceController {
   }
   @GetMapping("/search")
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  public Page<Race> searchRace(@QuerydslPredicate(root = Race.class) Predicate predicate,
-      Pageable pageable){
+  public Page<Race> searchRace(@QuerydslPredicate(root = Race.class,bindings = RaceRepository.class)
+  Predicate predicate, Pageable pageable){
     return raceService.searchRaces(predicate,pageable);
   }
-
 }
