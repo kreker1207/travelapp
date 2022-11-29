@@ -3,6 +3,7 @@ package com.project.trav.controller;
 import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -61,6 +62,12 @@ public class RaceController {
       @PathVariable Long id) {
     return raceService.updateRace(raceUpdateRequest, id);
   }
-
+  @GetMapping("/search")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyAuthority('users','admins')")
+  public void sendKafka(@RequestBody List<String> param, HttpServletRequest httpServletRequest){
+  String login = httpServletRequest.getUserPrincipal().getName();
+  raceService.sendKafka(login, param);
+  }
 
 }

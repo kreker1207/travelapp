@@ -4,12 +4,14 @@ import com.project.trav.exeption.EntityAlreadyExists;
 import com.project.trav.mapper.RaceMapper;
 import com.project.trav.model.dto.RaceDto;
 import com.project.trav.model.dto.RaceUpdateRequest;
+import com.project.trav.model.dto.SendLogsKafka;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
 import com.project.trav.repository.RaceRepository;
 import com.project.trav.exeption.EntityNotFoundByIdException;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class RaceService {
 
   private static final String NOT_FOUND_ERROR = "Race was not found by id";
   private final RaceRepository raceRepository;
+  private final KafkaTemplate<String, SendLogsKafka> kafkaKafkaTemplate;
   private final RaceMapper raceMapper;
 
   public List<RaceDto> getRaces() {
@@ -72,7 +75,11 @@ public class RaceService {
             .setInformation(raceUpdateRequest.getArrivalCityInformation())));
     return raceMapper.toRaceDto(oldRace);
   }
-
+  public void sendKafka(String login, List<String> param){
+    kafkaKafkaTemplate.send("logsTopic",new SendLogsKafka()
+        .setLogin(login)
+        .setSearchParams(param));
+  }
   private Race findByIdRace(Long id) {
     return raceRepository.findById(id).orElseThrow(() -> {
       throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
