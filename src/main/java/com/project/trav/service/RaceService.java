@@ -10,7 +10,10 @@ import com.project.trav.model.entity.Race;
 import com.project.trav.repository.CityRepository;
 import com.project.trav.repository.RaceRepository;
 import com.project.trav.exeption.EntityNotFoundByIdException;
+import com.querydsl.core.types.Predicate;
 import java.time.Duration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -100,4 +103,7 @@ public class RaceService {
     return cityRepository.findById(cityId).orElseThrow(()->{throw new EntityNotFoundByIdException("City was not found by if");});
   }
 
+  public Page<Race> searchRaces(Predicate predicate, Pageable pageable) {
+    return raceRepository.findAll(predicate,pageable);
+  }
 }
