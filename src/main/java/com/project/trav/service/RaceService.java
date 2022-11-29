@@ -3,7 +3,7 @@ package com.project.trav.service;
 import com.project.trav.exeption.EntityAlreadyExists;
 import com.project.trav.mapper.RaceMapper;
 import com.project.trav.model.dto.RaceDto;
-import com.project.trav.model.dto.RaceSacveRequest;
+import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
@@ -33,13 +33,14 @@ public class RaceService {
     return raceMapper.toRaceDto(findByIdRace(id));
   }
 
-  public RaceDto addRace(RaceSacveRequest raceSacveRequest) {
-    verifyRaceExists(null, raceSacveRequest.getRaceNumber());
-    Duration d = Duration.between(raceSacveRequest.getDepartureDateTime(), raceSacveRequest.getArrivalDateTime());
-    Race race = new Race().setTravelTimeDuration(d.abs()).setDepartureDateTime(raceSacveRequest.getDepartureDateTime()).setArrivalDateTime(raceSacveRequest.getArrivalDateTime())
-        .setRaceNumber(raceSacveRequest.getRaceNumber()).setAirline(raceSacveRequest.getAirline()).setTravelTimeDuration(d)
-        .setArrivalCity(cityRepository.findById(raceSacveRequest.getArrivalCityId()).orElseThrow(()-> {throw new EntityNotFoundByIdException("Arrival city was not found");}))
-        .setDepartureCity(cityRepository.findById(raceSacveRequest.getDepartureCityId()).orElseThrow(()->{throw new EntityNotFoundByIdException("Departure city was not found");}));
+  public RaceDto addRace(RaceSaveRequest raceSaveRequest) {
+    verifyRaceExists(null, raceSaveRequest.getRaceNumber());
+    Duration d = Duration.between(raceSaveRequest.getDepartureDateTime(), raceSaveRequest.getArrivalDateTime());
+    Race race = new Race().setTravelTimeDuration(d.abs()).setDepartureDateTime(raceSaveRequest.getDepartureDateTime()).setArrivalDateTime(
+            raceSaveRequest.getArrivalDateTime())
+        .setRaceNumber(raceSaveRequest.getRaceNumber()).setAirline(raceSaveRequest.getAirline()).setTravelTimeDuration(d)
+        .setArrivalCity(getValidCity(raceSaveRequest.getArrivalCityId()))
+        .setDepartureCity(getValidCity(raceSaveRequest.getDepartureCityId()));
     raceRepository.save(race);
     return raceMapper.toRaceDto(race);
   }
@@ -94,6 +95,9 @@ public class RaceService {
     raceOptional.ifPresent(race -> {
       throw new EntityAlreadyExists("Race with this Number already exists");
     });
+  }
+  private City getValidCity(Long cityId){
+    return cityRepository.findById(cityId).orElseThrow(()->{throw new EntityNotFoundByIdException("City was not found by if");});
   }
 
 }

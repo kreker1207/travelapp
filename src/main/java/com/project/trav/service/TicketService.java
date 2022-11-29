@@ -40,7 +40,7 @@ public class TicketService {
   public TicketDto addTicket(TicketSaveRequest ticketSaveRequest) {
     validPlaceAdd(ticketSaveRequest);
     Ticket ticket = new Ticket().setPlace(ticketSaveRequest.getPlace()).setPlaceClass(ticketSaveRequest.getPlaceClass())
-            .setCost(ticketSaveRequest.getCost()).setRaces(raceRepository.findById(ticketSaveRequest.getRacesId()).get())
+            .setCost(ticketSaveRequest.getCost()).setRaces(raceRepository.findById(ticketSaveRequest.getRaceId()).get())
             .setTicketStatus(ticketSaveRequest.getTicketStatus());
     ticketRepository.save(ticket);
     return ticketMapper.toTicketDto(ticket);
@@ -113,7 +113,7 @@ public class TicketService {
   }
 
   private void validPlaceAdd(TicketSaveRequest ticketSaveRequest) {
-    Race race = raceRepository.findById(ticketSaveRequest.getRacesId()).orElseThrow(() ->
+    Race race = raceRepository.findById(ticketSaveRequest.getRaceId()).orElseThrow(() ->
         new EntityNotFoundByIdException("Race was not fond"));
     if (ticketRepository.findByPlaceAndRaces_RaceNumber(ticketSaveRequest.getPlace(), race.getRaceNumber())
         .isPresent()) {

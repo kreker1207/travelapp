@@ -110,7 +110,7 @@ public class TicketServiceTest {
     var ticket = new Ticket().setId(null).setUserId(null).setPlace("a23").setPlaceClass("econom")
         .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaces(race);
     var ticketSave = new TicketSaveRequest().setPlace("a23").setPlaceClass("econom")
-        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRacesId(1L);
+        .setCost("200").setTicketStatus(TicketStatus.AVAILABLE).setRaceId(1L);
     Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(raceAdd));
     Mockito.when(ticketRepository.findByPlaceAndRaces_RaceNumber(ticketSave.getPlace(), raceAdd.getRaceNumber()))
         .thenReturn(Optional.empty());

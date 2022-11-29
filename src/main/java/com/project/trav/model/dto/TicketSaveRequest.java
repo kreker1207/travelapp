@@ -21,5 +21,5 @@ public class TicketSaveRequest {
   @NotNull
   private TicketStatus ticketStatus;
   @NotNull
-  private Long racesId;
+  private Long raceId;
 }

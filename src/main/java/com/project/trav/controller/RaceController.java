@@ -2,7 +2,7 @@ package com.project.trav.controller;
 
 import static com.project.trav.configuration.SecurityConfiguration.SECURITY_CONFIG_NAME;
 
-import com.project.trav.model.dto.RaceSacveRequest;
+import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
@@ -78,8 +78,8 @@ public class RaceController {
       @ApiResponse(responseCode = "403", description = "Not enough permissions", content = @Content)
   })
   @PreAuthorize("hasAuthority('admins')")
-  public RaceDto addRace(@Valid @RequestBody RaceSacveRequest raceSacveRequest) {
-    return raceService.addRace(raceSacveRequest);
+  public RaceDto addRace(@Valid @RequestBody RaceSaveRequest raceSaveRequest) {
+    return raceService.addRace(raceSaveRequest);
   }
 
   @DeleteMapping("/{id}")

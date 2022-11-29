@@ -14,7 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class RaceSacveRequest {
+public class RaceSaveRequest {
   @NotNull
   @DateTimeFormat(iso = ISO.DATE_TIME)
   private LocalDateTime departureDateTime;

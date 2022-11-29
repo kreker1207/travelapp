@@ -3,7 +3,7 @@ package com.project.trav.application.service;
 import com.project.trav.mapper.RaceMapper;
 import com.project.trav.model.dto.CityDto;
 import com.project.trav.model.dto.RaceDto;
-import com.project.trav.model.dto.RaceSacveRequest;
+import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.repository.CityRepository;
 import com.project.trav.service.RaceService;
@@ -105,7 +105,7 @@ public class RaceServiceTest {
 
   @Test
   void addRace() {
-    var raceRequest = new RaceSacveRequest().setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+    var raceRequest = new RaceSaveRequest().setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setAirline("Mau").setRaceNumber("Wr23-ww")
         .setDepartureCityId(1L).setArrivalCityId(2L);
