@@ -4,6 +4,8 @@ import static com.project.trav.configuration.SecurityConfiguration.SECURITY_CONF
 
 import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
+import com.project.trav.model.entity.Race;
+import com.project.trav.repository.RaceRepository;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
 import com.querydsl.core.types.Predicate;
@@ -33,7 +35,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/races")
+@RequestMapping("/v1/races")
 @RequiredArgsConstructor
 @SecurityRequirement(name = SECURITY_CONFIG_NAME)
 public class RaceController {
@@ -119,6 +121,16 @@ public class RaceController {
     return raceService.updateRace(raceUpdateRequest, id);
   }
   @GetMapping("/search")
+  @Operation(summary = "Search for race", responses = {
+      @ApiResponse(responseCode = "200", description = "Races by criteria",
+          content = {
+              @Content(mediaType = "application/json", schema = @Schema(implementation = Race.class))
+          }),
+      @ApiResponse(responseCode = "400", description = "Bad request check fields", content = @Content),
+      @ApiResponse(responseCode = "401", description = "Access denied for unauthorized user", content = @Content),
+      @ApiResponse(responseCode = "403", description = "Not enough permissions", content = @Content),
+      @ApiResponse(responseCode = "404", description = "Race was not found", content = @Content)
+  })
   @PreAuthorize("hasAnyAuthority('users','admins')")
   public Page<Race> searchRace(@QuerydslPredicate(root = Race.class,bindings = RaceRepository.class)
   Predicate predicate, Pageable pageable){
