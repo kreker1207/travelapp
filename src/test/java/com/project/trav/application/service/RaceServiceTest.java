@@ -3,13 +3,16 @@ package com.project.trav.application.service;
 import com.project.trav.mapper.RaceMapper;
 import com.project.trav.model.dto.CityDto;
 import com.project.trav.model.dto.RaceDto;
+import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
+import com.project.trav.repository.CityRepository;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
 import com.project.trav.repository.RaceRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,10 +34,14 @@ public class RaceServiceTest {
   private RaceMapper raceMapper;
   @Mock
   private RaceRepository raceRepository;
+  @Mock
+  private CityRepository cityRepository;
   @InjectMocks
   private RaceService raceService;
   City city = new City().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
+  City city2 = new City().setId(2L).setName("Berlin").setCountry("Germany")
+      .setPopulation("3.7 million").setInformation("Capital");
   CityDto cityDto = new CityDto().setId(1L).setName("Kiev").setCountry("Ukraine")
       .setPopulation("2.7 million").setInformation("Capital");
 
@@ -98,12 +105,20 @@ public class RaceServiceTest {
 
   @Test
   void addRace() {
-    var race = new RaceDto().setId(1L).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+    var raceRequest = new RaceSaveRequest().setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
-        .setTravelTimeDuration(Duration.ZERO).setAirline("Mau").setRaceNumber("Wr23-ww")
-        .setDepartureCityDto(cityDto).setArrivalCityDto(cityDto);
-    raceService.addRace(race);
-    Mockito.verify(raceRepository).save(raceMapper.toRace(race));
+        .setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setDepartureCityId(1L).setArrivalCityId(2L);
+    var race = new Race().setId(null).setTickets(new ArrayList<>()).setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
+        .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
+        .setTravelTimeDuration(Duration.between(raceRequest.getDepartureDateTime(),raceRequest.getArrivalDateTime())).setAirline("Mau").setRaceNumber("Wr23-ww")
+        .setDepartureCity(city).setArrivalCity(city2);
+
+    Mockito.when(raceRepository.findByRaceNumber(raceRequest.getRaceNumber())).thenReturn(Optional.empty());
+    Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
+    Mockito.when(cityRepository.findById(2L)).thenReturn(Optional.of(city2));
+    raceService.addRace(raceRequest);
+    Mockito.verify(raceRepository).save(race);
   }
 
   @Test

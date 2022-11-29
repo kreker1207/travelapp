@@ -2,6 +2,7 @@ package com.project.trav.application.service;
 
 import com.project.trav.mapper.UserMapper;
 import com.project.trav.model.dto.UserDto;
+import com.project.trav.model.dto.UserSaveRequest;
 import com.project.trav.model.dto.UserUpdateRequest;
 import com.project.trav.service.UserService;
 import com.project.trav.model.entity.Role;
@@ -72,13 +73,14 @@ public class UserServiceTest {
 
   @Test
   void addUser() {
-    var user = new UserDto().setId(1L).setName("Ivan").setSurname("Baranetskyi")
+    var user = new UserSaveRequest().setName("Ivan").setSurname("Baranetskyi")
         .setMail("baranetskiy@gmail.com")
         .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER)
-        .setStatus(Status.ACTIVE)
-        .setTicketsDto(new ArrayList<>());
+        .setStatus(Status.ACTIVE);
+    Mockito.when(userRepository.existsUserByLoginOrMailOrPhone(user.getLogin(), user.getMail(),
+        user.getPhone())).thenReturn(false);
     userService.addUser(user);
-    Mockito.verify(userRepository).save(userMapper.toUser(user));
+    Mockito.verify(userRepository).save(Mockito.any(User.class));
   }
 
   @Test

@@ -1,11 +1,20 @@
 package com.project.trav.controller;
 
+import static com.project.trav.configuration.SecurityConfiguration.SECURITY_CONFIG_NAME;
+
+import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.model.entity.Race;
 import com.project.trav.repository.RaceRepository;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
 import com.querydsl.core.types.Predicate;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,13 +35,21 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/races")
+@RequestMapping("/v1/races")
 @RequiredArgsConstructor
+@SecurityRequirement(name = SECURITY_CONFIG_NAME)
 public class RaceController {
   private final RaceService raceService;
-
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
+  @Operation(summary = "Get all races", responses = {
+      @ApiResponse(responseCode = "200", description = "Races were found",
+          content = {
+              @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RaceDto.class)))
+          }),
+      @ApiResponse(responseCode = "401", description = "Access denied for unauthorized user", content = @Content),
+      @ApiResponse(responseCode = "403", description = "Not enough permissions", content = @Content)
+  })
   @PreAuthorize("hasAnyAuthority('users','admins')")
   public List<RaceDto> getRaces() {
     return raceService.getRaces();
@@ -40,6 +57,15 @@ public class RaceController {
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
+  @Operation(summary = "Get race by id", responses = {
+      @ApiResponse(responseCode = "200", description = "Race was found by id",
+          content = {
+              @Content(mediaType = "application/json", schema = @Schema(implementation = RaceDto.class))
+          }),
+      @ApiResponse(responseCode = "404", description = "Race was not found by id", content = @Content),
+      @ApiResponse(responseCode = "401", description = "Access denied for unauthorized user", content = @Content),
+      @ApiResponse(responseCode = "403", description = "Not enough permissions", content = @Content)
+  })
   @PreAuthorize("hasAnyAuthority('users','admins')")
   public RaceDto getRace(@PathVariable Long id) {
     return raceService.getRace(id);
@@ -47,13 +73,31 @@ public class RaceController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @Operation(summary = "Create new race", responses = {
+      @ApiResponse(responseCode = "201", description = "Race was created",
+          content = {
+              @Content(mediaType = "application/json", schema = @Schema(implementation = RaceDto.class))
+          }),
+      @ApiResponse(responseCode = "400", description = "Bad request check fields", content = @Content),
+      @ApiResponse(responseCode = "401", description = "Access denied for unauthorized user", content = @Content),
+      @ApiResponse(responseCode = "403", description = "Not enough permissions", content = @Content)
+  })
   @PreAuthorize("hasAuthority('admins')")
-  public RaceDto addRace(@Valid @RequestBody RaceDto raceDto) {
-    return raceService.addRace(raceDto);
+  public RaceDto addRace(@Valid @RequestBody RaceSaveRequest raceSaveRequest) {
+    return raceService.addRace(raceSaveRequest);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
+  @Operation(summary = "Delete race by id", responses = {
+      @ApiResponse(responseCode = "200", description = "Race was deleted by id",
+          content = {
+              @Content(mediaType = "application/json", schema = @Schema(implementation = RaceDto.class))
+          }),
+      @ApiResponse(responseCode = "404", description = "Race was not found by id", content = @Content),
+      @ApiResponse(responseCode = "401", description = "Access denied for unauthorized user", content = @Content),
+      @ApiResponse(responseCode = "403", description = "Not enough permissions", content = @Content)
+  })
   @PreAuthorize("hasAuthority('admins')")
   public RaceDto deleteRace(@PathVariable Long id) {
      return raceService.deleteRace(id);
@@ -61,12 +105,32 @@ public class RaceController {
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
+  @Operation(summary = "Update race", responses = {
+      @ApiResponse(responseCode = "201", description = "Race was updated",
+          content = {
+              @Content(mediaType = "application/json", schema = @Schema(implementation = RaceDto.class))
+          }),
+      @ApiResponse(responseCode = "400", description = "Bad request check fields", content = @Content),
+      @ApiResponse(responseCode = "401", description = "Access denied for unauthorized user", content = @Content),
+      @ApiResponse(responseCode = "403", description = "Not enough permissions", content = @Content),
+      @ApiResponse(responseCode = "404", description = "Race was not found by id", content = @Content)
+  })
   @PreAuthorize("hasAuthority('admins')")
   public RaceDto updateRace(@Valid @RequestBody RaceUpdateRequest raceUpdateRequest,
       @PathVariable Long id) {
     return raceService.updateRace(raceUpdateRequest, id);
   }
   @GetMapping("/search")
+  @Operation(summary = "Search for race", responses = {
+      @ApiResponse(responseCode = "200", description = "Races by criteria",
+          content = {
+              @Content(mediaType = "application/json", schema = @Schema(implementation = Race.class))
+          }),
+      @ApiResponse(responseCode = "400", description = "Bad request check fields", content = @Content),
+      @ApiResponse(responseCode = "401", description = "Access denied for unauthorized user", content = @Content),
+      @ApiResponse(responseCode = "403", description = "Not enough permissions", content = @Content),
+      @ApiResponse(responseCode = "404", description = "Race was not found", content = @Content)
+  })
   @PreAuthorize("hasAnyAuthority('users','admins')")
   public Page<Race> searchRace(@QuerydslPredicate(root = Race.class,bindings = RaceRepository.class)
   Predicate predicate, Pageable pageable){
