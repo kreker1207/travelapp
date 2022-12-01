@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -132,8 +133,8 @@ public class RaceController {
       @ApiResponse(responseCode = "404", description = "Race was not found", content = @Content)
   })
   @PreAuthorize("hasAnyAuthority('users','admins')")
-  public Page<Race> searchRace(@QuerydslPredicate(root = Race.class,bindings = RaceRepository.class)
-  Predicate predicate, Pageable pageable){
+  public Page<RaceDto> searchRace(@QuerydslPredicate(root = Race.class,bindings = RaceRepository.class)
+   Predicate predicate,@ParameterObject Race race,@ParameterObject Pageable pageable){
     return raceService.searchRaces(predicate,pageable);
   }
 }
