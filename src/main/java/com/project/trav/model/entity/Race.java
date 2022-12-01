@@ -1,6 +1,5 @@
 package com.project.trav.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 
 @Data
@@ -34,7 +32,6 @@ public class Race {
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @JsonIgnore
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @OneToMany(
@@ -43,10 +40,10 @@ public class Race {
   )
   private List<Ticket> tickets = new ArrayList<>();
   @Column(name = "departure_date_time")
-  @DateTimeFormat(iso = ISO.DATE_TIME)
+  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
   private LocalDateTime departureDateTime;
   @Column(name = "arrival_date_time")
-  @DateTimeFormat(iso = ISO.DATE_TIME)
+  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
   private LocalDateTime arrivalDateTime;
   @Column(name = "duration")
   private Duration travelTimeDuration;

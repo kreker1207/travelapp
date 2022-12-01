@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Data
 @AllArgsConstructor
@@ -16,10 +15,10 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Accessors(chain = true)
 public class RaceSaveRequest {
   @NotNull
-  @DateTimeFormat(iso = ISO.DATE_TIME)
+  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
   private LocalDateTime departureDateTime;
   @NotNull
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
   private LocalDateTime arrivalDateTime;
   @NotNull
   private String airline;

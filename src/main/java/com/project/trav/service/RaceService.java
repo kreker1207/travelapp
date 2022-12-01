@@ -103,7 +103,7 @@ public class RaceService {
     return cityRepository.findById(cityId).orElseThrow(()->{throw new EntityNotFoundByIdException("City was not found by if");});
   }
 
-  public Page<Race> searchRaces(Predicate predicate, Pageable pageable) {
-    return raceRepository.findAll(predicate,pageable);
+  public Page<RaceDto> searchRaces(Predicate predicate, Pageable pageable) {
+    return raceRepository.findAll(predicate,pageable).map(raceMapper::toRaceDto);
   }
 }
