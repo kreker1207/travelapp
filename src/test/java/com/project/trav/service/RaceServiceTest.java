@@ -1,4 +1,4 @@
-package com.project.trav.application.service;
+package com.project.trav.service;
 
 import com.project.trav.mapper.RaceMapper;
 import com.project.trav.model.dto.CityDto;
@@ -6,7 +6,6 @@ import com.project.trav.model.dto.RaceDto;
 import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
 import com.project.trav.repository.CityRepository;
-import com.project.trav.service.RaceService;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
 import com.project.trav.repository.RaceRepository;
@@ -132,13 +131,11 @@ public class RaceServiceTest {
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setAirline("Mau").setRaceNumber("Wr23-ww")
-        .setDepartureCityId(city.getId()).setDepartureCityName(city.getName()).setDepartureCityCountry(city.getCountry())
-        .setDepartureCityPopulation(city.getPopulation()).setDepartureCityInformation(city.getInformation())
-        .setArrivalCityId(city.getId()).setArrivalCityName(city.getName()).setArrivalCityCountry(city.getCountry())
-        .setArrivalCityPopulation(city.getPopulation()).setArrivalCityInformation(city.getInformation());
+        .setDepartureCityId(city.getId())
+        .setArrivalCityId(city.getId());
     Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.of(race));
     Mockito.when(raceMapper.toRace(raceService.getRace(1L))).thenReturn(race);
-
+    Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
     raceService.updateRace(sourceRace, 1L);
     Mockito.verify(raceRepository).save(race);
   }
@@ -149,10 +146,8 @@ public class RaceServiceTest {
         .setDepartureDateTime(LocalDateTime.parse("2022-11-02T12:00:00"))
         .setArrivalDateTime(LocalDateTime.parse("2022-11-02T15:00"))
         .setAirline("Mau").setRaceNumber("Wr23-ww")
-        .setDepartureCityId(city.getId()).setDepartureCityName(city.getName()).setDepartureCityCountry(city.getCountry())
-        .setDepartureCityPopulation(city.getPopulation()).setDepartureCityInformation(city.getInformation())
-        .setArrivalCityId(city.getId()).setArrivalCityName(city.getName()).setArrivalCityCountry(city.getCountry())
-        .setArrivalCityPopulation(city.getPopulation()).setArrivalCityInformation(city.getInformation());
+        .setDepartureCityId(city.getId())
+        .setArrivalCityId(city.getId());
 
     Mockito.when(raceRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "Race was not found by id";

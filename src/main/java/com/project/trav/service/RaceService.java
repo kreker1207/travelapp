@@ -57,7 +57,7 @@ public class RaceService {
   public RaceDto updateRace(RaceUpdateRequest raceUpdateRequest, Long id) {
     findByIdRace(id);
     Race oldRace = raceMapper.toRace(getRace(id));
-    verifyRaceExists(raceUpdateRequest.getId(), raceUpdateRequest.getRaceNumber());
+    verifyRaceExists(id, raceUpdateRequest.getRaceNumber());
     raceRepository.save(oldRace
         .setDepartureDateTime(
             raceUpdateRequest.getDepartureDateTime())
@@ -69,17 +69,8 @@ public class RaceService {
         .setAirline(raceUpdateRequest.getAirline())
         .setRaceNumber(
             raceUpdateRequest.getRaceNumber())
-        .setDepartureCity(new City().setId(raceUpdateRequest.getDepartureCityId())
-            .setName(raceUpdateRequest.getDepartureCityName())
-            .setCountry(raceUpdateRequest.getDepartureCityCountry())
-            .setPopulation(raceUpdateRequest.getDepartureCityPopulation())
-            .setInformation(raceUpdateRequest.getDepartureCityInformation()))
-        .setArrivalCity(new City().setId(
-                raceUpdateRequest.getArrivalCityId())
-            .setName(raceUpdateRequest.getArrivalCityName())
-            .setCountry(raceUpdateRequest.getArrivalCityCountry())
-            .setPopulation(raceUpdateRequest.getArrivalCityPopulation())
-            .setInformation(raceUpdateRequest.getArrivalCityInformation())));
+        .setDepartureCity(getValidCity(raceUpdateRequest.getDepartureCityId()))
+        .setArrivalCity(getValidCity(raceUpdateRequest.getArrivalCityId())));
     return raceMapper.toRaceDto(oldRace);
   }
 

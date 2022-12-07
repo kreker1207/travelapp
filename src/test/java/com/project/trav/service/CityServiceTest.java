@@ -1,8 +1,7 @@
-package com.project.trav.application.service;
+package com.project.trav.service;
 
 import com.project.trav.mapper.CityMapper;
 import com.project.trav.model.dto.CityDto;
-import com.project.trav.service.CityService;
 import com.project.trav.model.entity.City;
 import com.project.trav.repository.CityRepository;
 import org.assertj.core.api.AssertionsForClassTypes;

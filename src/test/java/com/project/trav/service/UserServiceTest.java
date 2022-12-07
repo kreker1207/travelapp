@@ -1,10 +1,9 @@
-package com.project.trav.application.service;
+package com.project.trav.service;
 
 import com.project.trav.mapper.UserMapper;
 import com.project.trav.model.dto.UserDto;
 import com.project.trav.model.dto.UserSaveRequest;
 import com.project.trav.model.dto.UserUpdateRequest;
-import com.project.trav.service.UserService;
 import com.project.trav.model.entity.Role;
 import com.project.trav.model.entity.Status;
 import com.project.trav.model.entity.User;
