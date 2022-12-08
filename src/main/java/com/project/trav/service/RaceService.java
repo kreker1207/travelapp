@@ -85,11 +85,7 @@ public class RaceService {
             .setInformation(raceUpdateRequest.getArrivalCityInformation())));
     return raceMapper.toRaceDto(oldRace);
   }
-  public void sendKafka(String login, List<String> param){
-    kafkaKafkaTemplate.send("logsTopic",new SendLogsKafka()
-        .setLogin(login)
-        .setSearchParams(param));
-  }
+
   private Race findByIdRace(Long id) {
     return raceRepository.findById(id).orElseThrow(() -> {
       throw new EntityNotFoundByIdException(NOT_FOUND_ERROR);
@@ -110,7 +106,10 @@ public class RaceService {
     return cityRepository.findById(cityId).orElseThrow(()->{throw new EntityNotFoundByIdException("City was not found by if");});
   }
 
-  public Page<RaceDto> searchRaces(Predicate predicate, Pageable pageable) {
+  public Page<RaceDto> searchRaces(Predicate predicate, Pageable pageable,String login) {
+    kafkaKafkaTemplate.send("logsTopic",new SendLogsKafka()
+        .setLogin(login)
+        .setSearchParams(predicate.toString()));
     return raceRepository.findAll(predicate,pageable).map(raceMapper::toRaceDto);
   }
 }

@@ -124,13 +124,7 @@ public class RaceController {
       @PathVariable Long id) {
     return raceService.updateRace(raceUpdateRequest, id);
   }
-  @GetMapping("/search")
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("hasAnyAuthority('users','admins')")
-  public void sendKafka(@RequestBody List<String> param, HttpServletRequest httpServletRequest){
-  String login = httpServletRequest.getUserPrincipal().getName();
-  raceService.sendKafka(login, param);
-  }
+
 
   @GetMapping("/search")
   @Operation(summary = "Search for race", responses = {
@@ -145,7 +139,8 @@ public class RaceController {
   })
   @PreAuthorize("hasAnyAuthority('users','admins')")
   public Page<RaceDto> searchRace(@QuerydslPredicate(root = Race.class,bindings = RaceRepository.class)
-   Predicate predicate,@ParameterObject Race race,@ParameterObject Pageable pageable){
-    return raceService.searchRaces(predicate,pageable);
+   Predicate predicate,@ParameterObject Race race,@ParameterObject Pageable pageable, HttpServletRequest httpServletRequest){
+    String login = httpServletRequest.getUserPrincipal().getName();
+    return raceService.searchRaces(predicate,pageable,login);
   }
 }
