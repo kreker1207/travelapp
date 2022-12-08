@@ -3,6 +3,7 @@ package com.project.trav.service;
 import com.project.trav.exeption.EntityAlreadyExists;
 import com.project.trav.mapper.TicketMapper;
 import com.project.trav.model.dto.TicketDto;
+import com.project.trav.model.dto.TicketSaveRequest;
 import com.project.trav.model.dto.TicketUpdateRequest;
 import com.project.trav.model.entity.Race;
 import com.project.trav.model.entity.Ticket;
@@ -36,10 +37,13 @@ public class TicketService {
     return ticketMapper.toTicketDto(findByIdTicket(id));
   }
 
-  public TicketDto addTicket(TicketDto ticketDto) {
-    validPlaceAdd(ticketDto);
-    ticketRepository.save(ticketMapper.toTicket(ticketDto));
-    return ticketDto;
+  public TicketDto addTicket(TicketSaveRequest ticketSaveRequest) {
+    validPlaceAdd(ticketSaveRequest);
+    Ticket ticket = new Ticket().setPlace(ticketSaveRequest.getPlace()).setPlaceClass(ticketSaveRequest.getPlaceClass())
+            .setCost(ticketSaveRequest.getCost()).setRaces(raceRepository.findById(ticketSaveRequest.getRaceId()).get())
+            .setTicketStatus(ticketSaveRequest.getTicketStatus());
+    ticketRepository.save(ticket);
+    return ticketMapper.toTicketDto(ticket);
   }
 
   public TicketDto deleteTicket(Long id) {
@@ -108,10 +112,10 @@ public class TicketService {
     }
   }
 
-  private void validPlaceAdd(TicketDto ticketDto) {
-    Race race = raceRepository.findById(ticketDto.getRacesDto().getId()).orElseThrow(() ->
+  private void validPlaceAdd(TicketSaveRequest ticketSaveRequest) {
+    Race race = raceRepository.findById(ticketSaveRequest.getRaceId()).orElseThrow(() ->
         new EntityNotFoundByIdException("Race was not fond"));
-    if (ticketRepository.findByPlaceAndRaces_RaceNumber(ticketDto.getPlace(), race.getRaceNumber())
+    if (ticketRepository.findByPlaceAndRaces_RaceNumber(ticketSaveRequest.getPlace(), race.getRaceNumber())
         .isPresent()) {
       throw new EntityAlreadyExists("Ticket with this place on race already exists");
     }

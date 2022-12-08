@@ -19,17 +19,23 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.postgresql:postgresql'
 	implementation 'org.liquibase:liquibase-core'
-	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.7.4'
-	implementation 'org.springframework.cloud:spring-cloud-openfeign:3.1.4'
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
+	implementation 'com.querydsl:querydsl-jpa:5.0.0'
+	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.5'
+	implementation 'org.springframework.cloud:spring-cloud-openfeign:3.1.5'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.5'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
+	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.12'
 	annotationProcessor 'org.projectlombok:lombok'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
+	annotationProcessor("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0")
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {

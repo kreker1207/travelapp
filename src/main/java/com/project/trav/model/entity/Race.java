@@ -40,10 +40,10 @@ public class Race {
   )
   private List<Ticket> tickets = new ArrayList<>();
   @Column(name = "departure_date_time")
-  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
   private LocalDateTime departureDateTime;
   @Column(name = "arrival_date_time")
-  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
   private LocalDateTime arrivalDateTime;
   @Column(name = "duration")
   private Duration travelTimeDuration;
