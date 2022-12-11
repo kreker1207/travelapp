@@ -8,20 +8,14 @@ import com.project.trav.TravelApplication;
 import com.project.trav.model.dto.TicketDto;
 import com.project.trav.model.dto.TicketSaveRequest;
 import com.project.trav.model.dto.TicketUpdateRequest;
-import com.project.trav.model.entity.Role;
 import com.project.trav.model.entity.TicketStatus;
 import com.project.trav.repository.TicketH2Repository;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,13 +29,6 @@ public class TicketServiceIntegrationTest {
   private TicketService ticketService;
   @Autowired
   private TicketH2Repository ticketH2Repository;
-
-  @BeforeAll
-  public static void setSecurityContext() {
-    Set<SimpleGrantedAuthority> authority = Role.ADMIN.grantedAuthorities();
-    SecurityContextHolder.getContext().setAuthentication(
-        new UsernamePasswordAuthenticationToken("admin", "admin", authority));
-  }
 
   @AfterEach
   public void clearDataBase() {
@@ -116,6 +103,7 @@ public class TicketServiceIntegrationTest {
     ticketService.deleteTicket(1L);
     assertFalse(ticketH2Repository.findById(1L).isPresent());
   }
+
   @Test
   @Sql(statements =
       "INSERT INTO users (id,name, surname, mail, phone, login, password, role, status) "

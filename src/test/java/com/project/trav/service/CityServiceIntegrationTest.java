@@ -6,19 +6,13 @@ import com.project.trav.TravelApplication;
 import com.project.trav.mapper.CityMapper;
 import com.project.trav.model.dto.CityDto;
 import com.project.trav.model.entity.City;
-import com.project.trav.model.entity.Role;
 import com.project.trav.repository.CityH2Repository;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,12 +29,7 @@ public class CityServiceIntegrationTest {
   @Autowired
   private CityH2Repository cityH2Repository;
 
-  @BeforeAll
-  public static void setSecurityContext() {
-    Set<SimpleGrantedAuthority> authority = Role.ADMIN.grantedAuthorities();
-    SecurityContextHolder.getContext().setAuthentication(
-        new UsernamePasswordAuthenticationToken("admin", "admin", authority));
-  }
+
 
   @AfterEach
   public void clearDataBase() {

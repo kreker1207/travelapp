@@ -14,19 +14,13 @@ import com.project.trav.model.entity.User;
 import com.project.trav.repository.UserH2Repository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -43,13 +37,6 @@ class UserServiceIntegrationTest {
   private UserMapper userMapper;
   @Autowired
   private UserH2Repository userH2Repository;
-
-  @BeforeAll
-  public static void setSecurityContext() {
-    Set<SimpleGrantedAuthority> authority = Role.ADMIN.grantedAuthorities();
-    SecurityContextHolder.getContext().setAuthentication(
-        new UsernamePasswordAuthenticationToken("admin", "admin", authority));
-  }
 
   @AfterEach
   public void clearDataBase() {

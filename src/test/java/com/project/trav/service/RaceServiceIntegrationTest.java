@@ -7,20 +7,14 @@ import com.project.trav.model.dto.RaceDto;
 import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
 
-import com.project.trav.model.entity.Role;
 import com.project.trav.repository.RaceH2Repository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +28,6 @@ public class RaceServiceIntegrationTest {
   private RaceService raceService;
   @Autowired
   private RaceH2Repository raceH2Repository;
-
-  @BeforeAll
-  public static void setSecurityContext() {
-    Set<SimpleGrantedAuthority> authority = Role.ADMIN.grantedAuthorities();
-    SecurityContextHolder.getContext().setAuthentication(
-        new UsernamePasswordAuthenticationToken("admin", "admin", authority));
-  }
 
   @AfterEach
   public void clearDataBase() {
@@ -122,6 +109,7 @@ public class RaceServiceIntegrationTest {
         .setRaceNumber("Dsa-321-wwwa").setDepartureCityId(2L).setArrivalCityId(1L), 2L);
     assertEquals("MajongAir", raceService.getRace(2L).getAirline());
   }
+
   @Test
   @Sql(statements = "INSERT INTO city (id,name, country, population, info) VALUES (1,'Kiev','Ukraine','3.2m','Capital')")
   @Sql(statements = "INSERT INTO city (id,name, country, population, info) VALUES (2,'Berlin','Berlin','4.2m','Capital')")
@@ -134,7 +122,7 @@ public class RaceServiceIntegrationTest {
   @Sql(statements =
       "INSERT INTO race (id, departure_date_time, arrival_date_time, duration, airline, race_number, departure_city_id, arrival_city_id) "
           + "VALUES (3,'2022-11-02T18:00:00','2022-11-02T19:00:00','3600000','Mau','eww2-gfa',2,1)")
-  void searchRace(){
-    assertEquals(3,raceH2Repository.findAll().size());
+  void searchRace() {
+    assertEquals(3, raceH2Repository.findAll().size());
   }
 }
