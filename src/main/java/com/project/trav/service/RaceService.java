@@ -91,7 +91,7 @@ public class RaceService {
     });
   }
   private City getValidCity(Long cityId){
-    return cityRepository.findById(cityId).orElseThrow(()->{throw new EntityNotFoundByIdException("City was not found by if");});
+    return cityRepository.findById(cityId).orElseThrow(()->{throw new EntityNotFoundByIdException("City was not found by id");});
   }
 
   public Page<RaceDto> searchRaces(Predicate predicate, Pageable pageable) {

@@ -1,8 +1,11 @@
 package com.project.trav.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.project.trav.TravelApplication;
+import com.project.trav.exeption.EntityAlreadyExists;
+import com.project.trav.exeption.EntityNotFoundByIdException;
 import com.project.trav.mapper.UserMapper;
 import com.project.trav.model.dto.UserDto;
 import com.project.trav.model.dto.UserSaveRequest;
@@ -50,6 +53,11 @@ class UserServiceIntegrationTest {
     UserDto foundUser = userService.getUser(user.getId());
     assertEquals(userMapper.toUserDto(user), foundUser);
   }
+  @Test
+  void getUserNotFoundFail() {
+    EntityNotFoundByIdException thrown  = assertThrows(EntityNotFoundByIdException.class,()->{userService.getUser(1L);},"User was not found");
+    assertEquals("User was not found",thrown.getMessage());
+  }
 
   @Test
   @Sql(statements = "INSERT INTO users (name, surname, mail, phone, login, password, role, status) "
@@ -75,7 +83,52 @@ class UserServiceIntegrationTest {
         .setRole(Role.ADMIN)
         .setStatus(Status.ACTIVE));
     assertEquals(1, userH2Repository.findAll().size());
-    assertEquals("Anton", userH2Repository.findById(1L).get().getName());
+    assertEquals("Anton", userH2Repository.findAll().get(0).getName());
+  }
+  @Test
+  @Sql(statements = "INSERT INTO users (name, surname, mail, phone, login, password, role, status) "
+      + "VALUES ('Ivan','Baran','bara@gma.qew','+144568','kreker','1234','USER','ACTIVE')")
+  void addUserLoginFail() {
+    EntityAlreadyExists thrown  = assertThrows(EntityAlreadyExists.class,()->{userService.addUser(new UserSaveRequest()
+        .setName("Anton")
+        .setSurname("Chaika")
+        .setLogin("kreker")
+        .setPassword("anton")
+        .setMail("anton@gmail.com")
+        .setPhone("+1235456")
+        .setRole(Role.ADMIN)
+        .setStatus(Status.ACTIVE));},"User with this login/mail already exists");
+    assertEquals("User with this login/mail already exists",thrown.getMessage());
+  }
+  @Test
+  @Sql(statements = "INSERT INTO users (name, surname, mail, phone, login, password, role, status) "
+      + "VALUES ('Ivan','Baran','bara@gma.qew','+144568','kreker','1234','USER','ACTIVE')")
+  void addUserPhoneFail() {
+    EntityAlreadyExists thrown  = assertThrows(EntityAlreadyExists.class,()->{userService.addUser(new UserSaveRequest()
+        .setName("Anton")
+        .setSurname("Chaika")
+        .setLogin("antonio")
+        .setPassword("anton")
+        .setMail("anton@gmail.com")
+        .setPhone("+144568")
+        .setRole(Role.ADMIN)
+        .setStatus(Status.ACTIVE));},"User with this login/mail already exists");
+    assertEquals("User with this login/mail already exists",thrown.getMessage());
+  }
+  @Test
+  @Sql(statements = "INSERT INTO users (name, surname, mail, phone, login, password, role, status) "
+      + "VALUES ('Ivan','Baran','bara@gma.qew','+144568','kreker','1234','USER','ACTIVE')")
+  void addUserMailFail() {
+    EntityAlreadyExists thrown  = assertThrows(EntityAlreadyExists.class,()->{userService.addUser(new UserSaveRequest()
+        .setName("Anton")
+        .setSurname("Chaika")
+        .setLogin("antonio")
+        .setPassword("anton")
+        .setMail("bara@gma.qew")
+        .setPhone("+789546123")
+        .setRole(Role.ADMIN)
+        .setStatus(Status.ACTIVE));},"User with this login/mail already exists");
+    assertEquals("User with this login/mail already exists",thrown.getMessage());
   }
   @Test
   @Sql(statements =
@@ -88,6 +141,13 @@ class UserServiceIntegrationTest {
     assertEquals(2, userService.getUsers().size());
     userService.deleteUser(1L);
     assertEquals(1, userService.getUsers().size());
+  }
+  @Test
+  void deleteNotFoundUser() {
+    EntityNotFoundByIdException thrown = assertThrows(EntityNotFoundByIdException.class, () -> {
+      userService.deleteUser(1L);
+    }, "User was not found");
+    assertEquals("User was not found",thrown.getMessage());
   }
 
   @Test
@@ -108,6 +168,72 @@ class UserServiceIntegrationTest {
         .setStatus(Status.ACTIVE)
         .setPhone("+144568"), 1L);
     assertEquals("Boris", userService.getUser(1L).getName());
+  }
+  @Test
+  @Sql(statements =
+      "INSERT INTO users (id,name, surname, mail, phone, login, password, role, status) "
+          + "VALUES (1,'Ivan','Baran','bara@gma.qew','+144568','keeker','1234','USER','ACTIVE')")
+  void updateUserNotFoundFail() {
+    EntityNotFoundByIdException thrown = assertThrows(EntityNotFoundByIdException.class, () -> {userService.updateUser(new UserUpdateRequest()
+        .setName("Boris")
+        .setSurname("Baran")
+        .setLogin("keeker")
+        .setMail("bara@gma.qew")
+        .setRole(Role.USER)
+        .setStatus(Status.ACTIVE)
+        .setPhone("+144568"), 2L);},"User was not found");
+    assertEquals("User was not found", thrown.getMessage());
+  }
+  @Test
+  @Sql(statements = "INSERT INTO users (name, surname, mail, phone, login, password, role, status) "
+      + "VALUES ('Ivan','Baran','bara@gma.qew','+144568','kreker','1234','USER','ACTIVE')")
+  @Sql(statements =
+      "INSERT INTO users (id,name, surname, mail, phone, login, password, role, status) "
+          + "VALUES (2,'Kiril','Anrushckenk','kiril@gma.qew','+144532','kirez','rrrr','USER','ACTIVE')")
+  void updateUserLoginFail() {
+    EntityAlreadyExists thrown  = assertThrows(EntityAlreadyExists.class,()->{userService.updateUser(new UserUpdateRequest()
+        .setName("Ivan")
+        .setSurname("Baran")
+        .setLogin("kreker")
+        .setMail("anton@gmail.com")
+        .setPhone("+1235456")
+        .setRole(Role.ADMIN)
+        .setStatus(Status.ACTIVE),2L);},"User with this login/mail already exist");
+    assertEquals("User with this login/mail already exist",thrown.getMessage());
+  }
+  @Test
+  @Sql(statements = "INSERT INTO users (name, surname, mail, phone, login, password, role, status) "
+      + "VALUES ('Ivan','Baran','bara@gma.qew','+144568','kreker','1234','USER','ACTIVE')")
+  @Sql(statements =
+      "INSERT INTO users (id,name, surname, mail, phone, login, password, role, status) "
+          + "VALUES (2,'Kiril','Anrushckenk','kiril@gma.qew','+144532','kirez','rrrr','USER','ACTIVE')")
+  void updateUserMailFail() {
+    EntityAlreadyExists thrown  = assertThrows(EntityAlreadyExists.class,()->{userService.updateUser(new UserUpdateRequest()
+        .setName("Ivan")
+        .setSurname("Baran")
+        .setLogin("kruzo")
+        .setMail("bara@gma.qew")
+        .setPhone("+1235456")
+        .setRole(Role.ADMIN)
+        .setStatus(Status.ACTIVE),2L);},"User with this login/mail already exist");
+    assertEquals("User with this login/mail already exist",thrown.getMessage());
+  }
+  @Test
+  @Sql(statements = "INSERT INTO users (name, surname, mail, phone, login, password, role, status) "
+      + "VALUES ('Ivan','Baran','bara@gma.qew','+144568','kreker','1234','USER','ACTIVE')")
+  @Sql(statements =
+      "INSERT INTO users (id,name, surname, mail, phone, login, password, role, status) "
+          + "VALUES (2,'Kiril','Anrushckenk','kiril@gma.qew','+144532','kirez','rrrr','USER','ACTIVE')")
+  void updateUserPhoneFail() {
+    EntityAlreadyExists thrown  = assertThrows(EntityAlreadyExists.class,()->{userService.updateUser(new UserUpdateRequest()
+        .setName("Kiril")
+        .setSurname("Anrushckenk")
+        .setLogin("asdgh")
+        .setMail("anton@gmail.com")
+        .setPhone("+144568")
+        .setRole(Role.ADMIN)
+        .setStatus(Status.ACTIVE),2L);},"User with this login/mail already exist");
+    assertEquals("User with this login/mail already exist",thrown.getMessage());
   }
 
   @Test

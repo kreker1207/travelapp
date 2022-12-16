@@ -1,8 +1,10 @@
 package com.project.trav.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.project.trav.TravelApplication;
+import com.project.trav.exeption.EntityNotFoundByIdException;
 import com.project.trav.mapper.CityMapper;
 import com.project.trav.model.dto.CityDto;
 import com.project.trav.model.entity.City;
@@ -45,6 +47,12 @@ public class CityServiceIntegrationTest {
     List<CityDto> foundCity = cityService.getCities();
     assertEquals("Kakhovka", foundCity.get(0).getName());
   }
+  @Test
+  void getNotFoundFailure(){
+    EntityNotFoundByIdException thrown = assertThrows(EntityNotFoundByIdException.class,()->{
+      cityService.getCity(1L);},"City was not found");
+    assertEquals("City was not found",thrown.getMessage());
+  }
 
   @Test
   void getCity() {
@@ -75,6 +83,12 @@ public class CityServiceIntegrationTest {
     assertEquals(1,cityService.getCities().size());
   }
   @Test
+  void deleteNotFoundFailure(){
+    EntityNotFoundByIdException thrown = assertThrows(EntityNotFoundByIdException.class,()->{
+      cityService.deleteCity(1L);},"City was not found");
+    assertEquals("City was not found",thrown.getMessage());
+  }
+  @Test
   @Sql(statements = "INSERT INTO city (id, name, country, population, info) "
       + "VALUES (1,'Kiev','Ukraine','3.2m','Capital city')")
   @Sql(statements = "INSERT INTO city (id, name, country, population, info) "
@@ -85,7 +99,14 @@ public class CityServiceIntegrationTest {
     cityService.updateCity(cityUpdate,1L);
     assertEquals("3.5m",cityService.getCity(1L).getPopulation());
   }
-
+  @Test
+  void updateNotFoundFailure(){
+    EntityNotFoundByIdException thrown = assertThrows(EntityNotFoundByIdException.class,()->{
+      cityService.updateCity(new CityDto()
+          .setName("Kiev").setCountry("Ukraine").setPopulation("3.5m").setInformation("Capital city"),1L);
+      },"City was not found");
+    assertEquals("City was not found",thrown.getMessage());
+  }
   private City createAndSaveCity() {
     return cityH2Repository.save(new City()
         .setId(1L)
