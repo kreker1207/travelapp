@@ -4,6 +4,7 @@ import com.project.trav.exeption.EntityAlreadyExists;
 import com.project.trav.exeption.PasswordMatchException;
 import com.project.trav.mapper.UserMapper;
 import com.project.trav.model.dto.UpdateUserPasswordRequest;
+import com.project.trav.model.dto.UserBaseRequest;
 import com.project.trav.model.dto.UserDto;
 import com.project.trav.model.dto.UserSaveRequest;
 import com.project.trav.model.dto.UserUpdateRequest;
@@ -32,15 +33,13 @@ public class UserService {
   public UserDto getUser(Long id) {
     return userMapper.toUserDto(findByIdUser(id));
   }
-  public UserDto getMyProfile(String username){
-    return userMapper.toUserDto(userRepository.findByLogin(username).get());}
+
+  public UserDto getMyProfile(String username) {
+    return userMapper.toUserDto(userRepository.findByLogin(username).get());
+  }
 
   public UserDto addUser(UserSaveRequest userSaveRequest) {
-    if (userRepository.existsUserByLoginOrMailOrPhone(userSaveRequest.getLogin(),
-        userSaveRequest.getMail(),
-        userSaveRequest.getPhone())) {
-      throw new EntityAlreadyExists("User with this login/mail already exists");
-    }
+    validateUniqueUserFields(userSaveRequest, null);
     User user = new User().setName(userSaveRequest.getName()).setSurname(
             userSaveRequest.getSurname()).setMail(userSaveRequest.getMail()).setPhone(
             userSaveRequest.getPhone()).setLogin(userSaveRequest.getLogin())
@@ -53,7 +52,7 @@ public class UserService {
 
   public UserDto updateUser(UserUpdateRequest userUpdateRequest, Long id) {
     User oldUser = userMapper.toUser(getUser(id));
-    validUpdate(userUpdateRequest, oldUser);
+    validateUniqueUserFields(userUpdateRequest, id);
     userRepository.save(oldUser
         .setLogin(userUpdateRequest.getLogin())
         .setName(userUpdateRequest.getName())
@@ -88,24 +87,11 @@ public class UserService {
 
   public void resetPasswordById(UpdateUserPasswordRequest userPasswordRequest, Long id) {
     User user = userMapper.toUser(getUser(id));
-    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(),
-        user.getPassword())) {
-      user.setPassword(encryptPassword(userPasswordRequest.getNewPassword()));
-      userRepository.save(user);
-    } else {
-      throw new PasswordMatchException("Check your password");
-    }
+    resetPassword(user,userPasswordRequest);
   }
-
   public void resetPassword(UpdateUserPasswordRequest userPasswordRequest, String username) {
     User user = userRepository.findByLogin(username).get();
-    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(),
-        user.getPassword())) {
-      user.setPassword(encryptPassword(userPasswordRequest.getNewPassword()));
-      userRepository.save(user);
-    } else {
-      throw new PasswordMatchException("Check your password");
-    }
+    resetPassword(user,userPasswordRequest);
   }
 
   private User findByIdUser(Long id) {
@@ -115,12 +101,24 @@ public class UserService {
 
   }
 
-  private void validUpdate(UserUpdateRequest user, User oldUser) {
-    if ((!user.getLogin().equals(oldUser.getLogin()) || !user.getMail().equals(oldUser.getMail())
-        || !user.getPhone().equals(oldUser.getPhone()))
-        && userRepository.existsUserByLoginOrMailOrPhone(user.getLogin(), user.getMail(),
-        user.getPhone())) {
-      throw new EntityAlreadyExists("User with this login/mail already exist");
+  private void validateUniqueUserFields(UserBaseRequest userBaseRequest, Long id) {
+    var foundUserByUniqueParams = userRepository.findUserByLoginOrMailOrPhone(
+        userBaseRequest.getLogin(), userBaseRequest.getMail(), userBaseRequest.getPhone());
+    if (id != null) {
+      foundUserByUniqueParams = foundUserByUniqueParams.stream()
+          .filter(user -> !user.getId().equals(id)).toList();
+    }
+    if (!foundUserByUniqueParams.isEmpty()) {
+      throw new EntityAlreadyExists("User with this login/mail already exists");
+    }
+  }
+  private void resetPassword(User user, UpdateUserPasswordRequest userPasswordRequest){
+    if (new BCryptPasswordEncoder().matches(userPasswordRequest.getOldPassword(),
+        user.getPassword())) {
+      user.setPassword(encryptPassword(userPasswordRequest.getNewPassword()));
+      userRepository.save(user);
+    } else {
+      throw new PasswordMatchException("Check your password");
     }
   }
 

@@ -8,6 +8,7 @@ import com.project.trav.model.entity.Role;
 import com.project.trav.model.entity.Status;
 import com.project.trav.model.entity.User;
 import com.project.trav.repository.UserRepository;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,12 +73,17 @@ public class UserServiceTest {
 
   @Test
   void addUser() {
-    var user = new UserSaveRequest().setName("Ivan").setSurname("Baranetskyi")
-        .setMail("baranetskiy@gmail.com")
-        .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER)
+    var user = new UserSaveRequest().setName("Anton")
+        .setSurname("Chaika")
+        .setRole(Role.ADMIN)
+        .setPassword("anton")
         .setStatus(Status.ACTIVE);
-    Mockito.when(userRepository.existsUserByLoginOrMailOrPhone(user.getLogin(), user.getMail(),
-        user.getPhone())).thenReturn(false);
+    user
+        .setMail("anton@gmail.com")
+        .setPhone("+1235456")
+        .setMail("anton@gmail.com");
+    Mockito.when(userRepository.findUserByLoginOrMailOrPhone(user.getLogin(), user.getMail(),
+        user.getPhone())).thenReturn(List.of());
     userService.addUser(user);
     Mockito.verify(userRepository).save(Mockito.any(User.class));
   }
@@ -89,10 +95,14 @@ public class UserServiceTest {
         .setPhone("+380956954604").setLogin("kreker").setPassword("admin").setRole(Role.USER)
         .setStatus(Status.ACTIVE)
         .setTickets(null);
-    var updateUser = new UserUpdateRequest().setName("Ivan").setSurname("Baranetskyi")
-        .setMail("baranetskiy@gmail.com")
-        .setPhone("+380956954604").setLogin("kreker")
+    var updateUser = new UserUpdateRequest().setName("Anton")
+        .setSurname("Chaika")
+        .setRole(Role.ADMIN)
         .setStatus(Status.ACTIVE);
+    updateUser
+        .setLogin("kreker")
+        .setPhone("+1235456")
+        .setMail("anton@gmail.com");
     Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(sourceUser));
     Mockito.when(userMapper.toUser(userService.getUser(1L))).thenReturn(sourceUser);
     userService.updateUser(updateUser, 1L);
@@ -101,14 +111,18 @@ public class UserServiceTest {
 
   @Test
   void updateUser_failure() {
-    var user = new UserUpdateRequest().setName("Ivan").setSurname("Baranetskyi")
-        .setMail("baranetskiy@gmail.com")
-        .setPhone("+380956954604").setLogin("kreker")
+    var updateUser = new UserUpdateRequest().setName("Anton")
+        .setSurname("Chaika")
+        .setRole(Role.ADMIN)
         .setStatus(Status.ACTIVE);
+    updateUser
+        .setMail("anton@gmail.com")
+        .setPhone("+1235456")
+        .setMail("anton@gmail.com");
     Mockito.when(userRepository.findById(1L)).thenReturn(Optional.empty());
     String expectedMessage = "User was not found";
     String actualMessage = Assertions.assertThrows(EntityNotFoundException.class, () ->
-        userService.updateUser(user, 1L)).getMessage();
+        userService.updateUser(updateUser, 1L)).getMessage();
     assertThat(actualMessage).isEqualTo(expectedMessage);
   }
 

@@ -12,17 +12,11 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class UserSaveRequest {
+public class UserSaveRequest extends UserBaseRequest{
   @NotNull
   private String name;
   @NotNull
   private String surname;
-  @NotNull
-  private String mail;
-  @NotNull
-  private String phone;
-  @NotNull
-  private String login;
   @NotNull
   private String password;
   @NotNull
