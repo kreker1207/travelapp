@@ -103,7 +103,7 @@ public class TicketService {
 
   private void validPlaceUpdate(TicketUpdateRequest ticketUpdateRequest, Ticket ticket) {
     Race race = raceRepository.findById(ticketUpdateRequest.getRacesId()).orElseThrow(() ->
-        new EntityNotFoundByIdException("Race was not fond"));
+        new EntityNotFoundByIdException("Race was not found"));
     if (!ticketUpdateRequest.getPlace().equals(ticket.getPlace())
         && ticketRepository.findByPlaceAndRaces_RaceNumber(ticketUpdateRequest.getPlace(),
             race.getRaceNumber())
@@ -114,7 +114,7 @@ public class TicketService {
 
   private void validPlaceAdd(TicketSaveRequest ticketSaveRequest) {
     Race race = raceRepository.findById(ticketSaveRequest.getRaceId()).orElseThrow(() ->
-        new EntityNotFoundByIdException("Race was not fond"));
+        new EntityNotFoundByIdException("Race was not found"));
     if (ticketRepository.findByPlaceAndRaces_RaceNumber(ticketSaveRequest.getPlace(), race.getRaceNumber())
         .isPresent()) {
       throw new EntityAlreadyExists("Ticket with this place on race already exists");

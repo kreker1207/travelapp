@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
+import lombok.experimental.FieldNameConstants;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -17,6 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@FieldNameConstants
 public class RaceDto {
 
   private Long id;
