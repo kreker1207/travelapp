@@ -11,12 +11,9 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class UserUpdateRequest {
+public class UserUpdateRequest extends UserBaseRequest{
   private String name;
   private String surname;
-  private String mail;
-  private String phone;
-  private String login;
   private Role role;
   private Status status;
 }

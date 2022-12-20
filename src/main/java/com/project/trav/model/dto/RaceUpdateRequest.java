@@ -14,7 +14,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class RaceUpdateRequest {
-  private Long id;
   @DateTimeFormat(iso = ISO.DATE_TIME)
   private LocalDateTime departureDateTime;
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -23,13 +22,5 @@ public class RaceUpdateRequest {
   @Size(min = 3, max = 20)
   private String raceNumber;
   private Long departureCityId;
-  private String departureCityName;
-  private String departureCityCountry;
-  private String departureCityPopulation;
-  private String departureCityInformation;
   private Long arrivalCityId;
-  private String arrivalCityName;
-  private String arrivalCityCountry;
-  private String arrivalCityPopulation;
-  private String arrivalCityInformation;
 }

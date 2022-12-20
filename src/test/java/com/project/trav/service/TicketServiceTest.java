@@ -1,4 +1,4 @@
-package com.project.trav.application.service;
+package com.project.trav.service;
 
 import com.project.trav.mapper.TicketMapper;
 import com.project.trav.model.dto.CityDto;
@@ -7,7 +7,6 @@ import com.project.trav.model.dto.TicketDto;
 import com.project.trav.model.dto.TicketSaveRequest;
 import com.project.trav.model.dto.TicketUpdateRequest;
 import com.project.trav.repository.RaceRepository;
-import com.project.trav.service.TicketService;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
 import com.project.trav.model.entity.Ticket;
