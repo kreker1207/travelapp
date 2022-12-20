@@ -5,6 +5,7 @@ import com.project.trav.mapper.RaceMapper;
 import com.project.trav.model.dto.RaceDto;
 import com.project.trav.model.dto.RaceSaveRequest;
 import com.project.trav.model.dto.RaceUpdateRequest;
+import com.project.trav.model.dto.SendLogsKafka;
 import com.project.trav.model.entity.City;
 import com.project.trav.model.entity.Race;
 import com.project.trav.repository.CityRepository;
@@ -15,6 +16,7 @@ import java.time.Duration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,7 @@ public class RaceService {
 
   private static final String NOT_FOUND_ERROR = "Race was not found by id";
   private final RaceRepository raceRepository;
+  private final KafkaTemplate<String, SendLogsKafka> kafkaKafkaTemplate;
   private final CityRepository cityRepository;
   private final RaceMapper raceMapper;
 
@@ -94,7 +97,10 @@ public class RaceService {
     return cityRepository.findById(cityId).orElseThrow(()->{throw new EntityNotFoundByIdException("City was not found by id");});
   }
 
-  public Page<RaceDto> searchRaces(Predicate predicate, Pageable pageable) {
+  public Page<RaceDto> searchRaces(Predicate predicate, Pageable pageable,String login) {
+    kafkaKafkaTemplate.send("logsTopic",new SendLogsKafka()
+        .setLogin(login)
+        .setSearchParams(predicate.toString()));
     return raceRepository.findAll(predicate,pageable).map(raceMapper::toRaceDto);
   }
 }

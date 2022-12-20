@@ -33,6 +33,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
 	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.13'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.kafka:spring-kafka'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
 	annotationProcessor("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")

@@ -8,6 +8,7 @@ import com.project.trav.model.entity.Race;
 import com.project.trav.repository.RaceRepository;
 import com.project.trav.service.RaceService;
 import com.project.trav.model.dto.RaceDto;
+import javax.servlet.http.HttpServletRequest;
 import com.querydsl.core.types.Predicate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -40,7 +41,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @SecurityRequirement(name = SECURITY_CONFIG_NAME)
 public class RaceController {
+
   private final RaceService raceService;
+
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   @Operation(summary = "Get all races", responses = {
@@ -121,6 +124,8 @@ public class RaceController {
       @PathVariable Long id) {
     return raceService.updateRace(raceUpdateRequest, id);
   }
+
+
   @GetMapping("/search")
   @Operation(summary = "Search for race", responses = {
       @ApiResponse(responseCode = "200", description = "Races by criteria",
@@ -134,7 +139,8 @@ public class RaceController {
   })
   @PreAuthorize("hasAnyAuthority('users','admins')")
   public Page<RaceDto> searchRace(@QuerydslPredicate(root = Race.class,bindings = RaceRepository.class)
-   Predicate predicate,@ParameterObject Race race,@ParameterObject Pageable pageable){
-    return raceService.searchRaces(predicate,pageable);
+   Predicate predicate,@ParameterObject Race race,@ParameterObject Pageable pageable, HttpServletRequest httpServletRequest){
+    String login = httpServletRequest.getUserPrincipal().getName();
+    return raceService.searchRaces(predicate,pageable,login);
   }
 }
