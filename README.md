@@ -26,9 +26,9 @@ docker-compose up
 
 ## Usage
 
-### Postman Collection
+### Postman
 
-To test the various routes and perform CRUD operations, import the provided Postman collection located at `./postman/TravelApp.postman_collection.json`. This collection contains pre-configured requests for different API endpoints.
+To test the various routes and perform CRUD operations you can use swagger - where showd examples of API endpoints.
 
 ### Authentication
 
