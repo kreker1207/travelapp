@@ -26,7 +26,7 @@ docker-compose up
 
 ## Usage
 
-### Postman
+### Postman/Swagger
 
 To test the various routes and perform CRUD operations you can use swagger - where showd examples of API endpoints.
 
